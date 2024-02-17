@@ -8,6 +8,10 @@ node_modules
 # Keep environment variables out of version control
 .env
 
+prisma-query-engine
+dmmf.json
+package-lock.json
+pubspec.lock
 
 # generated code
 lib/core/orm/
