@@ -1,13 +1,13 @@
 {
   "name": "todo_api",
   "version": "1.0.0",
-  "description": "A TODO API implemented with Dartseid and Prisma",
-  "homepage": "https://github.com/exaby73/dartsied/tree/main",
+  "description": "",
+  "homepage": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/exaby73/dartsied.git#main"
+    "url": ""
   },
-  "author": "exaby73",
+  "author": "",
   "license": "MIT",
   "devDependencies": {
     "prisma": "^4.16.1"

@@ -13,10 +13,6 @@ dmmf.json
 package-lock.json
 pubspec.lock
 
-# generated code
-lib/core/orm/
-*.g.dart
-*.freezed.dart
-*.config.dart
+
 *.diff
 
