@@ -78,7 +78,7 @@ class AppTheme {
       tabBarTheme: TabBarTheme(
         indicatorColor: CColor.primary.shade800,
         indicatorSize: TabBarIndicatorSize.tab,
-        tabAlignment: TabAlignment.start,
+        //tabAlignment: TabAlignment.start,
         unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
         unselectedLabelColor: CColor.disableText,
         labelStyle: TextStyle(

@@ -92,7 +92,7 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker>
                       selectedIndex = value;
                       setState(() {});
                     },
-                    tabAlignment: TabAlignment.center,
+                   // tabAlignment: TabAlignment.center,
                     tabs: [
                       Column(
                         children: [
