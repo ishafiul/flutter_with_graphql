@@ -6,6 +6,7 @@ analyzer:
     - lib/**/*.g.dart
     - lib/**/*.gr.dart
     - lib/**/*.config.dart
+    - lib/**/*.graphql.dart
     - lib/config/custom_icons_icons.dart
 linter:
   rules:
