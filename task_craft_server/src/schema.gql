@@ -8,6 +8,11 @@ type Task {
   description: String!
 }
 
+type Auth {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   health: String!
   task: [Task!]
@@ -18,6 +23,8 @@ type Mutation {
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
   removeTask(id: String!): Task!
+  createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput!): Auth!
+  reqOtp(requestOtpInput: RequestOtpInput!): Auth!
 }
 
 input CreateTaskInput {
@@ -29,4 +36,46 @@ input UpdateTaskInput {
   title: String
   description: String
   id: String!
+}
+
+input CreateDeviceUuidInput {
+  """User Device Type. Example: IOS, Android, Web"""
+  deviceType: String!
+
+  """User Device Type. Example: Mobile, Tablet, Desktop, Watch"""
+  osName: String!
+
+  """Device Os Name. """
+  osVersion: String!
+
+  """Device Os Version"""
+  deviceModel: String!
+
+  """Physical or emulator"""
+  isPhysicalDevice: Boolean!
+
+  """Client App Version"""
+  appVersion: String!
+
+  """Uer Current Location. """
+  location: LocationInput!
+
+  """User Ip Address"""
+  ipAddress: String!
+}
+
+input LocationInput {
+  """Latitude"""
+  lat: String!
+
+  """Longitude"""
+  long: String!
+}
+
+input RequestOtpInput {
+  """User Valid Email. OTP will send there"""
+  email: String!
+
+  """this system generated device id"""
+  deviceUuid: String!
 }
