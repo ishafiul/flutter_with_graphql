@@ -13,6 +13,11 @@ type Auth {
   exampleField: Int!
 }
 
+type DeviceUuId {
+  """Secret token for current device"""
+  deviceUuId: String!
+}
+
 type Query {
   health: String!
   task: [Task!]
@@ -23,7 +28,7 @@ type Mutation {
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
   removeTask(id: String!): Task!
-  createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput!): Auth!
+  createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput!): DeviceUuId!
   reqOtp(requestOtpInput: RequestOtpInput!): Auth!
 }
 
@@ -43,25 +48,25 @@ input CreateDeviceUuidInput {
   deviceType: String!
 
   """User Device Type. Example: Mobile, Tablet, Desktop, Watch"""
-  osName: String!
+  osName: String
 
   """Device Os Name. """
-  osVersion: String!
+  osVersion: String
 
   """Device Os Version"""
-  deviceModel: String!
+  deviceModel: String
 
   """Physical or emulator"""
-  isPhysicalDevice: Boolean!
+  isPhysicalDevice: Boolean
 
   """Client App Version"""
-  appVersion: String!
+  appVersion: String
 
   """Uer Current Location. """
-  location: LocationInput!
+  location: LocationInput
 
   """User Ip Address"""
-  ipAddress: String!
+  ipAddress: String
 }
 
 input LocationInput {

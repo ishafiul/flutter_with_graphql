@@ -21,13 +21,13 @@ export class UpdateTaskInput {
 
 export class CreateDeviceUuidInput {
     deviceType: string;
-    osName: string;
-    osVersion: string;
-    deviceModel: string;
-    isPhysicalDevice: boolean;
-    appVersion: string;
-    location: LocationInput;
-    ipAddress: string;
+    osName?: Nullable<string>;
+    osVersion?: Nullable<string>;
+    deviceModel?: Nullable<string>;
+    isPhysicalDevice?: Nullable<boolean>;
+    appVersion?: Nullable<string>;
+    location?: Nullable<LocationInput>;
+    ipAddress?: Nullable<string>;
 }
 
 export class LocationInput {
@@ -50,6 +50,10 @@ export class Auth {
     exampleField: number;
 }
 
+export class DeviceUuId {
+    deviceUuId: string;
+}
+
 export abstract class IQuery {
     abstract health(): string | Promise<string>;
 
@@ -65,7 +69,7 @@ export abstract class IMutation {
 
     abstract removeTask(id: string): Task | Promise<Task>;
 
-    abstract createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput): Auth | Promise<Auth>;
+    abstract createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput): DeviceUuId | Promise<DeviceUuId>;
 
     abstract reqOtp(requestOtpInput: RequestOtpInput): Auth | Promise<Auth>;
 }

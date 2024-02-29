@@ -1,14 +1,16 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Auth } from './entities/auth.entity';
 import { CreateDeviceUuidInput } from './dto/create-device-uuid.input';
 import { RequestOtpInput } from './dto/request-otp.input';
 
+import { DeviceUuId } from './entities/device-uuid.entity';
+
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation(() => Auth)
+  @Mutation(() => DeviceUuId)
   createDeviceUuid(
     @Args('createDeviceUuidInput') createDeviceUuidInput: CreateDeviceUuidInput,
   ) {
