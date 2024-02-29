@@ -12,6 +12,7 @@ import { ConnectOptions } from 'mongoose';
 import { GraphQLFormattedError } from 'graphql/error';
 import { TaskModule } from './modules/task/task.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { AuthModule } from './modules/auth/auth.module';
     TaskModule,
     _ConfigModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
