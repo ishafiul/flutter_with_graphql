@@ -2,8 +2,8 @@ import { IsString } from 'class-validator';
 
 export class JwtPayload {
   @IsString()
-  userName: string;
+  uuid: string;
 
   @IsString()
-  id: string;
+  deviceUuId: string;
 }
