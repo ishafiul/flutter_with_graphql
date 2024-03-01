@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { TaskResolver } from './task.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TaskModel } from './schema/task.schema';
+import { TaskModel } from "./entities/task.entity";
 
 const MongooseModels = MongooseModule.forFeature([TaskModel]);
 
