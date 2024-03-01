@@ -14,14 +14,14 @@ type User {
   email: String!
 }
 
-type Auth {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type DeviceUuId {
   """Secret token for current device"""
   deviceUuId: String!
+}
+
+type TokenEntity {
+  """Secret token for current device"""
+  accessToken: String!
 }
 
 type Query {
@@ -36,7 +36,8 @@ type Mutation {
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
   removeTask(id: String!): Task!
   createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput!): DeviceUuId!
-  reqOtp(requestOtpInput: RequestOtpInput!): Auth!
+  reqOtp(requestOtpInput: RequestOtpInput!): User!
+  verifyOtp(verifyOtpInput: VerifyOtpInput!): TokenEntity!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
@@ -95,13 +96,28 @@ input RequestOtpInput {
   deviceUuid: String!
 }
 
+input VerifyOtpInput {
+  """User Valid Email. OTP will send there"""
+  email: String
+
+  """this system generated device id"""
+  deviceUuid: String
+  otp: Int!
+}
+
 input CreateUserInput {
   """Example field (placeholder)"""
-  exampleField: Int!
+  email: String!
+
+  """Example field (placeholder)"""
+  deviceUuId: String!
 }
 
 input UpdateUserInput {
   """Example field (placeholder)"""
-  exampleField: Int
+  email: String
+
+  """Example field (placeholder)"""
+  deviceUuId: String
   id: Int!
 }

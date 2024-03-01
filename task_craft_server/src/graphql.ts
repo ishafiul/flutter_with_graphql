@@ -40,12 +40,20 @@ export class RequestOtpInput {
     deviceUuid: string;
 }
 
+export class VerifyOtpInput {
+    email?: Nullable<string>;
+    deviceUuid?: Nullable<string>;
+    otp: number;
+}
+
 export class CreateUserInput {
-    exampleField: number;
+    email: string;
+    deviceUuId: string;
 }
 
 export class UpdateUserInput {
-    exampleField?: Nullable<number>;
+    email?: Nullable<string>;
+    deviceUuId?: Nullable<string>;
     id: number;
 }
 
@@ -61,12 +69,12 @@ export class User {
     email: string;
 }
 
-export class Auth {
-    exampleField: number;
-}
-
 export class DeviceUuId {
     deviceUuId: string;
+}
+
+export class TokenEntity {
+    accessToken: string;
 }
 
 export abstract class IQuery {
@@ -88,7 +96,9 @@ export abstract class IMutation {
 
     abstract createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput): DeviceUuId | Promise<DeviceUuId>;
 
-    abstract reqOtp(requestOtpInput: RequestOtpInput): Auth | Promise<Auth>;
+    abstract reqOtp(requestOtpInput: RequestOtpInput): User | Promise<User>;
+
+    abstract verifyOtp(verifyOtpInput: VerifyOtpInput): TokenEntity | Promise<TokenEntity>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 
