@@ -1,9 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateDeviceUuidInput } from './dto/create-device-uuid.input';
 import { RequestOtpInput } from './dto/request-otp.input';
-import { AES } from 'crypto-js';
+import { AES, enc } from 'crypto-js';
 import { DeviceUuId } from './entities/device-uuid.entity';
 import { UserService } from '../user/user.service';
+import { MailerService } from '@nestjs-modules/mailer';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { OtpDocument, OtpModel } from './schema/otp.schema';
+import { generateOtp } from '../../common/utils/function.utils';
+import { User } from '../user/entities/user.entity';
+import { VerifyOtpInput } from './dto/vreify-otp.input';
+import { JwtPayload } from '../../common/model/jwt-payload.model';
+import { TokenEntity } from './entities/token.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -70,6 +80,30 @@ export class AuthService {
         JSON.stringify({ createDeviceUuidInput }),
         process.env.HASH_KEY!,
       ).toString(),
+    };
+  }
+
+  async verifyOtp(verifyOtpInput: VerifyOtpInput): Promise<TokenEntity> {
+    const otp = await this.otpModel.findOne({
+      email: verifyOtpInput.email,
+      otp: verifyOtpInput.otp,
+      deviceUuId: verifyOtpInput.deviceUuid,
+    });
+    if (!otp) {
+      throw new HttpException('Invalid otp', HttpStatus.BAD_REQUEST);
+    }
+    await this.otpModel.deleteOne({
+      email: verifyOtpInput.email,
+      otp: verifyOtpInput.otp,
+      deviceUuId: verifyOtpInput.deviceUuid,
+    });
+
+    const jwtPayload: JwtPayload = {
+      uuid: otp.deviceUuId,
+      deviceUuId: otp.deviceUuId,
+    };
+    return {
+      accessToken: this.jwtService.sign(jwtPayload),
     };
   }
 }

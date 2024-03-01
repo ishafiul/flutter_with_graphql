@@ -24,4 +24,9 @@ export class AuthResolver {
   reqOtp(@Args('requestOtpInput') requestOtpInput: RequestOtpInput) {
     return this.authService.reqOtp(requestOtpInput);
   }
+
+  @Mutation(() => TokenEntity)
+  verifyOtp(@Args('verifyOtpInput') verifyOtpInput: VerifyOtpInput) {
+    return this.authService.verifyOtp(verifyOtpInput);
+  }
 }
