@@ -12,8 +12,8 @@ export class UserService {
     private readonly userModel: Model<UserDocument>,
   ) {}
 
-  create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+  async create(createUserInput: CreateUserInput) {
+    return this.userModel.create(createUserInput);
   }
 
   findAll() {
