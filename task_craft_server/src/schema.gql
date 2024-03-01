@@ -5,7 +5,13 @@
 type Task {
   _id: String!
   title: String!
-  description: String!
+}
+
+type User {
+  _id: String!
+  firstName: String!
+  lastName: String!
+  email: String!
 }
 
 type Auth {
@@ -22,6 +28,7 @@ type Query {
   health: String!
   task: [Task!]
   taskById(id: String!): Task
+  user(id: String!): User!
 }
 
 type Mutation {
@@ -30,6 +37,9 @@ type Mutation {
   removeTask(id: String!): Task!
   createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput!): DeviceUuId!
   reqOtp(requestOtpInput: RequestOtpInput!): Auth!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
 }
 
 input CreateTaskInput {
@@ -83,4 +93,15 @@ input RequestOtpInput {
 
   """this system generated device id"""
   deviceUuid: String!
+}
+
+input CreateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }

@@ -40,10 +40,25 @@ export class RequestOtpInput {
     deviceUuid: string;
 }
 
+export class CreateUserInput {
+    exampleField: number;
+}
+
+export class UpdateUserInput {
+    exampleField?: Nullable<number>;
+    id: number;
+}
+
 export class Task {
     _id: string;
     title: string;
-    description: string;
+}
+
+export class User {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
 }
 
 export class Auth {
@@ -60,6 +75,8 @@ export abstract class IQuery {
     abstract task(): Nullable<Task[]> | Promise<Nullable<Task[]>>;
 
     abstract taskById(id: string): Nullable<Task> | Promise<Nullable<Task>>;
+
+    abstract user(id: string): User | Promise<User>;
 }
 
 export abstract class IMutation {
@@ -72,6 +89,12 @@ export abstract class IMutation {
     abstract createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput): DeviceUuId | Promise<DeviceUuId>;
 
     abstract reqOtp(requestOtpInput: RequestOtpInput): Auth | Promise<Auth>;
+
+    abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
+
+    abstract updateUser(updateUserInput: UpdateUserInput): User | Promise<User>;
+
+    abstract removeUser(id: number): User | Promise<User>;
 }
 
 type Nullable<T> = T | null;
