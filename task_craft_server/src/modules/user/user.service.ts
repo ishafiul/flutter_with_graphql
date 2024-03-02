@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { InjectModel } from '@nestjs/mongoose';
@@ -37,8 +37,14 @@ export class UserService {
     return this.userModel.findOne({ email: email }).exec();
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async update(updateUserInput: UpdateUserInput) {
+    await this.userModel.updateOne(
+      { _id: updateUserInput.id },
+      {
+        deviceUuId: updateUserInput.deviceUuId,
+      },
+    );
+    return true;
   }
 
   remove(id: number) {
