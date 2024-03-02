@@ -46,6 +46,10 @@ export class VerifyOtpInput {
     otp: number;
 }
 
+export class RefreshTokenInput {
+    deviceUuid: string;
+}
+
 export class CreateUserInput {
     email: string;
     deviceUuId: string;
@@ -54,7 +58,7 @@ export class CreateUserInput {
 export class UpdateUserInput {
     email?: Nullable<string>;
     deviceUuId?: Nullable<string>;
-    id: number;
+    id: string;
 }
 
 export class Task {
@@ -99,6 +103,8 @@ export abstract class IMutation {
     abstract reqOtp(requestOtpInput: RequestOtpInput): User | Promise<User>;
 
     abstract verifyOtp(verifyOtpInput: VerifyOtpInput): TokenEntity | Promise<TokenEntity>;
+
+    abstract refreshToken(refreshTokenInput: RefreshTokenInput): TokenEntity | Promise<TokenEntity>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 
