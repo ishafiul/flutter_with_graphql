@@ -55,7 +55,10 @@ export class AuthService {
         deviceUuId: requestOtpInput.deviceUuid,
       });
     }
-
+    await this.userService.update({
+      deviceUuId: requestOtpInput.deviceUuid,
+      id: user._id.toString(),
+    });
     const otp = generateOtp(5);
 
     await this.otpModel.create({
