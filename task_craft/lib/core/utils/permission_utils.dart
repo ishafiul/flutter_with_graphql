@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/utils/extention.dart';
-import 'package:task_craft/core/widgets/button.dart';
+import 'package:task_craft/core/widgets/button/button.dart';
+import 'package:task_craft/core/widgets/button/enums.dart';
 
 /// Handles the permission specified by `permission` by checking and requesting it if necessary.
 /// If the permission is denied or permanently denied, it prompts the user with a dialog
@@ -110,26 +111,23 @@ Future<T?> showRequestPermissionDialog<T>({
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Button to open app settings
-                  Button.filled(
+                  Button.primary(
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },
-                    isFullWidth: true,
-                    buttonSize: ButtonSize.xsm,
-                    buttonColor: ButtonColor.primary,
+                    isBlock: true,
                     child: accessName != null
                         ? Text("Enable $accessName Access")
                         : const Text("Open Settings"),
                   ),
                   16.verticalSpace,
                   // Button to cancel the request
-                  Button.tonal(
+                  Button.primary(
                     onPressed: () {
                       Navigator.of(context).pop(false);
                     },
-                    isFullWidth: true,
-                    buttonSize: ButtonSize.xsm,
-                    buttonColor: ButtonColor.primary,
+                    isBlock: true,
+                    fill: ButtonFill.outline,
                     child: const Text("Not Now"),
                   ),
                 ],

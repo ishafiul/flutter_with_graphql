@@ -6,11 +6,5 @@ targets:
           clients:
             - graphql
           scalars:
-            GeoJsonPointCoordinatesScalar:
-              type: List<double>
-            GeoJsonLineStringCoordinatesScalar:
-              type: List<List<double>>
-            GeoJsonPolygonCoordinatesScalar:
-              type: List<List<List<double>>>
             IsoDate:
               type: String

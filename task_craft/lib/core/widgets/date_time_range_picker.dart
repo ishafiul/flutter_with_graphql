@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:task_craft/core/widgets/button.dart';
+import 'package:task_craft/core/widgets/button/button.dart';
+import 'package:task_craft/core/widgets/button/enums.dart';
 
 /// Represents a range of date and time, specified by [startTime] and [endTime].
 class DateTimeRange {
@@ -92,13 +93,13 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker>
                       selectedIndex = value;
                       setState(() {});
                     },
-                   // tabAlignment: TabAlignment.center,
+                    // tabAlignment: TabAlignment.center,
                     tabs: [
                       Column(
                         children: [
-                          Button.text(
-                            buttonSize: ButtonSize.sm,
-                            buttonColor: ButtonColor.primary,
+                          Button.primary(
+                            buttonSize: ButtonSize.small,
+                            fill: ButtonFill.none,
                             child: Text(
                               'Start',
                               style: TextStyle(
@@ -122,9 +123,9 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker>
                       ),
                       Column(
                         children: [
-                          Button.text(
-                            buttonSize: ButtonSize.sm,
-                            buttonColor: ButtonColor.primary,
+                          Button.primary(
+                            buttonSize: ButtonSize.small,
+                            fill: ButtonFill.none,
                             child: Text(
                               'End',
                               style: TextStyle(
@@ -196,15 +197,15 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Button.outline(
+                  Button.primary(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    buttonSize: ButtonSize.sm,
-                    buttonColor: ButtonColor.primary,
+                    buttonSize: ButtonSize.small,
+                    fill: ButtonFill.outline,
                     child: const Text("Cancel"),
                   ),
-                  Button.filled(
+                  Button.primary(
                     onPressed: () {
                       Navigator.of(context).pop(
                         DateTimeRange(
@@ -213,8 +214,7 @@ class _DateTimeRangePickerState extends State<DateTimeRangePicker>
                         ),
                       );
                     },
-                    buttonSize: ButtonSize.sm,
-                    buttonColor: ButtonColor.primary,
+                    buttonSize: ButtonSize.small,
                     child: const Text("Save"),
                   ),
                 ],

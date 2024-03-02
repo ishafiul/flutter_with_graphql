@@ -1,8 +1,9 @@
 import 'package:task_craft/core/utils/extention.dart';
-import 'package:task_craft/core/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:task_craft/core/widgets/button/button.dart';
+import 'package:task_craft/core/widgets/button/enums.dart';
 
 /// page not found page
 class PageNotFound extends StatelessWidget {
@@ -17,9 +18,7 @@ class PageNotFound extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset('assets/animations/404.json'),
-            Button(
-              buttonSize: ButtonSize.sm,
-              buttonColor: ButtonColor.warning,
+            Button.primary(
               onPressed: () {
                 context.go('/home');
               },

@@ -1,19 +1,43 @@
 type Task {
     _id: String!
     title: String!
-    description: String!
+}
+
+type User {
+    _id: String!
+    firstName: String!
+    lastName: String!
+    email: String!
+}
+
+type DeviceUuId {
+    # Secret token for current device
+    deviceUuId: String!
+}
+
+type TokenEntity {
+    # Secret token for current device
+    accessToken: String!
 }
 
 type Query {
     health: String!
     task: [Task!]
     taskById(id: String!): Task
+    user(id: String!): User!
 }
 
 type Mutation {
     createTask(createTaskInput: CreateTaskInput!): Task!
     updateTask(updateTaskInput: UpdateTaskInput!): Task!
     removeTask(id: String!): Task!
+    createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput!): DeviceUuId!
+    reqOtp(requestOtpInput: RequestOtpInput!): User!
+    verifyOtp(verifyOtpInput: VerifyOtpInput!): TokenEntity!
+    refreshToken(refreshTokenInput: RefreshTokenInput!): TokenEntity!
+    createUser(createUserInput: CreateUserInput!): User!
+    updateUser(updateUserInput: UpdateUserInput!): User!
+    removeUser(id: Int!): User!
 }
 
 input CreateTaskInput {
@@ -24,5 +48,77 @@ input CreateTaskInput {
 input UpdateTaskInput {
     title: String
     description: String
+    id: String!
+}
+
+input CreateDeviceUuidInput {
+    # User Device Type. Example: IOS, Android, Web
+    deviceType: String!
+
+    # User Device Type. Example: Mobile, Tablet, Desktop, Watch
+    osName: String
+
+    # Device Os Name.
+    osVersion: String
+
+    # Device Os Version
+    deviceModel: String
+
+    # Physical or emulator
+    isPhysicalDevice: Boolean
+
+    # Client App Version
+    appVersion: String
+
+    # Uer Current Location.
+    location: LocationInput
+
+    # User Ip Address
+    ipAddress: String
+}
+
+input LocationInput {
+    # Latitude
+    lat: String!
+
+    # Longitude
+    long: String!
+}
+
+input RequestOtpInput {
+    # User Valid Email. OTP will send there
+    email: String!
+
+    # this system generated device id
+    deviceUuid: String!
+}
+
+input VerifyOtpInput {
+    # User Valid Email. OTP will send there
+    email: String
+
+    # this system generated device id
+    deviceUuid: String
+    otp: Int!
+}
+
+input RefreshTokenInput {
+    deviceUuid: String!
+}
+
+input CreateUserInput {
+    # Example field (placeholder)
+    email: String!
+
+    # Example field (placeholder)
+    deviceUuId: String!
+}
+
+input UpdateUserInput {
+    # Example field (placeholder)
+    email: String
+
+    # Example field (placeholder)
+    deviceUuId: String
     id: String!
 }

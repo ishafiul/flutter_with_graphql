@@ -316,3 +316,14 @@ extension ImagePathToBase64 on String {
   /// Converts the image at the given path to a base64-encoded string.
   String get toBase64 => base64Encode(File(this).readAsBytesSync());
 }
+
+extension FigmaDimention on double {
+  double toFigmaHeight(double fontSize) {
+    return this / fontSize;
+  }
+
+  double fromPersentagetoFigmaWidth(double fontSize) {
+    final percentAsDecimal = this / 100;
+    return percentAsDecimal * fontSize;
+  }
+}

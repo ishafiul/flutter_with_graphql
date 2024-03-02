@@ -67,21 +67,22 @@ MaterialColor createMaterialColor(Color baseColor) {
 ///
 /// project colors
 class CColor {
+  static MaterialColor border = createMaterialColor(const Color(0xFFEEEEEE));
   /// primary color for a project that can be use as a [ColorScheme] inside material
   /// theme property.
-  static MaterialColor primary = createMaterialColor(const Color(0xFF001F3F));
+  static MaterialColor primary = createMaterialColor(const Color(0xFF1677FF));
 
   /// warning color for a project that can be use as a [ColorScheme] inside material
   /// theme property. or use can use for any warning related color.
-  static MaterialColor warning = createMaterialColor(const Color(0xFFF39F1D));
+  static MaterialColor warning = createMaterialColor(const Color(0xFFFF8F1F));
 
   /// danger color for a project that can be use as a [ColorScheme] inside material
   /// theme property. or use can use for any danger related color.
-  static MaterialColor danger = createMaterialColor(const Color(0xFFD40022));
+  static MaterialColor danger = createMaterialColor(const Color(0xFFFF3141));
 
   /// success color for a project that can be use as a [ColorScheme] inside material
   /// theme property. or use can use for any success related color.
-  static MaterialColor success = createMaterialColor(const Color(0xFF37AD57));
+  static MaterialColor success = createMaterialColor(const Color(0xFF00B578));
 
   /// info color for a project that can be use as a [ColorScheme] inside material
   /// theme property. or use can use for any info related color.
@@ -96,7 +97,7 @@ class CColor {
   static MaterialColor secondary = createMaterialColor(const Color(0xFFFF752D));
 
   /// text colors
-  static MaterialColor text = createMaterialColor(const Color(0xFF000000));
+  static MaterialColor text = createMaterialColor(const Color(0xFF333333));
 
   /// text colors
   static MaterialColor text2 = createMaterialColor(const Color(0xFF71727A));
