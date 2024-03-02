@@ -70,7 +70,7 @@ class CColor {
   static MaterialColor border = createMaterialColor(const Color(0xFFEEEEEE));
   /// primary color for a project that can be use as a [ColorScheme] inside material
   /// theme property.
-  static MaterialColor primary = createMaterialColor(const Color(0xFF1677FF));
+  static MaterialColor primary = createMaterialColor(const Color(0xFF097D5D));
 
   /// warning color for a project that can be use as a [ColorScheme] inside material
   /// theme property. or use can use for any warning related color.
