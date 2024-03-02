@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateDeviceUuidInput } from './dto/create-device-uuid.input';
 import { RequestOtpInput } from './dto/request-otp.input';
 import { AES, enc } from 'crypto-js';
@@ -14,9 +14,12 @@ import { VerifyOtpInput } from './dto/vreify-otp.input';
 import { JwtPayload } from '../../common/model/jwt-payload.model';
 import { TokenEntity } from './entities/token.entity';
 import { JwtService } from '@nestjs/jwt';
+import { RefreshTokenInput } from './dto/refresh-token.input';
 
 @Injectable()
 export class AuthService {
+  readonly #logger = new Logger(AuthService.name);
+
   constructor(
     private readonly userService: UserService,
     private readonly mailerService: MailerService,
@@ -87,6 +90,13 @@ export class AuthService {
   }
 
   async verifyOtp(verifyOtpInput: VerifyOtpInput): Promise<TokenEntity> {
+    const user = await this.userService.findOne({
+      email: verifyOtpInput.email,
+    });
+
+    if (!user) {
+      throw new HttpException('Invalid email', HttpStatus.BAD_REQUEST);
+    }
     const otp = await this.otpModel.findOne({
       email: verifyOtpInput.email,
       otp: verifyOtpInput.otp,
@@ -102,8 +112,35 @@ export class AuthService {
     });
 
     const jwtPayload: JwtPayload = {
-      uuid: otp.deviceUuId,
-      deviceUuId: otp.deviceUuId,
+      uuid: user._id.toString(),
+      deviceUuId: user.deviceUuId,
+    };
+    return {
+      accessToken: this.jwtService.sign(jwtPayload),
+    };
+  }
+
+  async refreshToken(
+    refreshTokenInput: RefreshTokenInput,
+  ): Promise<TokenEntity> {
+    const DeviceUuIdBytes = AES.decrypt(
+      refreshTokenInput.deviceUuid,
+      process.env.HASH_KEY!,
+    );
+    const isDeviceUuId = DeviceUuIdBytes.toString(enc.Utf8);
+
+    if (!isDeviceUuId) {
+      throw new HttpException('Device uuid invalid ', HttpStatus.BAD_REQUEST);
+    }
+    const user = await this.userService.findOne({
+      deviceUuId: refreshTokenInput.deviceUuid,
+    });
+    if (!user) {
+      throw new HttpException('Invalid device', HttpStatus.BAD_REQUEST);
+    }
+    const jwtPayload: JwtPayload = {
+      uuid: user._id.toString(),
+      deviceUuId: user.deviceUuId,
     };
     return {
       accessToken: this.jwtService.sign(jwtPayload),
