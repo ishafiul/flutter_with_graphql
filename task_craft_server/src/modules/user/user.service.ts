@@ -7,6 +7,8 @@ import { User, UserDocument, UserModel } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
+  readonly #logger = new Logger(UserService.name);
+
   constructor(
     @InjectModel(UserModel.name)
     private readonly userModel: Model<UserDocument>,
@@ -20,10 +22,17 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  async findOne(args: { id?: string; email?: string }): Promise<User> {
-    const { id, email } = args;
+  async findOne(args: {
+    id?: string;
+    email?: string;
+    deviceUuId?: string;
+  }): Promise<User> {
+    const { id, email, deviceUuId } = args;
     if (id) {
       return this.userModel.findById(id).exec();
+    }
+    if (deviceUuId) {
+      return this.userModel.findOne({ deviceUuId: deviceUuId }).exec();
     }
     return this.userModel.findOne({ email: email }).exec();
   }
