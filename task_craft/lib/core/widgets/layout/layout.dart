@@ -120,7 +120,7 @@ class Layout extends StatelessWidget {
                                 Navigator.pop(context);
                               },
                           icon: Icon(
-                            CustomIcons.arrow_back_ios_new,
+                            CustomIcons.left,
                             color: CColor.primary.shade800,
                             size: 26,
                           ),

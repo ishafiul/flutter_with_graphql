@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:task_craft/core/config/colors.dart';
-import 'package:task_craft/core/widgets/button/base_button.dart';
 import 'package:task_craft/core/widgets/button/button.dart';
 import 'package:task_craft/core/widgets/button/enums.dart';
+import 'package:task_craft/core/widgets/devider/divider.dart';
+import 'package:task_craft/core/widgets/devider/divider_base.dart';
+import 'package:task_craft/core/widgets/devider/text_divider.dart';
 import 'package:task_craft/core/widgets/spinner/fade_dots.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,25 +16,39 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: [
             Text("data"),
             Text("data"),
             Text("data"),
-            Text("data"),
-            Text("data"),
-            FadingFourSpinner(color: Colors.black, size: 20,),
+            BaseDivider(axis: Axis.horizontal),
+            CDivider.text(
+              text: "Hello World",
+              position: TextDividerPosition.right,
+            ),
+            IntrinsicHeight(
+              child: Row(
+                children: <Widget>[
+                  Text('Hello'),
+                  BaseDivider(axis: Axis.vertical),
+                  Text('World'),
+                ],
+              ),
+            ),
+            20.verticalSpace,
             Button.primary(
               fill: ButtonFill.solid,
               shape: ButtonShape.base,
               buttonSize: ButtonSize.large,
               isBlock: true,
-
+              onPressed: () {},
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  FadingFourSpinner(color: Colors.white, size: 20,),
+                  FadingFourSpinner(
+                    color: Colors.white,
+                    size: 20,
+                  ),
                   8.horizontalSpace,
                   Text("Loading")
                 ],
