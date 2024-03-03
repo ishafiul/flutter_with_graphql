@@ -70,7 +70,13 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/fonts/
+    - assets/fonts/icons/
     - .env
+  fonts:
+    - family: "CustomIcons"
+      fonts:
+        - asset: assets/fonts/icons/CustomIcons.ttf
 
 flutter_launcher_icons:
   android: "launcher_icon"
