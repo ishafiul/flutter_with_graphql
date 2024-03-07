@@ -26,35 +26,58 @@ class AppTheme {
       colorScheme: colorScheme,
       scaffoldBackgroundColor: const Color(0xffFAFAFA),
       inputDecorationTheme: InputDecorationTheme(
-        counterStyle: TextStyle(
-          color: const Color(0xff71727A),
-          fontSize: 14.r,
-          fontWeight: FontWeight.w300,
+        counterStyle: const TextStyle(
+          color: Color(0xFF333333),
+          fontSize: 17,
+          fontFamily: 'Arial',
+          fontWeight: FontWeight.w400,
+          height: 0.08,
+          letterSpacing: 0.5,
         ),
-        labelStyle: TextStyle(color: Colors.black, fontSize: 14.r),
-        contentPadding: EdgeInsets.symmetric(vertical: 13.h, horizontal: 10.w),
+        labelStyle: const TextStyle(
+          color: Color(0xFFCCCCCC),
+          fontSize: 17,
+          fontFamily: 'Arial',
+          fontWeight: FontWeight.w400,
+          height: 0.08,
+        ),
+        contentPadding: const EdgeInsets.all(12),
         prefixIconColor: const Color(0xff6C7E8B),
         suffixIconColor: const Color(0xff6C7E8B),
         filled: true,
         isDense: true,
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: CColor.primary),
-          borderRadius: BorderRadius.all(Radius.circular(Space.lg.r)),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: CColor.border),
+          borderRadius: BorderRadius.zero,
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           // width: 0.0 produces a thin "hairline" border
-          borderSide: const BorderSide(color: Color(0xffC5C6CC)),
-          borderRadius: BorderRadius.all(Radius.circular(Space.lg.r)),
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.zero,
         ),
-        errorBorder: OutlineInputBorder(
+        disabledBorder: const UnderlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.zero,
+        ),
+        errorBorder: UnderlineInputBorder(
           // width: 0.0 produces a thin "hairline" border
           borderSide: BorderSide(color: CColor.danger),
-          borderRadius: BorderRadius.all(Radius.circular(Space.lg.r)),
+          borderRadius: BorderRadius.zero,
         ),
-        hintStyle: TextStyle(
-          color: const Color(0xffBEBEBE),
-          fontSize: 14.r,
-          height: 1.42.h,
+        hintStyle: const TextStyle(
+          color: Color(0xFFCCCCCC),
+          fontSize: 17,
+          fontFamily: 'Arial',
+          fontWeight: FontWeight.w400,
+          height: 0.08,
+          letterSpacing: 0.5,
+        ),
+        errorStyle: const TextStyle(
+          color: Color(0xFFFF3141),
+          fontSize: 13,
+          fontFamily: 'Arial',
+          fontWeight: FontWeight.w400,
         ),
         fillColor: Colors.white,
         suffixStyle: TextStyle(
