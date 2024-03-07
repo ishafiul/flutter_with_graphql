@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:task_craft/core/config/custom_icons_icons.dart';
+import 'package:task_craft/core/utils/extention.dart';
 
 class BBottomSheet {
   final BuildContext context;
@@ -35,23 +37,26 @@ class BBottomSheet {
               child: DraggableScrollableSheet(
                 initialChildSize: height ?? 0.6,
                 minChildSize: height ?? 0.3,
-                maxChildSize: maxHeight ?? 1,
+                maxChildSize: maxHeight ?? 0.9,
                 expand: false,
                 builder: (context, scrollController) => Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.0),
-                      topRight: Radius.circular(10.0),
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(4),
                     ),
                   ),
                   child: ListView(
                     controller: scrollController,
                     children: [
                       if (isBarIcon == true)
-                        Icon(
-                          Icons.remove,
-                          color: Colors.grey[600],
+                        Container(
+                          padding: 8.paddingVertical(),
+                          child: const Icon(
+                            CustomIcons.minus,
+                            color: Color(0xffABABAB),
+                          ),
                         ),
                       child,
                     ],
@@ -61,21 +66,36 @@ class BBottomSheet {
             ),
           );
         }
-        return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * (height ?? 0.6),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24.0.r),
-                topRight: Radius.circular(24.0.r),
+        return Wrap(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(4),
+                    topRight: Radius.circular(4),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: 8.paddingVertical(),
+                      child: const Icon(
+                        CustomIcons.minus,
+                        color: Color(0xffABABAB),
+                      ),
+                    ),
+                    child
+                  ],
+                ),
               ),
             ),
-            child: child,
-          ),
+          ],
         );
       },
     );
