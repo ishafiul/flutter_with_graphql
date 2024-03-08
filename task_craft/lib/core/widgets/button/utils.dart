@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_craft/core/config/colors.dart';
-import 'package:task_craft/core/utils/extention.dart';
 
-import 'enums.dart';
+import 'package:task_craft/core/widgets/button/enums.dart';
 
 BoxConstraints buttonConstants(
     {ButtonSize buttonSize = ButtonSize.middle, bool isBlock = false}) {
@@ -64,8 +63,8 @@ ShapeBorder buttonShape({
           return fill != ButtonFill.outline
               ? BorderSide.none
               : BorderSide(
-            color: buttonColor(buttonType: buttonType),
-          );
+                  color: buttonColor(buttonType: buttonType),
+                );
         }.call(),
         borderRadius: BorderRadius.circular(4),
       );
@@ -98,8 +97,8 @@ ShapeBorder buttonShape({
           return fill != ButtonFill.outline
               ? BorderSide.none
               : BorderSide(
-            color: buttonColor(buttonType: buttonType),
-          );
+                  color: buttonColor(buttonType: buttonType),
+                );
         }.call(),
       );
   }

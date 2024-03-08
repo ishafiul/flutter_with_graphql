@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:task_craft/core/config/colors.dart';
-import 'package:task_craft/core/const.dart';
-import 'package:task_craft/core/utils/extention.dart';
 import 'package:task_craft/core/widgets/button/base_button.dart';
 import 'package:task_craft/core/widgets/button/primary_button.dart';
 import 'package:task_craft/core/widgets/button/success_button.dart';
 import 'package:task_craft/core/widgets/button/warning_button.dart';
-
 import 'danger_button.dart';
 import 'enums.dart';
 
-/// custom button
 class Button extends StatelessWidget {
-  /// on press button
   final Function()? onPressed;
-
-  /// [ButtonType]
   late final ButtonType? buttonType;
   final ButtonFill? fill;
   final ButtonShape? shape;
-
   final ButtonSize? buttonSize;
-
   final bool? isBlock;
-
   final Widget child;
 
-  ///basic button
   Button({
     super.key,
     this.onPressed,
@@ -36,11 +23,8 @@ class Button extends StatelessWidget {
     this.buttonSize = ButtonSize.middle,
     this.isBlock = false,
     required this.child,
-  }) {
-    buttonType = ButtonType.base;
-  }
+  }) : buttonType = ButtonType.base;
 
-  /// text button
   Button.primary({
     super.key,
     this.onPressed,
@@ -49,11 +33,8 @@ class Button extends StatelessWidget {
     this.buttonSize = ButtonSize.middle,
     this.isBlock = false,
     required this.child,
-  }) {
-    buttonType = ButtonType.primary;
-  }
+  }) : buttonType = ButtonType.primary;
 
-  /// outline button
   Button.success({
     super.key,
     this.onPressed,
@@ -62,11 +43,8 @@ class Button extends StatelessWidget {
     this.buttonSize = ButtonSize.middle,
     this.isBlock = false,
     required this.child,
-  }) {
-    buttonType = ButtonType.success;
-  }
+  }) : buttonType = ButtonType.success;
 
-  /// filled button
   Button.warning({
     super.key,
     this.onPressed,
@@ -75,11 +53,8 @@ class Button extends StatelessWidget {
     this.buttonSize = ButtonSize.middle,
     this.isBlock = false,
     required this.child,
-  }) {
-    buttonType = ButtonType.warning;
-  }
+  }) : buttonType = ButtonType.warning;
 
-  /// secondary button
   Button.danger({
     super.key,
     this.onPressed,
@@ -88,19 +63,19 @@ class Button extends StatelessWidget {
     this.buttonSize = ButtonSize.middle,
     this.isBlock = false,
     required this.child,
-  }) {
-    buttonType = ButtonType.danger;
-  }
+  }) : buttonType = ButtonType.danger;
 
   @override
   Widget build(BuildContext context) {
+    final isBlockValue = isBlock ?? false; // Handle null case for isBlock
+
     switch (buttonType) {
       case ButtonType.primary:
         return PrimaryButton(
           fill: fill,
           onPressed: onPressed,
           shape: shape,
-          isBlock: isBlock!,
+          isBlock: isBlockValue,
           buttonSize: buttonSize,
           child: child,
         );
@@ -109,7 +84,7 @@ class Button extends StatelessWidget {
           fill: fill,
           onPressed: onPressed,
           shape: shape,
-          isBlock: isBlock!,
+          isBlock: isBlockValue,
           buttonSize: buttonSize,
           child: child,
         );
@@ -118,7 +93,7 @@ class Button extends StatelessWidget {
           fill: fill,
           onPressed: onPressed,
           shape: shape,
-          isBlock: isBlock!,
+          isBlock: isBlockValue,
           buttonSize: buttonSize,
           child: child,
         );
@@ -127,7 +102,7 @@ class Button extends StatelessWidget {
           fill: fill,
           onPressed: onPressed,
           shape: shape,
-          isBlock: isBlock!,
+          isBlock: isBlockValue,
           buttonSize: buttonSize,
           child: child,
         );
@@ -136,9 +111,9 @@ class Button extends StatelessWidget {
           fill: fill,
           onPressed: onPressed,
           shape: shape,
-          isBlock: isBlock!,
-          child: child,
+          isBlock: isBlockValue,
           buttonSize: buttonSize,
+          child: child,
         );
     }
   }

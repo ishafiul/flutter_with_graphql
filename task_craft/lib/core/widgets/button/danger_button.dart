@@ -22,34 +22,37 @@ class DangerButton extends StatelessWidget {
   final bool isBlock;
 
   final Widget child;
-
   @override
   Widget build(BuildContext context) {
-    print(fill);
     return Opacity(
       opacity: onPressed != null ? 1 : 0.4,
       child: RawMaterialButton(
         shape: buttonShape(
-          shape: shape!,
+          shape: shape ?? ButtonShape.base,
           fill: fill,
           buttonType: ButtonType.danger,
         ),
         textStyle: buttonTextStyle(
           fill: fill,
-          buttonSize: buttonSize!,
+          buttonSize: buttonSize ?? ButtonSize.middle,
           buttonType: ButtonType.danger,
         ),
         elevation: 0,
         focusElevation: 0,
         highlightElevation: 0,
         splashColor: CColor.danger.shade50.withOpacity(0.4),
-        fillColor:
-            fill == ButtonFill.solid ? CColor.danger : Colors.transparent,
-        constraints: buttonConstants(buttonSize: buttonSize!, isBlock: isBlock),
-        padding: buttonPadding(buttonSize: buttonSize!),
+        fillColor: fill == ButtonFill.solid ? CColor.danger : Colors.transparent,
+        constraints: buttonConstants(
+          buttonSize: buttonSize ?? ButtonSize.middle,
+          isBlock: isBlock,
+        ),
+        padding: buttonPadding(
+          buttonSize: buttonSize ?? ButtonSize.middle,
+        ),
         onPressed: onPressed,
         child: child,
       ),
     );
   }
+
 }

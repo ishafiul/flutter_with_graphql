@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_craft/core/config/colors.dart';
+import 'package:task_craft/core/widgets/button/enums.dart';
 import 'package:task_craft/core/widgets/button/utils.dart';
-
-import 'enums.dart';
 
 class BaseButton extends StatelessWidget {
   const BaseButton({
@@ -30,24 +28,28 @@ class BaseButton extends StatelessWidget {
       opacity: onPressed != null ? 1 : 0.4,
       child: RawMaterialButton(
         shape: buttonShape(
-          shape: shape!,
+          shape: shape ?? ButtonShape.base,
           fill: fill,
         ),
         textStyle: buttonTextStyle(
           fill: fill,
-          buttonSize: buttonSize!,
+          buttonSize: buttonSize ?? ButtonSize.middle,
         ),
         elevation: 0,
         focusElevation: 0,
         highlightElevation: 0,
         fillColor: fill == ButtonFill.solid ? Colors.white : Colors.transparent,
-        constraints: buttonConstants(buttonSize: buttonSize!, isBlock: isBlock),
+        constraints: buttonConstants(
+          buttonSize: buttonSize ?? ButtonSize.middle,
+          isBlock: isBlock,
+        ),
         padding: buttonPadding(
-          buttonSize: buttonSize!,
+          buttonSize: buttonSize ?? ButtonSize.middle,
         ),
         onPressed: onPressed,
         child: child,
       ),
     );
   }
+
 }
