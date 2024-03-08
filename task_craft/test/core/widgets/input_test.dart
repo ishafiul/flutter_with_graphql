@@ -8,7 +8,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: AntInput(
+          body: TextInputField(
             controller: TextEditingController(),
             placeholder: 'Enter text',
             labelText: 'Label',
@@ -31,7 +31,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: AntInput(
+          body: TextInputField(
             controller: TextEditingController(),
             placeholder: 'Enter text',
             labelText: 'Label',
@@ -60,7 +60,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: AntInput(
+          body: TextInputField(
             controller: TextEditingController(),
             placeholder: 'Enter text',
             labelText: 'Label',
@@ -84,7 +84,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: AntInput(
+          body: TextInputField(
             controller: TextEditingController(),
             placeholder: 'Enter text',
 
