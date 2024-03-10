@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_craft/app/view/app.dart';
 import 'package:task_craft/core/config/colors.dart';
+import 'package:task_craft/core/config/custom_icons_icons.dart';
 import 'package:task_craft/core/utils/extention.dart';
 import 'package:vibration/vibration.dart';
 
@@ -9,23 +12,17 @@ import 'package:vibration/vibration.dart';
 ///
 /// Use this enum to specify the desired visual style and behavior when displaying SnackBars.
 enum SnackBarType {
-  /// Indicates an error-related SnackBar.
-  error,
+  /// Indicates a warning-related SnackBar.
+  base,
 
   /// Indicates a success-related SnackBar.
-  success,
+  alert,
 
   /// Indicates a danger-related SnackBar.
-  danger,
+  error,
 
   /// Indicates an information-related SnackBar.
   info,
-
-  /// Indicates a warning-related SnackBar.
-  warning,
-
-  /// Indicates a firebase related SnackBar.
-  firebase
 }
 
 /// Displays a snack bar with various configurations based on the provided parameters.
@@ -40,12 +37,11 @@ enum SnackBarType {
 /// - `tailingIcon`: The icon displayed at the end of the snack bar.
 Future<void> showSnackBar({
   BuildContext? builderContext,
-  Function? onPressed,
-  required SnackBarType type,
+  SnackBarType? type = SnackBarType.base,
+  bool? closable = true,
+  bool? withIcon = false,
+  IconData? leadingIcon,
   required String message,
-  required String title,
-  required IconData? leadingIcon,
-  required IconData? tailingIcon,
 }) async {
   await Vibration.vibrate(
     duration: 10,
@@ -55,299 +51,253 @@ Future<void> showSnackBar({
     duration: 10,
   );
   late SnackBar snackBar;
-  if (type == SnackBarType.warning) {
-    snackBar = SnackBar(
-      content: Row(
-        children: [
-          Container(
-            height: 44.w,
-            width: 44.w,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFFD97541),
-            ),
-            child: Icon(
-              leadingIcon ?? Icons.warning_amber_outlined,
-              size: 26,
-              color: CColor.primary.shade50,
+  switch (type) {
+    case SnackBarType.base:
+      snackBar = SnackBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: const Color(0xFFABABAB),
+            border: Border(
+              top: BorderSide(color: CColor.weak),
+              bottom: BorderSide(color: CColor.weak),
             ),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: scaffoldMessageKey
-                      .currentContext!.textTheme.titleMedium
-                      ?.copyWith(
-                    color: CColor.primary.shade50,
-                    fontWeight: FontWeight.w500,
+          child: Padding(
+              padding: const EdgeInsets.all(
+                12,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (withIcon == true)
+                    Icon(
+                      leadingIcon ?? CustomIcons.sound,
+                      color: Colors.white,
+                    ),
+                  if (withIcon == true) 8.horizontalSpace,
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            message,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: 'Arial',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        if (closable == true) 8.horizontalSpace,
+                        if (closable == true)
+                          InkWell(
+                            onTap: () {
+                              scaffoldMessageKey.currentState
+                                  ?.removeCurrentSnackBar();
+                            },
+                            child: const Icon(
+                              CustomIcons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                Text(message),
-              ],
-            ),
-          ),
-        ],
-      ),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: CColor.warning),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      backgroundColor: CColor.backgroundColor,
-      behavior: SnackBarBehavior.floating,
-      action: SnackBarAction(
-        label: 'CLOSE',
-        textColor:
-        MaterialStateColor.resolveWith((states) => CColor.primary.shade50),
-        onPressed: () => onPressed,
-      ),
-    );
-  } else if (type == SnackBarType.danger) {
-    snackBar = SnackBar(
-      content: Row(
-        children: [
-          Container(
-            height: 44.w,
-            width: 44.w,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFFC14444),
-            ),
-            child: Icon(
-              leadingIcon ?? Icons.warning_amber_outlined,
-              size: 26,
-              color: CColor.primary.shade50,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: scaffoldMessageKey
-                      .currentContext?.textTheme.titleMedium
-                      ?.copyWith(
-                    color: CColor.primary.shade50,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(message),
-              ],
-            ),
-          ),
-        ],
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      backgroundColor: CColor.backgroundColor,
-      behavior: SnackBarBehavior.floating,
-      action: SnackBarAction(
-        label: 'CLOSE',
-        textColor:
-        MaterialStateColor.resolveWith((states) => CColor.primary.shade50),
-        onPressed: () => onPressed,
-      ),
-    );
-  } else if (type == SnackBarType.success) {
-    snackBar = SnackBar(
-      content: Row(
-        children: [
-          Container(
-            height: 44.h,
-            width: 44.w,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-            ),
-            child: Icon(
-              leadingIcon ?? Icons.check_circle,
-              size: 26.r,
-              color: CColor.primary,
-            ),
-          ),
-          SizedBox(width: 16.h),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: scaffoldMessageKey.currentContext?.textTheme.bodyLarge
-                      ?.copyWith(
-                    color: CColor.primary.shade50,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  message,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14.r,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      backgroundColor: CColor.success,
-      behavior: SnackBarBehavior.floating,
-      action: SnackBarAction(
-        label: 'CLOSE',
-        textColor:
-        MaterialStateColor.resolveWith((states) => CColor.primary.shade50),
-        onPressed: () => onPressed,
-      ),
-    );
-  } else if (type == SnackBarType.error) {
-    snackBar = SnackBar(
-      content: Row(
-        children: [
-          Icon(
-            Icons.error_outline,
-            size: 26,
-            color: CColor.danger,
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              message,
-              style: scaffoldMessageKey.currentContext?.textTheme.bodyLarge
-                  ?.copyWith(color: CColor.danger, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: CColor.danger),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      backgroundColor: Colors.white,
-      behavior: SnackBarBehavior.floating,
-      action: SnackBarAction(
-        label: 'CLOSE',
-        textColor: MaterialStateColor.resolveWith((states) => CColor.danger),
-        onPressed: () => onPressed,
-      ),
-    );
-  } else if (type == SnackBarType.info) {
-    snackBar = SnackBar(
-      content: Row(
-        children: [
-          Container(
-            height: 44.w,
-            width: 44.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: CColor.primary.shade700,
-            ),
-            child: Icon(
-              leadingIcon ?? Icons.warning_amber_outlined,
-              size: 26,
-              color: CColor.primary.shade50,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: scaffoldMessageKey
-                      .currentContext?.textTheme.titleMedium
-                      ?.copyWith(
-                    color: CColor.primary.shade50,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(message),
-              ],
-            ),
-          ),
-        ],
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      backgroundColor: CColor.primary,
-      behavior: SnackBarBehavior.floating,
-      action: SnackBarAction(
-        label: 'CLOSE',
-        textColor:
-        MaterialStateColor.resolveWith((states) => CColor.primary.shade50),
-        onPressed: () => onPressed,
-      ),
-    );
-  } else if (type == SnackBarType.firebase) {
-    snackBar = SnackBar(
-      content: Row(
-        children: [
-          Container(
-            height: 44.w,
-            width: 44.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: CColor.primary.shade50,
-            ),
-            child: Icon(
-              leadingIcon ?? Icons.notifications_active,
-              size: 26.r,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(width: 16.r),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: scaffoldMessageKey
-                      .currentContext?.textTheme.titleMedium
-                      ?.copyWith(
-                    color: CColor.primary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  message,
-                  style: scaffoldMessageKey.currentContext?.textTheme.bodyMedium
-                      ?.copyWith(
-                    color: CColor.primary.shade300,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.r),
-        side: BorderSide(
-          color: CColor.primary,
+                ],
+              )),
         ),
-      ),
-      backgroundColor: Colors.white,
-      behavior: SnackBarBehavior.floating,
-      action: SnackBarAction(
-        label: 'CLOSE',
-        textColor:
-        MaterialStateColor.resolveWith((states) => CColor.primary.shade50),
-        onPressed: () => onPressed,
-      ),
-    );
+      );
+      break;
+    case SnackBarType.alert:
+      snackBar = SnackBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: Color(0xFFFFF9ED),
+            border: Border(
+              top: BorderSide(color: Color(0xFFFFF3E9)),
+              bottom: BorderSide(color: Color(0xFFFFF3E9)),
+            ),
+          ),
+          child: Padding(
+              padding: const EdgeInsets.all(
+                12,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (withIcon == true)
+                    Icon(
+                      leadingIcon ?? CustomIcons.sound,
+                      color: CColor.warning,
+                    ),
+                  if (withIcon == true) 8.horizontalSpace,
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            message,
+                            style: TextStyle(
+                              color: CColor.warning,
+                              fontSize: 15,
+                              fontFamily: 'Arial',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        if (closable == true) 8.horizontalSpace,
+                        if (closable == true)
+                          InkWell(
+                            onTap: () {
+                              scaffoldMessageKey.currentState
+                                  ?.removeCurrentSnackBar();
+                            },
+                            child: Icon(
+                              CustomIcons.close,
+                              color: CColor.warning,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+        ),
+      );
+      break;
+    case SnackBarType.error:
+      snackBar = SnackBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: CColor.danger,
+            border: Border(
+              top: BorderSide(color: Color(0xFFD9281E)),
+              bottom: BorderSide(color: Color(0xFFD9281E)),
+            ),
+          ),
+          child: Padding(
+              padding: const EdgeInsets.all(
+                12,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (withIcon == true)
+                    Icon(
+                      leadingIcon ?? CustomIcons.sound,
+                      color: Colors.white,
+                    ),
+                  if (withIcon == true) 8.horizontalSpace,
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            message,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: 'Arial',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        if (closable == true) 8.horizontalSpace,
+                        if (closable == true)
+                          InkWell(
+                            onTap: () {
+                              scaffoldMessageKey.currentState
+                                  ?.removeCurrentSnackBar();
+                            },
+                            child: Icon(
+                              CustomIcons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+        ),
+      );
+      break;
+    case SnackBarType.info:
+      snackBar = SnackBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: Color(0xffD0E4FF),
+            border: Border(
+              top: BorderSide(color: Color(0xFFBCD8FF)),
+              bottom: BorderSide(color: Color(0xFFBCD8FF)),
+            ),
+          ),
+          child: Padding(
+              padding: const EdgeInsets.all(
+                12,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (withIcon == true)
+                    Icon(
+                      leadingIcon ?? CustomIcons.sound,
+                      color: CColor.info,
+                    ),
+                  if (withIcon == true) 8.horizontalSpace,
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            message,
+                            style: TextStyle(
+                              color: CColor.info,
+                              fontSize: 15,
+                              fontFamily: 'Arial',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        if (closable == true) 8.horizontalSpace,
+                        if (closable == true)
+                          InkWell(
+                            onTap: () {
+                              scaffoldMessageKey.currentState
+                                  ?.removeCurrentSnackBar();
+                            },
+                            child: Icon(
+                              CustomIcons.close,
+                              color: CColor.info,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+        ),
+      );
+      break;
+    case null:
+    // TODO: Handle this case.
   }
 
   // Show the SnackBar using the provided build context

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
+import 'package:task_craft/core/config/custom_icons_icons.dart';
 import 'package:task_craft/core/config/env/env.dart';
 import 'package:task_craft/core/config/get_it.dart';
 import 'package:task_craft/core/service/local/app_state.dart';
@@ -131,9 +132,7 @@ class MyGraphQLClient {
         showSnackBar(
           type: SnackBarType.error,
           message: error.message,
-          title: "ERROR",
-          leadingIcon: Icons.error,
-          tailingIcon: Icons.close,
+          withIcon: true,
         );
       }
     }
