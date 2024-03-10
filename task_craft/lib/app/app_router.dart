@@ -1,7 +1,8 @@
-import 'package:task_craft/core/presentation/page_not_found.dart';
-import 'package:task_craft/module/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:task_craft/core/presentation/page_not_found.dart';
+import 'package:task_craft/module/auth/presentation/auth_router.dart';
+import 'package:task_craft/module/home/presentation/home_page.dart';
 
 /// it will return [GoRouter] object,
 /// that can be use for navigation between pages
@@ -10,13 +11,16 @@ GoRouter router = GoRouter(
   errorBuilder: (context, state) {
     return const PageNotFound();
   },
-  initialLocation: '/',
+  initialLocation: '/auth/login',
   routes: [
     GoRoute(
       path: '/',
       name: 'home',
       builder: (context, state) => const HomePage(),
     ),
+
+    /// auth
+    ...authRouter,
   ],
 );
 
