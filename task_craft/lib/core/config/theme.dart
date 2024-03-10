@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:injectable/injectable.dart';
 import 'package:task_craft/core/config/colors.dart';
+import 'package:task_craft/core/config/custom_icons_icons.dart';
 import 'package:task_craft/core/const.dart';
 
 /// a [Singleton] class that hold our project theming info
@@ -88,15 +90,16 @@ class AppTheme {
         shape: Border.all(color: Colors.transparent),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: const Color(0xffFAFAFA),
-        elevation: 0,
-        toolbarHeight: 56.h,
-        titleSpacing: 16.w,
-        shadowColor: Colors.black.withAlpha(0),
-        // systemOverlayStyle: const SystemUiOverlayStyle(
-        //   statusBarColor: Colors.transparent,
-        //   statusBarIconBrightness: Brightness.dark,
-        // ),
+          backgroundColor: const Color(0xffFAFAFA),
+          elevation: 0,
+          toolbarHeight: 56.h,
+          titleSpacing: 16.w,
+          iconTheme: const IconThemeData()),
+      actionIconTheme: ActionIconThemeData(
+        backButtonIconBuilder: (BuildContext context) => Icon(
+          CustomIcons.left,
+          color: CColor.text,
+        ),
       ),
       tabBarTheme: TabBarTheme(
         indicatorColor: CColor.primary.shade800,
