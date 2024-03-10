@@ -178,4 +178,11 @@ class CustomIcons {
   static const IconData addcircle = IconData(0xe89a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData addressbook = IconData(0xe89b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData addsquare = IconData(0xe89c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData apple_filled = IconData(0xe89d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData apple_outline = IconData(0xe89e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData google_outline = IconData(0xe89f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData facebook_outline = IconData(0xe8a0, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData google_square = IconData(0xe8a1, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData google_circle = IconData(0xe8a2, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData facebook_filled = IconData(0xe8a3, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
