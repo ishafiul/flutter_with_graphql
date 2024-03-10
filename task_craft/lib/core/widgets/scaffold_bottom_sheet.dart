@@ -159,17 +159,17 @@ class _StickyScaffoldBottomSheetState extends State<StickyScaffoldBottomSheet> {
               child: ListView(
                 controller: scrollController,
                 children: widget.minimizeWidgets ?? const [SizedBox()],
-              )
+              ),
             );
           }
           return Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: ListView(
-                controller: scrollController,
-                children: widget.maximizeWidgets ?? const [SizedBox()],
-              )
+            decoration: const BoxDecoration(
+              color: Colors.white,
+            ),
+            child: ListView(
+              controller: scrollController,
+              children: widget.maximizeWidgets ?? const [SizedBox()],
+            ),
           );
         },
       ),

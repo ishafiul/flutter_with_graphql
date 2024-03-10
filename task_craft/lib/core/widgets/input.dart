@@ -4,7 +4,7 @@ import 'package:task_craft/core/config/custom_icons_icons.dart';
 class TextInputField extends StatefulWidget {
   const TextInputField({
     super.key,
-    required this.controller,
+    this.controller,
     this.placeholder,
     this.validator,
     this.disabled = true,
@@ -19,7 +19,7 @@ class TextInputField extends StatefulWidget {
   });
 
   final String? Function(String? value)? validator;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String? placeholder;
   final String? initialValue;
   final bool disabled;
