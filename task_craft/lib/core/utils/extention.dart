@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_craft/core/config/get_it.dart';
 import 'package:task_craft/core/utils/cache_state.dart';
@@ -27,8 +26,7 @@ extension XBuildContext on BuildContext {
   OutlinedButtonThemeData get outlineButtonTheme =>
       Theme.of(this).outlinedButtonTheme;
 
-  /// get AppLocalizations
-  AppLocalizations get locale => AppLocalizations.of(this);
+
 
   /// get filledButtonTheme of the project
   FilledButtonThemeData get filledButtonTheme =>
