@@ -1,0 +1,30 @@
+mutation CreateDeviceUuid($deviceInfo: CreateDeviceUuidInput!){
+    createDeviceUuid(createDeviceUuidInput: $deviceInfo){
+        deviceUuId
+    }
+}
+
+mutation RequestOtp($requestOtpInput: RequestOtpInput!){
+    reqOtp(requestOtpInput: $requestOtpInput){
+        email,
+    }
+}
+
+mutation VerifyOtp($otpVerify: VerifyOtpInput!){
+    verifyOtp(verifyOtpInput:$otpVerify ){
+        accessToken
+    }
+}
+
+mutation RefreshToken($refreshTokenInput: RefreshTokenInput!){
+    refreshToken(refreshTokenInput: $refreshTokenInput){
+        accessToken
+    }
+}
+
+query getTasks {
+    task{
+        _id
+        title
+    }
+}
