@@ -42,16 +42,17 @@ import { ConnectOptions } from 'mongoose';
       formatError: (error) => {
         const originalError = error.extensions
           ?.originalError as GraphQLFormattedError;
-
         if (!originalError) {
           return {
             message: error.message,
-            code: error.extensions?.code,
+            code: error.extensions.originalError['statusCode'],
+            extensions: error.extensions,
           };
         }
         return {
           message: originalError.message,
-          code: error.extensions?.code,
+          code: error.extensions.originalError['statusCode'],
+          extensions: originalError.extensions,
         };
       },
       definitions: {
