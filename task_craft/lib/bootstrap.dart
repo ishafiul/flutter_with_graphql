@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/config/env/env.dart';
 import 'package:task_craft/core/config/get_it.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:logger/logger.dart';
 
 /// show console log with [Logger].
 Logger logger = Logger(
@@ -77,12 +76,14 @@ Future<void> bootstrap(
       if (kDebugMode) {
         print(EnvProd.host);
       }
-
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
           statusBarColor: CColor.backgroundColor,
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarContrastEnforced: false,
-          systemNavigationBarColor: CColor.backgroundColor));
+          systemNavigationBarColor: CColor.backgroundColor,
+        ),
+      );
       runApp(await builder());
     },
     (Object error, StackTrace stackTrace) {
