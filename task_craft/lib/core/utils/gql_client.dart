@@ -1,12 +1,15 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql/client.dart';
-import 'package:task_craft/core/config/custom_icons_icons.dart';
+import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/config/env/env.dart';
 import 'package:task_craft/core/config/get_it.dart';
+import 'package:task_craft/core/schema.graphql.dart';
 import 'package:task_craft/core/service/local/app_state.dart';
 import 'package:task_craft/core/widgets/snackbar.dart';
+import 'package:task_craft/module/auth/data/repositories/auth_repository.dart';
+import 'package:task_craft/module/auth/domain/usecase/refresh_token.dart';
 
 typedef _RequestTransformer = FutureOr<Request> Function(Request request);
 
@@ -18,12 +21,12 @@ class CustomAuthLink extends _AsyncReqTransformLink {
   final FutureOr<Map<String, String>>? Function() getHeaders;
 
   static _RequestTransformer transform(
-      FutureOr<Map<String, String>>? Function() getHeaders,
-      ) =>
-          (Request request) async {
+    FutureOr<Map<String, String>>? Function() getHeaders,
+  ) =>
+      (Request request) async {
         final Map<String, String>? headers = await getHeaders();
         return request.updateContextEntry<HttpLinkHeaders>(
-              (_headers) => HttpLinkHeaders(
+          (_headers) => HttpLinkHeaders(
             headers: headers!,
           ),
         );
@@ -39,9 +42,9 @@ class _AsyncReqTransformLink extends Link {
 
   @override
   Stream<Response> request(
-      Request request, [
-        NextLink? forward,
-      ]) async* {
+    Request request, [
+    NextLink? forward,
+  ]) async* {
     final req = await requestTransformer(request);
 
     yield* forward!(req);
@@ -57,24 +60,56 @@ final policies = Policies(
 class MyGraphQLClient {
   late final GraphQLClient client;
 
-  _initClient({Map<String, String>? headers}) async {
+  MyGraphQLClient({Map<String, String>? headers}) {
+    // initClient(headers: headers);
+  }
+
+/*  MyGraphQLClient.subscribe({Map<String, String>? params}) {
+    _initWsClient(params: params);
+  }*/
+
+  Future<void> initClient({Map<String, String>? headers}) async {
     final storage = getIt<AppStateService>();
-    final isLoggedIn = await storage.isLoggedIn();
-    Link customAuthLink = graphqlUrl;
-    final token = await storage.getUserAccessToken();
-    customAuthLink = Link.concat(
-      CustomAuthLink(
-        getHeaders: () {
-          final Map<String, String> authorization =
-          isLoggedIn ? {"Authorization": token ?? ''} : {};
-          return {...authorization, ...?headers};
+    final accessToken = await storage.getUserAccessToken();
+    final freshLink = FreshLink.oAuth2(
+      tokenHeader: (token) {
+        return {
+          'Authorization': '${token?.accessToken}',
+        };
+      },
+      tokenStorage: InMemoryTokenStorage(),
+      refreshToken: (token, client) async {
+        final authService = AuthRepository();
+        final userCase = RefreshAccessToken(authService);
+        final deviceUuid = await storage.getUserRefreshToken();
+        final response = await userCase.call(
+          refreshTokenInput: Input$RefreshTokenInput(
+            deviceUuid: deviceUuid ?? '',
+          ),
+        );
+        if (response == null) {
+          throw RevokeTokenException();
+        }
+        return OAuth2Token(accessToken: response.accessToken);
+      },
+      shouldRefresh: (response) {
+        if (response.errors![0].message == 'Unauthorized') {
+          return true;
+        }
+        if (response is RevokeTokenException) {
+          return false;
+        }
+        return false;
+      },
+    )..authenticationStatus.listen(
+        (event) {
         },
-      ),
-      graphqlUrl,
-    );
+      );
+
+    await freshLink.setToken(OAuth2Token(accessToken: accessToken ?? ''));
 
     client = GraphQLClient(
-      link: customAuthLink,
+      link: Link.from([freshLink, graphqlUrl]),
       cache: GraphQLCache(store: InMemoryStore()),
       defaultPolicies: DefaultPolicies(
         watchQuery: policies,
@@ -84,24 +119,24 @@ class MyGraphQLClient {
     );
   }
 
-  _initWsClient({Map<String, String>? params}) async {
+/*  _initWsClient({Map<String, String>? params}) async {
     Link customAuthLink = graphqlUrl;
     final storage = getIt<AppStateService>();
     final isLoggedIn = await storage.isLoggedIn();
     final token = await storage.getUserAccessToken();
     customAuthLink = Link.split(
-          (request) => request.isSubscription,
+      (request) => request.isSubscription,
       WebSocketLink(
         graphqlWsUrl,
         config: SocketClientConfig(
           inactivityTimeout: const Duration(minutes: 15),
           initialPayload: () {
             final Map<String, String> authorization =
-            isLoggedIn ? {"accessToken": token ?? ''} : {};
+                isLoggedIn ? {"accessToken": token ?? ''} : {};
             return {...authorization, ...?params};
           },
         ),
-        /*subProtocol: GraphQLProtocol.graphqlTransportWs),*/
+        */ /*subProtocol: GraphQLProtocol.graphqlTransportWs),*/ /*
       ),
     );
     client = GraphQLClient(
@@ -115,15 +150,7 @@ class MyGraphQLClient {
         ),
       ),
     );
-  }
-
-  MyGraphQLClient({Map<String, String>? headers}) {
-    _initClient(headers: headers);
-  }
-
-  MyGraphQLClient.subscribe({Map<String, String>? params}) {
-    _initWsClient(params: params);
-  }
+  }*/
 
   static void handleGraphQlException(QueryResult<dynamic> graphQlRes) {
     if (graphQlRes.hasException &&
