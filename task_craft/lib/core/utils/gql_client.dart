@@ -93,6 +93,9 @@ class MyGraphQLClient {
         return OAuth2Token(accessToken: response.accessToken);
       },
       shouldRefresh: (response) {
+        if (accessToken == null) {
+          return false;
+        }
         if (response.errors![0].message == 'Unauthorized') {
           return true;
         }
@@ -102,8 +105,7 @@ class MyGraphQLClient {
         return false;
       },
     )..authenticationStatus.listen(
-        (event) {
-        },
+        (event) {},
       );
 
     await freshLink.setToken(OAuth2Token(accessToken: accessToken ?? ''));
