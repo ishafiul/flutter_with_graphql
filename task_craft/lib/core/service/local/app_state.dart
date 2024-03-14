@@ -1,5 +1,6 @@
 
 
+import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/service/local/i_app_state_service.dart';
@@ -7,6 +8,8 @@ import 'package:task_craft/core/utils/app_state_collection_isar.dart';
 import 'package:task_craft/core/utils/isar_db.dart';
 
 /// The `AppStateService` class implements the [IAppStateService] interface.
+///
+@singleton
 class AppStateService implements IAppStateService {
   /// Retrieves the user access token from the local storage.
   @override
