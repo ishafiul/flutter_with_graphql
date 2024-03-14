@@ -36,6 +36,8 @@ dependencies:
   vibration: ^1.8.4
   graphql: ^5.2.0-beta.7
   pinput: ^4.0.0
+  fresh_graphql: ^0.6.0
+  device_info_plus: ^9.1.2
 
 
 
