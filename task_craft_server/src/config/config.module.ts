@@ -45,7 +45,6 @@ import { ConnectOptions } from 'mongoose';
         if (!originalError) {
           return {
             message: error.message,
-            code: error.extensions.originalError['statusCode'],
             extensions: error.extensions,
           };
         }
