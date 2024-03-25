@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_craft/core/presentation/page_not_found.dart';
+import 'package:task_craft/core/service/local/app_state.dart';
 import 'package:task_craft/module/auth/presentation/auth_router.dart';
 import 'package:task_craft/module/home/presentation/home_page.dart';
 
@@ -11,7 +12,20 @@ GoRouter router = GoRouter(
   errorBuilder: (context, state) {
     return const PageNotFound();
   },
-  initialLocation: '/auth/login',
+  initialLocation: '/',
+  redirect: (context, state) async {
+    final isLoggedIn = await AppStateService().isLoggedIn();
+
+    if (isLoggedIn == false &&
+        (state.uri == Uri(path: '/auth/login') ||
+            state.uri == Uri(path: '/auth/verify-otp'))) {
+      return null;
+    }
+    if (isLoggedIn != true) {
+      return '/auth/login';
+    }
+    return null;
+  },
   routes: [
     GoRoute(
       path: '/',
