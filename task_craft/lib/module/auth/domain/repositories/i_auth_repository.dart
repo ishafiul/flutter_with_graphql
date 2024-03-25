@@ -13,4 +13,8 @@ abstract class IAuthRepository {
   Future<Mutation$RequestOtp$reqOtp?> requestOtp({
     required Input$RequestOtpInput requestOtpInput,
   });
+
+  Future<Mutation$VerifyOtp$verifyOtp?> verifyOtp({
+    required Input$VerifyOtpInput verifyOtpInput,
+  });
 }

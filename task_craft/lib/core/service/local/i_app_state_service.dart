@@ -28,7 +28,7 @@ abstract class IAppStateService {
   Future<bool> isLoggedIn();
 
   /// Updates the user refresh token in the local storage.
-  Future<void> updateRefreshToken(String accessToken);
+  Future<void> updateDeviceUuid(String accessToken);
 
 
 }
