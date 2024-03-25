@@ -119,6 +119,7 @@ class CColor {
   );
   static MaterialColor border = createMaterialColor(const Color(0xFFEEEEEE));
   static MaterialColor weak = createMaterialColor(const Color(0xFF999999));
+  static MaterialColor light = createMaterialColor(const Color(0xFFCCCCCC));
   /// project colors that will retun all color property as static variabble
   CColor();
 }
