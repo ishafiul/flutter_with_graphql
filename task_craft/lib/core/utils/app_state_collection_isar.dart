@@ -26,7 +26,5 @@ class User {
   String? accessToken;
 
   /// The refresh token associated with the user.
-  String? refreshToken;
-
-  bool? isProvider;
+  String? deviceUuid;
 }

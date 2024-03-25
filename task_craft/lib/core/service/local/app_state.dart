@@ -44,10 +44,10 @@ class AppStateService implements IAppStateService {
     final db = await isar.local;
     final appStates = await db.appStates.where().findAll();
     final appState = appStates.firstOrNull;
-    if (appState?.user?.refreshToken == null) {
+    if (appState?.user?.deviceUuid == null) {
       return null;
     }
-    return appState?.user?.refreshToken;
+    return appState?.user?.deviceUuid;
   }
 
   /// Clears all stored data in the local storage.
@@ -75,7 +75,7 @@ class AppStateService implements IAppStateService {
 
   /// Updates the user access token in the local storage.
   @override
-  Future<void> updateRefreshToken(String refreshToken) async {
+  Future<void> updateDeviceUuid(String deviceUuid) async {
     final isar = DB();
     final db = await isar.local;
     final appStates = await db.appStates.where().findAll();
@@ -84,7 +84,7 @@ class AppStateService implements IAppStateService {
       return;
     }
     await db.writeTxn(() async {
-      appState?.user!.refreshToken = refreshToken;
+      appState?.user!.deviceUuid = deviceUuid;
       await db.appStates.put(appState!);
     });
   }
@@ -133,29 +133,4 @@ class AppStateService implements IAppStateService {
     });
   }
 
-  Future<void> setIsProvider(bool isProvider) async {
-    final isar = DB();
-    final db = await isar.local;
-    final appStates = await db.appStates.where().findAll();
-    final appState = appStates.firstOrNull;
-    if (appState?.user == null) {
-      return;
-    }
-    await db.writeTxn(() async {
-      appState?.user!.isProvider = isProvider;
-      await db.appStates.put(appState!);
-    });
-  }
-
-  Future<bool> get isProvider async {
-    final isar = DB();
-    final db = await isar.local;
-    final appStates = await db.appStates.where().findAll();
-    final appState = appStates.firstOrNull;
-    logger.i('appState: $appStates');
-    if (appState?.user == null) {
-      return false;
-    }
-    return appState?.user?.isProvider ?? false;
-  }
 }
