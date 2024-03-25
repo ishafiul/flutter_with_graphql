@@ -28,6 +28,7 @@ export class CreateDeviceUuidInput {
     appVersion?: Nullable<string>;
     location?: Nullable<LocationInput>;
     ipAddress?: Nullable<string>;
+    fcmToken: string;
 }
 
 export class LocationInput {
