@@ -80,9 +80,9 @@ class MyGraphQLClient {
       tokenStorage: InMemoryTokenStorage(),
       refreshToken: (token, client) async {
         final authService = AuthRepository();
-        final userCase = RefreshAccessToken(authService);
+        final useCase = RefreshAccessToken(authService);
         final deviceUuid = await storage.getUserRefreshToken();
-        final response = await userCase.call(
+        final response = await useCase.call(
           refreshTokenInput: Input$RefreshTokenInput(
             deviceUuid: deviceUuid ?? '',
           ),
