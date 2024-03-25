@@ -7,8 +7,15 @@ import { UserService } from '../user/user.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModel } from '../user/entities/user.entity';
 import { OtpModel } from './schema/otp.schema';
+import { DeviceModel } from './schema/device.shema';
+import { AuthModel } from './schema/auth.schema';
 
-const MongooseModels = MongooseModule.forFeature([UserModel, OtpModel]);
+const MongooseModels = MongooseModule.forFeature([
+  UserModel,
+  OtpModel,
+  DeviceModel,
+  AuthModel,
+]);
 
 @Module({
   providers: [AuthResolver, AuthService, JwtStrategy, UserService],
