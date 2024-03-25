@@ -21,8 +21,6 @@ export class User {
   @Field()
   @Prop({ type: String, isRequired: true })
   email: string;
-  @Prop({ type: String, isRequired: true })
-  deviceUuId: string;
 }
 
 const schema = SchemaFactory.createForClass(User);
