@@ -138,7 +138,7 @@ export class AuthService {
     });
 
     //find on auth
-    const auth = await this.authModel.findOne({
+    let auth = await this.authModel.findOne({
       userId: user._id,
       deviceId: verifyOtpInput.deviceUuid,
     });
@@ -151,14 +151,12 @@ export class AuthService {
           lastRefresh: new Date().toISOString(),
         },
       );
-    } else {
-      await this.authModel.create({
-        userId: user._id,
-        deviceId: verifyOtpInput.deviceUuid,
-        lastRefresh: new Date().toISOString(),
-      });
     }
-
+    auth = await this.authModel.create({
+      userId: user._id,
+      deviceId: verifyOtpInput.deviceUuid,
+      lastRefresh: new Date().toISOString(),
+    });
     const jwtPayload: JwtPayload = {
       authID: auth._id,
     };

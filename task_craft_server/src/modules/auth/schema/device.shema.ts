@@ -22,7 +22,7 @@ export class Device {
   @Prop({ type: String, isRequired: false })
   appVersion?: string;
 
-  @Prop({ type: String, isRequired: false })
+  @Prop({ type: LocationInput, isRequired: false })
   location?: LocationInput;
   @Prop({ type: String, isRequired: false })
   ipAddress?: string;

@@ -4,7 +4,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/utils/extention.dart';
 import 'package:task_craft/core/widgets/devider/divider.dart';
-import 'package:task_craft/module/home/presentation/widgets/title.dart';
+import 'package:task_craft/module/todo/presentation/widgets/title.dart';
 import 'package:timelines/timelines.dart';
 
 class TaskContent extends HookWidget {

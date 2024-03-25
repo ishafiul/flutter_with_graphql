@@ -3,7 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:task_craft/core/presentation/page_not_found.dart';
 import 'package:task_craft/core/service/local/app_state.dart';
 import 'package:task_craft/module/auth/presentation/auth_router.dart';
-import 'package:task_craft/module/home/presentation/home_page.dart';
+import 'package:task_craft/module/home/presentation/home_screen.dart';
+import 'package:task_craft/module/todo/presentation/todo_router.dart';
 
 /// it will return [GoRouter] object,
 /// that can be use for navigation between pages
@@ -30,7 +31,10 @@ GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       name: 'home',
-      builder: (context, state) => const HomePage(),
+      builder: (context, state) => const HomeScreen(),
+      routes: [
+        ...todoRouter,
+      ],
     ),
 
     /// auth
