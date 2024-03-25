@@ -9,7 +9,7 @@ final authRouter = [
     path: '/auth',
     redirect: (context, state) async {
       final isLoggedIn = await AppStateService().isLoggedIn();
-      if (isLoggedIn && isLoggedIn == true) {
+      if (isLoggedIn == true) {
         return '/';
       }
       return null;
