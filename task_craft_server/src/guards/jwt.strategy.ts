@@ -3,11 +3,11 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as process from 'process';
 import { JwtPayload } from '../common/model/jwt-payload.model';
-import { UserService } from '../modules/user/user.service';
-import { Schema as MongooseSchema } from 'mongoose';
+import { AuthService } from '../modules/auth/auth.service';
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly userService: UserService) {
+  constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -16,12 +16,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const user = await this.userService.findOne({
-      id: payload.uuid,
+    const auth = await this.authService.findOne({
+      id: payload.authID,
     });
-    if (!user) {
+    if (!auth) {
       throw new UnauthorizedException();
     }
-    return user;
+    return auth;
   }
 }
