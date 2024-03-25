@@ -5,9 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
-import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/config/env/env.dart';
 import 'package:task_craft/core/config/get_it.dart';
+import 'package:task_craft/core/utils/isar_db.dart';
 
 /// show console log with [Logger].
 Logger logger = Logger(
@@ -72,16 +72,16 @@ Future<void> bootstrap(
 
       /// Enable if you need to do a background task
       // initBackgroundServices();
-
+      DB();
       if (kDebugMode) {
         print(EnvProd.host);
       }
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
-          statusBarColor: CColor.backgroundColor,
+          statusBarColor: Colors.white,
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarContrastEnforced: false,
-          systemNavigationBarColor: CColor.backgroundColor,
+          systemNavigationBarColor: Colors.white,
         ),
       );
       runApp(await builder());

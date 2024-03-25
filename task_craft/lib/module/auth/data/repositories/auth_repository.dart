@@ -55,4 +55,19 @@ class AuthRepository implements IAuthRepository {
     );
     return res.parsedData?.reqOtp;
   }
+
+  @override
+  Future<Mutation$VerifyOtp$verifyOtp?> verifyOtp({
+    required Input$VerifyOtpInput verifyOtpInput,
+  }) async {
+    final gql = MyGraphQLClient();
+    await gql.initClient();
+    final client = gql.client;
+    final res = await client.mutate$VerifyOtp(
+      Options$Mutation$VerifyOtp(
+        variables: Variables$Mutation$VerifyOtp(otpVerify: verifyOtpInput),
+      ),
+    );
+    return res.parsedData?.verifyOtp;
+  }
 }
