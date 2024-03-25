@@ -1,24 +1,20 @@
-import 'dart:io' show Platform;
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:meta/meta.dart';
 import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/schema.graphql.dart';
 import 'package:task_craft/module/auth/data/repositories/auth_repository.dart';
 import 'package:task_craft/module/auth/domain/usecase/create_device_uuid.dart';
-import 'package:task_craft/module/auth/domain/usecase/refresh_token.dart';
 import 'package:task_craft/module/auth/domain/usecase/request_otp.dart';
-
-part 'request_otp_cubit.freezed.dart';
 
 part 'request_otp_state.dart';
 
 class RequestOtpCubit extends Cubit<RequestOtpState> {
   final AuthRepository repository;
 
-  RequestOtpCubit({required this.repository})
-      : super(const RequestOtpState.initial());
+  RequestOtpCubit({required this.repository}) : super(RequestOtpInitial());
 
   Future<Input$CreateDeviceUuidInput> _deviceInfo() async {
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -33,6 +29,7 @@ class RequestOtpCubit extends Cubit<RequestOtpState> {
         isPhysicalDevice: androidInfo.isPhysicalDevice,
         ipAddress: '',
         deviceModel: androidInfo.model,
+        fcmToken: '',
         location: Input$LocationInput(
           lat: '0',
           long: '0',
@@ -48,6 +45,7 @@ class RequestOtpCubit extends Cubit<RequestOtpState> {
         appVersion: '0.1.1',
         isPhysicalDevice: iosInfo.isPhysicalDevice,
         ipAddress: '',
+        fcmToken: '',
         deviceModel: iosInfo.model,
         location: Input$LocationInput(
           lat: '0',
@@ -63,6 +61,7 @@ class RequestOtpCubit extends Cubit<RequestOtpState> {
       isPhysicalDevice: true,
       ipAddress: '',
       deviceModel: '',
+      fcmToken: '',
       location: Input$LocationInput(
         lat: '0',
         long: '',
@@ -71,6 +70,7 @@ class RequestOtpCubit extends Cubit<RequestOtpState> {
   }
 
   Future<void> requestOtp({required String email}) async {
+    emit(RequestOtpLoading());
     final createDeviceUuid = CreateDeviceUuid(repository);
     final requestOtp = RequestOtp(repository);
     final deviceInfo = await _deviceInfo();
@@ -80,7 +80,7 @@ class RequestOtpCubit extends Cubit<RequestOtpState> {
     logger.t(deviceUuid);
     if (deviceUuid?.deviceUuId == null) {
       emit(
-        const RequestOtpState.error(
+        RequestOtpFailure(
           message: 'something went wrong creating device uuid',
         ),
       );
@@ -94,12 +94,12 @@ class RequestOtpCubit extends Cubit<RequestOtpState> {
     );
     if (requestOtpRes?.email == null) {
       emit(
-        const RequestOtpState.error(
+        RequestOtpFailure(
           message: 'something went wrong requesting otp',
         ),
       );
       return;
     }
-    emit(RequestOtpState.loaded(email: email));
+    emit(RequestOtpSuccess(email: email, deviceUuid: deviceUuid.deviceUuId,userId: requestOtpRes!.$_id));
   }
 }

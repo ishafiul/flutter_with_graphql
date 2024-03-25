@@ -1,16 +1,26 @@
 part of 'request_otp_cubit.dart';
 
-@freezed
-class RequestOtpState with _$RequestOtpState {
-  const factory RequestOtpState.initial() = _Initial;
+@immutable
+abstract class RequestOtpState {}
 
-  const factory RequestOtpState.loading() = _Loading;
+class RequestOtpInitial extends RequestOtpState {}
 
-  const factory RequestOtpState.loaded({
-    required String email,
-  }) = _Loaded;
+class RequestOtpLoading extends RequestOtpState {}
 
-  const factory RequestOtpState.error({
-    required String message,
-  }) = _Error;
+class RequestOtpSuccess extends RequestOtpState {
+  final String email;
+  final String deviceUuid;
+  final String userId;
+
+  RequestOtpSuccess({
+    required this.email,
+    required this.deviceUuid,
+    required this.userId,
+  });
+}
+
+class RequestOtpFailure extends RequestOtpState {
+  final String message;
+
+  RequestOtpFailure({required this.message});
 }
