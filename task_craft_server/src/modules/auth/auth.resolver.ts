@@ -9,6 +9,8 @@ import { User } from '../user/entities/user.entity';
 import { VerifyOtpInput } from './dto/vreify-otp.input';
 import { TokenEntity } from './entities/token.entity';
 import { RefreshTokenInput } from './dto/refresh-token.input';
+import { UseGuards } from '@nestjs/common';
+import { RefreshAuthGuard } from '../../guards/refresh.guard';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -31,6 +33,7 @@ export class AuthResolver {
     return this.authService.verifyOtp(verifyOtpInput);
   }
 
+  @UseGuards(RefreshAuthGuard)
   @Mutation(() => TokenEntity)
   refreshToken(
     @Args('refreshTokenInput') refreshTokenInput: RefreshTokenInput,

@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateDeviceUuidInput } from './dto/create-device-uuid.input';
 import { RequestOtpInput } from './dto/request-otp.input';
-import { AES, enc } from 'crypto-js';
 import { DeviceUuId } from './entities/device-uuid.entity';
 import { UserService } from '../user/user.service';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -15,6 +14,8 @@ import { JwtPayload } from '../../common/model/jwt-payload.model';
 import { TokenEntity } from './entities/token.entity';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenInput } from './dto/refresh-token.input';
+import { DeviceDocument, DeviceModel } from './schema/device.shema';
+import { AuthDocument, AuthModel } from './schema/auth.schema';
 
 @Injectable()
 export class AuthService {
@@ -26,18 +27,20 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @InjectModel(OtpModel.name)
     private readonly otpModel: Model<OtpDocument>,
+    @InjectModel(DeviceModel.name)
+    private readonly deviceModel: Model<DeviceDocument>,
+    @InjectModel(AuthModel.name)
+    private readonly authModel: Model<AuthDocument>,
   ) {}
 
   async reqOtp(requestOtpInput: RequestOtpInput) {
-    const DeviceUuIdBytes = AES.decrypt(
-      requestOtpInput.deviceUuid,
-      process.env.HASH_KEY!,
-    );
-    const isDeviceUuId = DeviceUuIdBytes.toString(enc.Utf8);
-
+    const isDeviceUuId = await this.deviceModel.findOne({
+      _id: requestOtpInput.deviceUuid,
+    });
     if (!isDeviceUuId) {
       throw new HttpException('Device uuid invalid ', HttpStatus.BAD_REQUEST);
     }
+
     const oldOtp = await this.otpModel.findOne({
       email: requestOtpInput.email,
       deviceUuId: requestOtpInput.deviceUuid,
@@ -58,10 +61,16 @@ export class AuthService {
         deviceUuId: requestOtpInput.deviceUuid,
       });
     }
-    await this.userService.update({
-      deviceUuId: requestOtpInput.deviceUuid,
-      id: user._id.toString(),
+    // check auth
+    const auth = await this.authModel.findOne({
+      userId: user._id,
     });
+    if (auth) {
+      // delete auth
+      await this.authModel.deleteOne({
+        userId: user._id,
+      });
+    }
     const otp = generateOtp(5);
 
     await this.otpModel.create({
@@ -80,12 +89,29 @@ export class AuthService {
     return user;
   }
 
-  createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput): DeviceUuId {
+  async createDeviceUuid(
+    createDeviceUuidInput: CreateDeviceUuidInput,
+  ): Promise<DeviceUuId> {
+    const existingDevice = await this.deviceModel.findOne({
+      fcmToken: createDeviceUuidInput.fcmToken,
+    });
+
+    if (existingDevice) {
+      await this.deviceModel.updateOne(
+        {
+          _id: existingDevice._id,
+        },
+        createDeviceUuidInput,
+      );
+      return {
+        deviceUuId: existingDevice._id.toString(),
+      };
+    }
+
+    const res = await this.deviceModel.create(createDeviceUuidInput);
+
     return {
-      deviceUuId: AES.encrypt(
-        JSON.stringify({ createDeviceUuidInput }),
-        process.env.HASH_KEY!,
-      ).toString(),
+      deviceUuId: res._id.toString(),
     };
   }
 
@@ -111,9 +137,30 @@ export class AuthService {
       deviceUuId: verifyOtpInput.deviceUuid,
     });
 
+    //find on auth
+    const auth = await this.authModel.findOne({
+      userId: user._id,
+      deviceId: verifyOtpInput.deviceUuid,
+    });
+    if (auth) {
+      await this.authModel.updateOne(
+        {
+          _id: auth._id,
+        },
+        {
+          lastRefresh: new Date().toISOString(),
+        },
+      );
+    } else {
+      await this.authModel.create({
+        userId: user._id,
+        deviceId: verifyOtpInput.deviceUuid,
+        lastRefresh: new Date().toISOString(),
+      });
+    }
+
     const jwtPayload: JwtPayload = {
-      uuid: user._id.toString(),
-      deviceUuId: user.deviceUuId,
+      authID: auth._id,
     };
     return {
       accessToken: this.jwtService.sign(jwtPayload),
@@ -123,24 +170,41 @@ export class AuthService {
   async refreshToken(
     refreshTokenInput: RefreshTokenInput,
   ): Promise<TokenEntity> {
-    const DeviceUuIdBytes = AES.decrypt(
-      refreshTokenInput.deviceUuid,
-      process.env.HASH_KEY!,
-    );
-    const isDeviceUuId = DeviceUuIdBytes.toString(enc.Utf8);
+    console.log(refreshTokenInput);
 
-    if (!isDeviceUuId) {
-      throw new HttpException('Device uuid invalid ', HttpStatus.BAD_REQUEST);
-    }
-    const user = await this.userService.findOne({
-      deviceUuId: refreshTokenInput.deviceUuid,
+    const auth = await this.authModel.findOne({
+      deviceId: refreshTokenInput.deviceUuid,
     });
-    if (!user) {
-      throw new HttpException('Invalid device', HttpStatus.BAD_REQUEST);
+    if (!auth) {
+      throw new HttpException('Invalid device uuid', HttpStatus.BAD_REQUEST);
     }
+
+    const expire = 10;
+    const refresh = new Date(auth.lastRefresh);
+    const sevenDaysLater = new Date(refresh.getTime());
+    sevenDaysLater.setDate(sevenDaysLater.getDate() + expire);
+    console.log(sevenDaysLater);
+    const now = new Date();
+    console.log(now);
+
+    if (now > sevenDaysLater) {
+      // delete this auth
+      await this.authModel.deleteOne({
+        _id: auth._id,
+      });
+      throw new HttpException('Refresh token expired', HttpStatus.BAD_REQUEST);
+    }
+    await this.authModel.updateOne(
+      {
+        _id: auth._id,
+      },
+      {
+        lastRefresh: new Date().toISOString(),
+      },
+    );
+
     const jwtPayload: JwtPayload = {
-      uuid: user._id.toString(),
-      deviceUuId: user.deviceUuId,
+      authID: auth._id.toString(),
     };
     return {
       accessToken: this.jwtService.sign(jwtPayload),
