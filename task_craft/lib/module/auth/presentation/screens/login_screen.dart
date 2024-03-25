@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_craft/app/app_router.dart';
-import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/utils/extention.dart';
-import 'package:task_craft/core/widgets/bottom_sheet/scrollable_bottom_sheet.dart';
 import 'package:task_craft/core/widgets/button/button.dart';
 import 'package:task_craft/core/widgets/button/enums.dart';
 import 'package:task_craft/core/widgets/devider/divider.dart';
 import 'package:task_craft/core/widgets/input.dart';
+import 'package:task_craft/core/widgets/snackbar.dart';
 import 'package:task_craft/core/widgets/spinner/fade_dots.dart';
+import 'package:task_craft/module/auth/domain/cubit/request_otp/request_otp_cubit.dart';
 import 'package:task_craft/module/auth/presentation/widgets/social_buttons.dart';
 
 final _loginFormKey = GlobalKey<FormState>();
@@ -20,9 +21,65 @@ class LoginScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isButtonActive = useState(true);
+    final emailController = useState('');
+
+    Widget loadingButon() {
+      return Padding(
+        padding: 24.paddingHorizontal(),
+        child: Button.primary(
+          fill: ButtonFill.solid,
+          shape: ButtonShape.rectangular,
+          buttonSize: ButtonSize.large,
+          isBlock: true,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const FadingFourSpinner(
+                color: Colors.white,
+                size: 20,
+              ),
+              8.horizontalSpace,
+              const Text("Loading"),
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget regularButon() {
+      return Padding(
+        padding: 24.paddingHorizontal(),
+        child: Button.primary(
+          fill: ButtonFill.solid,
+          shape: ButtonShape.rectangular,
+          buttonSize: ButtonSize.large,
+          isBlock: true,
+          onPressed: isButtonActive.value
+              ? () {
+                  if (_loginFormKey.currentState!.validate()) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    context
+                        .read<RequestOtpCubit>()
+                        .requestOtp(email: emailController.value);
+                  } else {
+                    isButtonActive.value = false;
+                  }
+                }
+              : null,
+          child: const Text("Continue"),
+        ),
+      );
+    }
+
+    useEffect(
+      () {
+        return null;
+      },
+      [],
+    );
     return Scaffold(
       appBar: AppBar(
-        title: Text("Task Craft"),
+        title: const Text("Task Craft"),
       ),
       body: SafeArea(
         child: Form(
@@ -61,6 +118,7 @@ class LoginScreen extends HookWidget {
                     } else {
                       isButtonActive.value = true;
                     }
+                    emailController.value = value;
                   },
                 ),
               ),
@@ -77,25 +135,25 @@ class LoginScreen extends HookWidget {
               ),
               4.verticalSpace,
               16.verticalSpace,
-              Padding(
-                padding: 24.paddingHorizontal(),
-                child: Button.primary(
-                  fill: ButtonFill.solid,
-                  shape: ButtonShape.rectangular,
-                  buttonSize: ButtonSize.large,
-                  isBlock: true,
-                  onPressed: isButtonActive.value
-                      ? () {
-                          router.push('/auth/verify-otp');
-                          return;
-                          if (_loginFormKey.currentState!.validate()) {
-                          } else {
-                            isButtonActive.value = false;
-                          }
-                        }
-                      : null,
-                  child: const Text("Continue"),
-                ),
+              BlocConsumer<RequestOtpCubit, RequestOtpState>(
+                listener: (context, state) {
+                  if (state is RequestOtpSuccess) {
+                    router.push('/auth/verify-otp');
+                  }
+                  if (state is RequestOtpFailure) {
+                    showSnackBar(
+                      message: state.message,
+                      type: SnackBarType.error,
+                      withIcon: true,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is RequestOtpLoading) {
+                    return loadingButon();
+                  }
+                  return regularButon();
+                },
               ),
               16.verticalSpace,
               Padding(
@@ -103,7 +161,7 @@ class LoginScreen extends HookWidget {
                 child: CDivider.text(text: "or"),
               ),
               16.verticalSpace,
-              SocialButtons()
+              const SocialButtons(),
             ],
           ),
         ),
