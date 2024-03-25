@@ -90,11 +90,15 @@ class AppTheme {
         shape: Border.all(color: Colors.transparent),
       ),
       appBarTheme: AppBarTheme(
-          backgroundColor: const Color(0xffFAFAFA),
-          elevation: 0,
-          toolbarHeight: 56.h,
-          titleSpacing: 16.w,
-          iconTheme: const IconThemeData()),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        toolbarHeight: 56.h,
+        centerTitle: true,
+        shape: Border(
+          bottom: BorderSide(color: CColor.border),
+        ),
+        iconTheme: const IconThemeData(),
+      ),
       actionIconTheme: ActionIconThemeData(
         backButtonIconBuilder: (BuildContext context) => Icon(
           CustomIcons.left,
@@ -102,16 +106,20 @@ class AppTheme {
         ),
       ),
       tabBarTheme: TabBarTheme(
-        indicatorColor: CColor.primary.shade800,
-        indicatorSize: TabBarIndicatorSize.tab,
-        //tabAlignment: TabAlignment.start,
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
-        unselectedLabelColor: CColor.disableText,
-        labelStyle: TextStyle(
-          color: CColor.primary.shade800,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
+          indicatorColor: CColor.primary,
+          indicatorSize: TabBarIndicatorSize.tab,
+          //tabAlignment: TabAlignment.start,
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 16,
+          ),
+          unselectedLabelColor: CColor.text,
+          labelStyle: TextStyle(
+            color: CColor.primary,
+            fontWeight: FontWeight.w500,
+            fontSize: 16,
+          ),
+          dividerColor: Colors.transparent),
       checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateProperty.all(Colors.white),
         checkColor: MaterialStateProperty.all(CColor.primary),
@@ -135,9 +143,10 @@ class AppTheme {
       snackBarTheme: const SnackBarThemeData(
         actionTextColor: Colors.red,
       ),
-      datePickerTheme: const DatePickerThemeData(
+      datePickerTheme: DatePickerThemeData(
         backgroundColor: Colors.white,
-        dayOverlayColor: MaterialStatePropertyAll(Colors.white),
+        dayOverlayColor: const MaterialStatePropertyAll(Colors.white),
+        dividerColor: CColor.border,
       ),
       dialogBackgroundColor: Colors.white,
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -155,7 +164,8 @@ class AppTheme {
         ),
       ),
       iconButtonTheme: IconButtonThemeData(
-          style: ButtonStyle(iconSize: MaterialStatePropertyAll(24.r))),
+        style: ButtonStyle(iconSize: MaterialStatePropertyAll(24.r)),
+      ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           disabledForegroundColor: CColor.disableText,
@@ -323,7 +333,7 @@ class AppTheme {
       ),
       dialogTheme: const DialogTheme(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(Space.md)),
+          borderRadius: BorderRadius.all(Radius.circular(0)),
         ),
       ),
       unselectedWidgetColor: CColor.disableText,
