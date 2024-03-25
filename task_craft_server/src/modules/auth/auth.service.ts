@@ -210,4 +210,8 @@ export class AuthService {
       accessToken: this.jwtService.sign(jwtPayload),
     };
   }
+
+  async findOne(param: { id: string }) {
+    return this.authModel.findById(param.id);
+  }
 }
