@@ -30,4 +30,7 @@ export class CreateDeviceUuidInput {
   location?: LocationInput;
   @Field(() => String, { description: 'User Ip Address', nullable: true })
   ipAddress?: string;
+
+  @Field(() => String, { description: 'User Fcm Token', nullable: false })
+  fcmToken: string;
 }
