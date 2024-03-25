@@ -7,6 +7,7 @@ mutation CreateDeviceUuid($deviceInfo: CreateDeviceUuidInput!){
 mutation RequestOtp($requestOtpInput: RequestOtpInput!){
     reqOtp(requestOtpInput: $requestOtpInput){
         email,
+        _id
     }
 }
 
@@ -19,12 +20,5 @@ mutation VerifyOtp($otpVerify: VerifyOtpInput!){
 mutation RefreshToken($refreshTokenInput: RefreshTokenInput!){
     refreshToken(refreshTokenInput: $refreshTokenInput){
         accessToken
-    }
-}
-
-query getTasks {
-    task{
-        _id
-        title
     }
 }

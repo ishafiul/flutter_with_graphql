@@ -75,6 +75,9 @@ input CreateDeviceUuidInput {
 
     # User Ip Address
     ipAddress: String
+
+    # User Fcm Token
+    fcmToken: String!
 }
 
 input LocationInput {
