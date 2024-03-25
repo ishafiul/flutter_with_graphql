@@ -1,16 +1,96 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
+import 'package:task_craft/app/app_router.dart';
 import 'package:task_craft/core/config/colors.dart';
+import 'package:task_craft/core/schema.graphql.dart';
 import 'package:task_craft/core/utils/extention.dart';
 import 'package:task_craft/core/widgets/button/button.dart';
 import 'package:task_craft/core/widgets/button/enums.dart';
+import 'package:task_craft/core/widgets/spinner/fade_dots.dart';
+import 'package:task_craft/module/auth/domain/cubit/request_otp/request_otp_cubit.dart';
+import 'package:task_craft/module/auth/domain/cubit/verify_otp/verify_otp_cubit.dart';
 
-class VerifyOtpScreen extends StatelessWidget {
+class VerifyOtpScreen extends HookWidget {
   const VerifyOtpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isButtonActive = useState(true);
+    final otpText = useState('');
+    Widget loadingButon() {
+      return Padding(
+        padding: 24.paddingHorizontal(),
+        child: Button.primary(
+          fill: ButtonFill.solid,
+          shape: ButtonShape.rectangular,
+          buttonSize: ButtonSize.large,
+          isBlock: true,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const FadingFourSpinner(
+                color: Colors.white,
+                size: 20,
+              ),
+              8.horizontalSpace,
+              const Text("Loading"),
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget regularButon() {
+      return Padding(
+        padding: 24.paddingHorizontal(),
+        child: Button.primary(
+          fill: ButtonFill.solid,
+          shape: ButtonShape.rectangular,
+          buttonSize: ButtonSize.large,
+          isBlock: true,
+          onPressed: isButtonActive.value
+              ? () {
+                  if (otpText.value.length == 5) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+
+                    final email = context.read<RequestOtpCubit>().state
+                            is RequestOtpSuccess
+                        ? (context.read<RequestOtpCubit>().state
+                                as RequestOtpSuccess)
+                            .email
+                        : null;
+
+                    final deviceUuid = context.read<RequestOtpCubit>().state
+                            is RequestOtpSuccess
+                        ? (context.read<RequestOtpCubit>().state
+                                as RequestOtpSuccess)
+                            .deviceUuid
+                        : null;
+
+                    final userId = context.read<RequestOtpCubit>().state
+                            is RequestOtpSuccess
+                        ? (context.read<RequestOtpCubit>().state
+                                as RequestOtpSuccess)
+                            .userId
+                        : null;
+
+                    context.read<VerifyOtpCubit>().verifyOtp(
+                          otp: int.parse(otpText.value),
+                          email: email!,
+                          deviceUuid: deviceUuid!,
+                          userId: userId!,
+                        );
+                  }
+                }
+              : null,
+          child: const Text("Continue"),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Confirm your number"),
@@ -31,16 +111,18 @@ class VerifyOtpScreen extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: SafeArea(
-                  child: Padding(
-                    padding: 24.paddingHorizontal(),
-                    child: Button.primary(
-                      fill: ButtonFill.solid,
-                      shape: ButtonShape.rectangular,
-                      buttonSize: ButtonSize.large,
-                      isBlock: true,
-                      onPressed: () {},
-                      child: const Text("Continue"),
-                    ),
+                  child: BlocConsumer<VerifyOtpCubit, VerifyOtpState>(
+                    listener: (context, state) {
+                      if (state is VerifyOtpSuccess) {
+                        router.go('/');
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is VerifyOtpLoading) {
+                        return loadingButon();
+                      }
+                      return regularButon();
+                    },
                   ),
                 ),
               ),
@@ -54,19 +136,26 @@ class VerifyOtpScreen extends StatelessWidget {
           Center(
             child: Container(
               constraints: const BoxConstraints(maxWidth: 250),
-              child: RichText(
-                text: TextSpan(
-                  text: "Please enter the verification code sent to ",
-                  style: context.textTheme.bodyMedium,
-                  children: [
-                    TextSpan(
-                      text: "shafiulislam20@gmail.com",
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+              child: BlocBuilder<RequestOtpCubit, RequestOtpState>(
+                builder: (context, state) {
+                  if (state is RequestOtpSuccess) {
+                    return RichText(
+                      text: TextSpan(
+                        text: "Please enter the verification code sent to ",
+                        style: context.textTheme.bodyMedium,
+                        children: [
+                          TextSpan(
+                            text: state.email,
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
+                    );
+                  }
+                  return const SizedBox();
+                },
               ),
             ),
           ),
@@ -79,6 +168,7 @@ class VerifyOtpScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Pinput(
+                    length: 5,
                     defaultPinTheme: PinTheme(
                       width: 56,
                       height: 56,
@@ -98,7 +188,17 @@ class VerifyOtpScreen extends StatelessWidget {
                       ),
                     ),
                     validator: (s) {
-                      return s == '2222' ? null : 'Pin is incorrect';
+                      if (s!.length != 5) {
+                        return 'Pin is invalid';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      if (value.length <= 4) {
+                        isButtonActive.value = false;
+                      } else {
+                        isButtonActive.value = true;
+                      }
                     },
                     errorTextStyle: const TextStyle(
                       color: Color(0xFFFF3141),
@@ -106,7 +206,9 @@ class VerifyOtpScreen extends StatelessWidget {
                       fontFamily: 'Arial',
                       fontWeight: FontWeight.w400,
                     ),
-                    onCompleted: (pin) {},
+                    onCompleted: (pin) {
+                      otpText.value = pin;
+                    },
                   ),
                 ],
               ),
@@ -120,7 +222,7 @@ class VerifyOtpScreen extends StatelessWidget {
                 "Have not received the code?",
               ),
               Button.primary(
-                onPressed: () {},
+                onPressed: isButtonActive.value ? () {} : null,
                 fill: ButtonFill.none,
                 shape: ButtonShape.rectangular,
                 buttonSize: ButtonSize.small,
