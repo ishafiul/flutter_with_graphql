@@ -1,106 +1,99 @@
+import 'dart:math' as math;
+
+import 'package:easy_date_timeline/easy_date_timeline.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:task_craft/core/widgets/bottom_sheet/scrollable_bottom_sheet.dart';
-import 'package:task_craft/core/widgets/button/button.dart';
-import 'package:task_craft/core/widgets/button/enums.dart';
-import 'package:task_craft/core/widgets/devider/divider.dart';
-import 'package:task_craft/core/widgets/devider/divider_base.dart';
-import 'package:task_craft/core/widgets/devider/text_divider.dart';
-import 'package:task_craft/core/widgets/input.dart';
-import 'package:task_craft/core/widgets/spinner/fade_dots.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:task_craft/bootstrap.dart';
+import 'package:task_craft/core/config/custom_icons_icons.dart';
+import 'package:task_craft/core/config/get_it.dart';
+import 'package:task_craft/core/config/theme.dart';
+import 'package:task_craft/core/utils/extention.dart';
+import 'package:task_craft/core/widgets/bottom_sheet/snap_bottom_sheet.dart';
+import 'package:task_craft/core/widgets/mesure_widget.dart';
+import 'package:task_craft/module/home/presentation/widgets/date_timeline.dart';
+import 'package:task_craft/module/home/presentation/widgets/task_content.dart';
 
 final _formKey = GlobalKey<FormState>();
+GlobalKey<ScaffoldState> homePageScaffoldKey = GlobalKey<ScaffoldState>();
 
 class HomePage extends HookWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController();
-    return Scaffold(
-      backgroundColor: const Color(0xfffcfbfa),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
+    final maxCount = useState(0.0);
+    final maxHeight = useState(0.0);
+    final EasyInfiniteDateTimelineController _controller =
+        EasyInfiniteDateTimelineController();
+    final DateTime initialDate = DateTime(2024);
+    final _focusDate = useState(DateTime.now());
+    final controller = AutoScrollController(
+      viewportBoundaryGetter: () =>
+          Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+      axis: Axis.horizontal,
+    );
+
+    Widget wrapScrollTag({required int index, required Widget child}) =>
+        AutoScrollTag(
+          key: ValueKey(index),
+          controller: controller,
+          index: index,
+          child: child,
+        );
+
+    useEffect(() {});
+    final ValueNotifier<Size?> dateTimeLineConstraints = useState(null);
+    return SnapBottomSheet(
+      maxChild: Column(
+        children: [
+          Text('"data"'),
+          Text('"data"'),
+          Text('"data"'),
+        ],
+      ),
+      minChild: const Text("data"),
+      body: Scaffold(
+        key: homePageScaffoldKey,
+        floatingActionButton: SafeArea(
+          child: IconButton.filled(
+            onPressed: () {},
+            icon: const Icon(
+              CustomIcons.add,
+              size: 32,
+            ),
+          ),
+        ),
+        backgroundColor: const Color(0xfffcfbfa),
+        appBar: AppBar(
+          title: const Text("Home"),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(CustomIcons.more),
+            ),
+          ],
+        ),
+        body: Form(
           key: _formKey,
           child: ListView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             children: [
-              const Text("data"),
-              const Text("data"),
-              const Text("data"),
-              BaseDivider(axis: Axis.horizontal),
-              CDivider.text(
-                text: "Hello World",
-                position: TextDividerPosition.right,
-              ),
-              TextInputField(
-                controller: controller,
-                placeholder: "sdsd",
-                disabled: false,
-                isRequired: true,
-                labelText: "Index",
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  if (value != "ishaf") {
-                    return 'Please enter some text';
-                  }
-                  return null;
+              MeasureSize(
+                onChange: (Size size) {
+                  dateTimeLineConstraints.value = size;
                 },
-                onChanged: (value) {
-                  _formKey.currentState!.validate();
-                },
+                child: const DateTimeLine(),
               ),
-              12.verticalSpace,
-              TextInputField(
-                controller: controller,
-                placeholder: "sdsd",
-                disabled: false,
-              ),
-              12.verticalSpace,
-              TextInputField(
-                controller: controller,
-                placeholder: "sdsd",
-                disabled: false,
-              ),
-              12.verticalSpace,
-              IntrinsicHeight(
-                child: Row(
-                  children: <Widget>[
-                    const Text('Hello'),
-                    BaseDivider(axis: Axis.vertical),
-                    const Text('World'),
-                  ],
+              if (dateTimeLineConstraints.value != null)
+                TaskContent(
+                  extraTopSize: dateTimeLineConstraints.value!,
+                  scaafoldContext: context,
                 ),
-              ),
-              const TextField(),
-              20.verticalSpace,
-              Button.primary(
-                fill: ButtonFill.solid,
-                shape: ButtonShape.base,
-                buttonSize: ButtonSize.large,
-                isBlock: true,
-                onPressed: () {
-                  showBottomSheet(
-                    context: context,
-                    builder: (context) =>
-                        const ScrollableBottomSheet(child: Text("data")),
-                  );
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const FadingFourSpinner(
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    8.horizontalSpace,
-                    const Text("Loading"),
-                  ],
-                ),
-              ),
             ],
           ),
         ),
