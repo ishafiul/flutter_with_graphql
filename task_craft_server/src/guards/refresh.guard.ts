@@ -9,11 +9,17 @@ export class RefreshAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context);
     const authHeader = ctx.getContext().req.headers['authorization'];
-    console.log(authHeader);
-    if (!authHeader) {
+    let token: string | null = null;
+
+    if (authHeader && authHeader.startsWith('bearer ')) {
+      token = authHeader.substring(7); // Removing 'Bearer ' prefix
+    }
+
+    if (!token) {
       return false;
     }
-    const isValid = this.jwtService.verify(authHeader, {
+
+    const isValid = this.jwtService.verify(token, {
       secret: process.env.JWT_SECRECT,
       ignoreExpiration: true,
     });

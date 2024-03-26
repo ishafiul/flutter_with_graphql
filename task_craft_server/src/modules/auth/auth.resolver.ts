@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Auth } from './entities/auth.entity';
 import { CreateDeviceUuidInput } from './dto/create-device-uuid.input';
@@ -11,6 +11,7 @@ import { TokenEntity } from './entities/token.entity';
 import { RefreshTokenInput } from './dto/refresh-token.input';
 import { UseGuards } from '@nestjs/common';
 import { RefreshAuthGuard } from '../../guards/refresh.guard';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -39,5 +40,11 @@ export class AuthResolver {
     @Args('refreshTokenInput') refreshTokenInput: RefreshTokenInput,
   ) {
     return this.authService.refreshToken(refreshTokenInput);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => DeviceUuId)
+  async logout(@Context() context) {
+    return this.authService.logout(context.req.user);
   }
 }

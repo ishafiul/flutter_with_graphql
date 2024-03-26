@@ -89,6 +89,8 @@ export abstract class IQuery {
 
     abstract taskById(id: string): Nullable<Task> | Promise<Nullable<Task>>;
 
+    abstract logout(): DeviceUuId | Promise<DeviceUuId>;
+
     abstract user(id: string): User | Promise<User>;
 }
 

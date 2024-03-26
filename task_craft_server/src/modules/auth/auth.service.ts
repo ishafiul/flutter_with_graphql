@@ -15,7 +15,7 @@ import { TokenEntity } from './entities/token.entity';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenInput } from './dto/refresh-token.input';
 import { DeviceDocument, DeviceModel } from './schema/device.shema';
-import { AuthDocument, AuthModel } from './schema/auth.schema';
+import { Auth, AuthDocument, AuthModel } from './schema/auth.schema';
 
 @Injectable()
 export class AuthService {
@@ -211,5 +211,12 @@ export class AuthService {
 
   async findOne(param: { id: string }) {
     return this.authModel.findById(param.id);
+  }
+
+  async logout(user: Auth) {
+    await this.authModel.deleteOne(user);
+    return {
+      deviceUuId: user.deviceId,
+    };
   }
 }
