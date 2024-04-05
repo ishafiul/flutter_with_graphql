@@ -24,6 +24,7 @@ type Query {
     health: String!
     task: [Task!]
     taskById(id: String!): Task
+    logout: DeviceUuId!
     user(id: String!): User!
 }
 

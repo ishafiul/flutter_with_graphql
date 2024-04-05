@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "75391372358",
+    "project_id": "taskcraft-417310",
+    "storage_bucket": "taskcraft-417310.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75391372358:android:07e9f60d68efc8a28d4e47",
+        "android_client_info": {
+          "package_name": "com.example.ipp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75391372358-maqo7dcutjsd7dgdodf96gk980bjd2fl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsbsnyNVWFuCkmeQXbVE4uaxXMmXF_910"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75391372358-maqo7dcutjsd7dgdodf96gk980bjd2fl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

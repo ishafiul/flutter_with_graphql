@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql/client.dart';
+import 'package:task_craft/app/app_router.dart';
 import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/config/env/env.dart';
 import 'package:task_craft/core/config/get_it.dart';
@@ -74,7 +75,7 @@ class MyGraphQLClient {
     final freshLink = FreshLink.oAuth2(
       tokenHeader: (token) {
         return {
-          'Authorization': '${token?.accessToken}',
+          'Authorization': 'bearer ${token?.accessToken}',
         };
       },
       tokenStorage: InMemoryTokenStorage(),
@@ -88,6 +89,8 @@ class MyGraphQLClient {
           ),
         );
         if (response == null) {
+          await getIt<AppStateService>().clearAll();
+          router.go('/auth/login');
           throw RevokeTokenException();
         }
         return OAuth2Token(accessToken: response.accessToken);

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_craft/app/app_router.dart';
 import 'package:task_craft/core/config/custom_icons_icons.dart';
-import 'package:task_craft/core/widgets/button/button.dart';
-import 'package:task_craft/core/widgets/button/enums.dart';
+import 'package:task_craft/module/home/presentation/widgets/toda_todo_update.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,13 +19,10 @@ class HomeScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Button.primary(
-            fill: ButtonFill.solid,
-            child: Text("TODO"),
-            onPressed: () {
-              router.go('/todo');
-            },
-          )
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: TodayTodoUpdate(),
+          ),
         ],
       ),
     );

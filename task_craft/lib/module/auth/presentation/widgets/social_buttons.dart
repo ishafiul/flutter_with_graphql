@@ -5,7 +5,7 @@ import 'package:task_craft/core/config/custom_icons_icons.dart';
 import 'package:task_craft/core/utils/extention.dart';
 import 'package:task_craft/core/widgets/button/button.dart';
 import 'package:task_craft/core/widgets/button/enums.dart';
-import 'package:task_craft/core/widgets/snackbar.dart';
+import 'package:task_craft/module/auth/data/services/remote/oauth_service.dart';
 import 'package:task_craft/module/auth/domain/cubit/request_otp/request_otp_cubit.dart';
 
 class SocialButtons extends StatelessWidget {
@@ -45,7 +45,10 @@ class SocialButtons extends StatelessWidget {
                 shape: ButtonShape.rectangular,
                 buttonSize: ButtonSize.large,
                 isBlock: true,
-                onPressed: state is RequestOtpLoading ? null : () {},
+                onPressed: state is RequestOtpLoading ? null : () async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  await signInWithGoogle();
+                },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

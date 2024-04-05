@@ -45,6 +45,10 @@ dependencies:
   scroll_to_index: ^3.0.1
   timelines: ^0.1.0
   sliding_up_panel: ^2.0.0+1
+  firebase_core: ^2.28.0
+  firebase_auth: ^4.19.0
+  google_sign_in: ^6.2.1
+  firebase_messaging: ^14.8.0
 
 
 

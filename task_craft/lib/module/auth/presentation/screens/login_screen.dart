@@ -23,7 +23,7 @@ class LoginScreen extends HookWidget {
     final isButtonActive = useState(true);
     final emailController = useState('');
 
-    Widget loadingButon() {
+    Widget loadingButton() {
       return Padding(
         padding: 24.paddingHorizontal(),
         child: Button.primary(
@@ -46,7 +46,7 @@ class LoginScreen extends HookWidget {
       );
     }
 
-    Widget regularButon() {
+    Widget regularButton() {
       return Padding(
         padding: 24.paddingHorizontal(),
         child: Button.primary(
@@ -150,9 +150,9 @@ class LoginScreen extends HookWidget {
                 },
                 builder: (context, state) {
                   if (state is RequestOtpLoading) {
-                    return loadingButon();
+                    return loadingButton();
                   }
-                  return regularButon();
+                  return regularButton();
                 },
               ),
               16.verticalSpace,
