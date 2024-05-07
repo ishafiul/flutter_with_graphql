@@ -16,6 +16,7 @@ import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenInput } from './dto/refresh-token.input';
 import { DeviceDocument, DeviceModel } from './schema/device.shema';
 import { Auth, AuthDocument, AuthModel } from './schema/auth.schema';
+import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class AuthService {
@@ -32,6 +33,32 @@ export class AuthService {
     @InjectModel(AuthModel.name)
     private readonly authModel: Model<AuthDocument>,
   ) {}
+
+  async createDeviceUuid(
+    createDeviceUuidInput: CreateDeviceUuidInput,
+  ): Promise<DeviceUuId> {
+    const existingDevice = await this.deviceModel.findOne({
+      fcmToken: createDeviceUuidInput.fcmToken,
+    });
+
+    if (existingDevice) {
+      await this.deviceModel.updateOne(
+        {
+          _id: existingDevice._id,
+        },
+        createDeviceUuidInput,
+      );
+      return {
+        deviceUuId: existingDevice._id.toString(),
+      };
+    }
+
+    const res = await this.deviceModel.create(createDeviceUuidInput);
+
+    return {
+      deviceUuId: res._id.toString(),
+    };
+  }
 
   async reqOtp(requestOtpInput: RequestOtpInput) {
     const isDeviceUuId = await this.deviceModel.findOne({
@@ -58,7 +85,6 @@ export class AuthService {
     if (!user) {
       user = await this.userService.create({
         email: requestOtpInput.email,
-        deviceUuId: requestOtpInput.deviceUuid,
       });
     }
     // check auth
@@ -89,32 +115,6 @@ export class AuthService {
     return user;
   }
 
-  async createDeviceUuid(
-    createDeviceUuidInput: CreateDeviceUuidInput,
-  ): Promise<DeviceUuId> {
-    const existingDevice = await this.deviceModel.findOne({
-      fcmToken: createDeviceUuidInput.fcmToken,
-    });
-
-    if (existingDevice) {
-      await this.deviceModel.updateOne(
-        {
-          _id: existingDevice._id,
-        },
-        createDeviceUuidInput,
-      );
-      return {
-        deviceUuId: existingDevice._id.toString(),
-      };
-    }
-
-    const res = await this.deviceModel.create(createDeviceUuidInput);
-
-    return {
-      deviceUuId: res._id.toString(),
-    };
-  }
-
   async verifyOtp(verifyOtpInput: VerifyOtpInput): Promise<TokenEntity> {
     const user = await this.userService.findOne({
       email: verifyOtpInput.email,
@@ -137,22 +137,8 @@ export class AuthService {
       deviceUuId: verifyOtpInput.deviceUuid,
     });
 
-    //find on auth
-    let auth = await this.authModel.findOne({
-      userId: user._id,
-      deviceId: verifyOtpInput.deviceUuid,
-    });
-    if (auth) {
-      await this.authModel.updateOne(
-        {
-          _id: auth._id,
-        },
-        {
-          lastRefresh: new Date().toISOString(),
-        },
-      );
-    }
-    auth = await this.authModel.create({
+    //find on aut
+    const auth = await this.authModel.create({
       userId: user._id,
       deviceId: verifyOtpInput.deviceUuid,
       lastRefresh: new Date().toISOString(),
@@ -206,6 +192,18 @@ export class AuthService {
     };
     return {
       accessToken: this.jwtService.sign(jwtPayload),
+    };
+  }
+
+  async loginWithGoogle(token: string): Promise<any> {
+    const client = new OAuth2Client();
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    return {
+      email: payload.email,
     };
   }
 
