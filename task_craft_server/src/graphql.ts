@@ -51,14 +51,8 @@ export class RefreshTokenInput {
     deviceUuid: string;
 }
 
-export class CreateUserInput {
-    email: string;
-    deviceUuId: string;
-}
-
 export class UpdateUserInput {
     email?: Nullable<string>;
-    deviceUuId?: Nullable<string>;
     id: string;
 }
 
@@ -71,6 +65,7 @@ export class User {
     _id: string;
     firstName: string;
     lastName: string;
+    profilePicture: string;
     email: string;
 }
 
@@ -108,8 +103,6 @@ export abstract class IMutation {
     abstract verifyOtp(verifyOtpInput: VerifyOtpInput): TokenEntity | Promise<TokenEntity>;
 
     abstract refreshToken(refreshTokenInput: RefreshTokenInput): TokenEntity | Promise<TokenEntity>;
-
-    abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 
     abstract updateUser(updateUserInput: UpdateUserInput): User | Promise<User>;
 
