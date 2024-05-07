@@ -8,9 +8,19 @@ type Task {
 }
 
 type User {
+  """user uuid"""
   _id: String!
+
+  """user first name. its not required and can be null"""
   firstName: String!
+
+  """user last name. its not required and can be null"""
   lastName: String!
+
+  """user profile picture (public). its not required and can be null"""
+  profilePicture: String!
+
+  """user registered email"""
   email: String!
 }
 
@@ -28,6 +38,8 @@ type Query {
   health: String!
   task: [Task!]
   taskById(id: String!): Task
+
+  """logout user. it will remove auth and invalidate jwt token"""
   logout: DeviceUuId!
   user(id: String!): User!
 }
@@ -36,11 +48,26 @@ type Mutation {
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
   removeTask(id: String!): Task!
+
+  """
+  create device uuid. it will generate a unique device uuid, so that multiple device not be login at a same time with a single use
+  """
   createDeviceUuid(createDeviceUuidInput: CreateDeviceUuidInput!): DeviceUuId!
+
+  """
+  request otp. it will send otp to user registered email. if user not exist with email, it will create new user
+  """
   reqOtp(requestOtpInput: RequestOtpInput!): User!
+
+  """
+  verify otp. it will verify email and device, if not valid, it will throw error. then it will generate jwt token and refresh token. this endpoint also invalid existing longed in user
+  """
   verifyOtp(verifyOtpInput: VerifyOtpInput!): TokenEntity!
+
+  """
+  refresh token. it remove old auth and generate new. and against that it will generate new jwt token
+  """
   refreshToken(refreshTokenInput: RefreshTokenInput!): TokenEntity!
-  createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
 }
@@ -111,22 +138,16 @@ input VerifyOtpInput {
 }
 
 input RefreshTokenInput {
+  """Device UuId"""
   deviceUuid: String!
 }
 
-input CreateUserInput {
-  """Example field (placeholder)"""
-  email: String!
-
-  """Example field (placeholder)"""
-  deviceUuId: String!
-}
-
 input UpdateUserInput {
-  """Example field (placeholder)"""
+  """
+  this is user email. its one time use only. can be replaced. if user exist with this email, then it will not going to create new user. it will just use existing user info 
+  """
   email: String
 
-  """Example field (placeholder)"""
-  deviceUuId: String
+  """user uuid"""
   id: String!
 }
