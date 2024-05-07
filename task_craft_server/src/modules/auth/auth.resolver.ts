@@ -17,25 +17,37 @@ import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation(() => DeviceUuId)
+  @Mutation(() => DeviceUuId, {
+    description:
+      'create device uuid. it will generate a unique device uuid, so that multiple device not be login at a same time with a single use',
+  })
   createDeviceUuid(
     @Args('createDeviceUuidInput') createDeviceUuidInput: CreateDeviceUuidInput,
   ) {
     return this.authService.createDeviceUuid(createDeviceUuidInput);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, {
+    description:
+      'request otp. it will send otp to user registered email. if user not exist with email, it will create new user',
+  })
   reqOtp(@Args('requestOtpInput') requestOtpInput: RequestOtpInput) {
     return this.authService.reqOtp(requestOtpInput);
   }
 
-  @Mutation(() => TokenEntity)
+  @Mutation(() => TokenEntity, {
+    description:
+      'verify otp. it will verify email and device, if not valid, it will throw error. then it will generate jwt token and refresh token. this endpoint also invalid existing longed in user',
+  })
   verifyOtp(@Args('verifyOtpInput') verifyOtpInput: VerifyOtpInput) {
     return this.authService.verifyOtp(verifyOtpInput);
   }
 
   @UseGuards(RefreshAuthGuard)
-  @Mutation(() => TokenEntity)
+  @Mutation(() => TokenEntity, {
+    description:
+      'refresh token. it remove old auth and generate new. and against that it will generate new jwt token',
+  })
   refreshToken(
     @Args('refreshTokenInput') refreshTokenInput: RefreshTokenInput,
   ) {
@@ -43,7 +55,9 @@ export class AuthResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query(() => DeviceUuId)
+  @Query(() => DeviceUuId, {
+    description: 'logout user. it will remove auth and invalidate jwt token',
+  })
   async logout(@Context() context) {
     return this.authService.logout(context.req.user);
   }
