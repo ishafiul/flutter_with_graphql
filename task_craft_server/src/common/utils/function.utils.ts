@@ -4,3 +4,8 @@ export const generateOtp = (size: number) => {
   const y = parseFloat('9' + zeros);
   return String(Math.floor(x + Math.random() * y));
 };
+
+export function extractTokenFromHeader(request: Request): string | undefined {
+  const [type, token] = request.headers['authorization'].split(' ') ?? [];
+  return type === 'Bearer' ? token : undefined;
+}
