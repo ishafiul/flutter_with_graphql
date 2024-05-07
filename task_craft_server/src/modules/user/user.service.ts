@@ -38,12 +38,7 @@ export class UserService {
   }
 
   async update(updateUserInput: UpdateUserInput) {
-    await this.userModel.updateOne(
-      { _id: updateUserInput.id },
-      {
-        deviceUuId: updateUserInput.deviceUuId,
-      },
-    );
+    await this.userModel.updateOne({ _id: updateUserInput.id }, {});
     return true;
   }
 
