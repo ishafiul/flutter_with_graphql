@@ -65,6 +65,11 @@ type Mutation {
   verifyOtp(verifyOtpInput: VerifyOtpInput!): TokenEntity!
 
   """
+  verify otp. it will verify email and device, if not valid, it will throw error. then it will generate jwt token and refresh token. this endpoint also invalid existing longed in user
+  """
+  loginWithGoogle(loginWithGoogleInput: LoginWithGoogleInput!): TokenEntity!
+
+  """
   refresh token. it remove old auth and generate new. and against that it will generate new jwt token
   """
   refreshToken(refreshTokenInput: RefreshTokenInput!): TokenEntity!
@@ -135,6 +140,11 @@ input VerifyOtpInput {
   """this system generated device id"""
   deviceUuid: String
   otp: Int!
+}
+
+input LoginWithGoogleInput {
+  """User Valid Email. OTP will send there"""
+  googleToken: String!
 }
 
 input RefreshTokenInput {

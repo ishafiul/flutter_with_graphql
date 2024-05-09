@@ -17,6 +17,7 @@ import { RefreshTokenInput } from './dto/refresh-token.input';
 import { DeviceDocument, DeviceModel } from './schema/device.shema';
 import { Auth, AuthDocument, AuthModel } from './schema/auth.schema';
 import { OAuth2Client } from 'google-auth-library';
+import { LoginWithGoogleInput } from './dto/login-with-goole.input';
 
 @Injectable()
 export class AuthService {
@@ -195,15 +196,18 @@ export class AuthService {
     };
   }
 
-  async loginWithGoogle(token: string): Promise<any> {
+  async loginWithGoogle(
+    loginWithGoogleInput: LoginWithGoogleInput,
+  ): Promise<TokenEntity> {
     const client = new OAuth2Client();
     const ticket = await client.verifyIdToken({
-      idToken: token,
+      idToken: loginWithGoogleInput.googleToken,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
+    console.log(payload);
     return {
-      email: payload.email,
+      accessToken: '',
     };
   }
 

@@ -47,6 +47,10 @@ export class VerifyOtpInput {
     otp: number;
 }
 
+export class LoginWithGoogleInput {
+    googleToken: string;
+}
+
 export class RefreshTokenInput {
     deviceUuid: string;
 }
@@ -101,6 +105,8 @@ export abstract class IMutation {
     abstract reqOtp(requestOtpInput: RequestOtpInput): User | Promise<User>;
 
     abstract verifyOtp(verifyOtpInput: VerifyOtpInput): TokenEntity | Promise<TokenEntity>;
+
+    abstract loginWithGoogle(loginWithGoogleInput: LoginWithGoogleInput): TokenEntity | Promise<TokenEntity>;
 
     abstract refreshToken(refreshTokenInput: RefreshTokenInput): TokenEntity | Promise<TokenEntity>;
 
