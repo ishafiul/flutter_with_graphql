@@ -28,7 +28,7 @@ class Provider {
           VerifyOtpCubit(repository: AuthRepository()),
     ),
     BlocProvider<GoogleAuthCubit>(
-      create: (BuildContext context) => GoogleAuthCubit(),
+      create: (BuildContext context) => GoogleAuthCubit(AuthRepository()),
     ),
   ];
 }

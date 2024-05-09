@@ -70,4 +70,21 @@ class AuthRepository implements IAuthRepository {
     );
     return res.parsedData?.verifyOtp;
   }
+
+  @override
+  Future<Mutation$LoginWithGoogle$loginWithGoogle?> loginWithGoogle({
+    required Input$LoginWithGoogleInput loginWithGoogleInput,
+  }) async {
+    final gql = MyGraphQLClient();
+    await gql.initClient();
+    final client = gql.client;
+    final res = await client.mutate$LoginWithGoogle(
+      Options$Mutation$LoginWithGoogle(
+        variables: Variables$Mutation$LoginWithGoogle(
+          loginWithGoogleInput: loginWithGoogleInput,
+        ),
+      ),
+    );
+    return res.parsedData?.loginWithGoogle;
+  }
 }

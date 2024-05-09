@@ -4,19 +4,17 @@ import 'package:task_craft/bootstrap.dart';
 
 Future<String?> signInWithGoogle() async {
   await GoogleSignIn().signOut();
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  final GoogleSignInAccount? googleUser = await GoogleSignIn(
+    serverClientId: '287218143583-1hjqp1au1a6ra8gj6gdn1766m73r0k0q.apps.googleusercontent.com',
+  ).signIn();
 
   final GoogleSignInAuthentication? googleAuth =
       await googleUser?.authentication;
 
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth?.accessToken,
-    idToken: googleAuth?.idToken,
-  );
 
-  await FirebaseAuth.instance.signInWithCredential(credential);
-  logger.d(googleAuth?.accessToken);
-  return googleAuth?.accessToken;
+  logger.d(googleAuth?.idToken);
+
+  return googleAuth?.idToken;
 }
 
 Future<bool> signOutFromGoogle() async {

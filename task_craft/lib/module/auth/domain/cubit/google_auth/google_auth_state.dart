@@ -12,5 +12,5 @@ final class GoogleAuthSuccess extends GoogleAuthState {}
 final class GoogleAuthError extends GoogleAuthState {
   final String message;
 
-  GoogleAuthError(this.message);
+  GoogleAuthError({required this.message});
 }

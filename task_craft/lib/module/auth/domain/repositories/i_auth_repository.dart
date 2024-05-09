@@ -17,4 +17,8 @@ abstract class IAuthRepository {
   Future<Mutation$VerifyOtp$verifyOtp?> verifyOtp({
     required Input$VerifyOtpInput verifyOtpInput,
   });
+
+  Future<Mutation$LoginWithGoogle$loginWithGoogle?> loginWithGoogle({
+    required Input$LoginWithGoogleInput loginWithGoogleInput,
+  });
 }
