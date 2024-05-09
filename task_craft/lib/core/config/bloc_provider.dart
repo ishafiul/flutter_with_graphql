@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:task_craft/app/app.dart';
 import 'package:task_craft/core/snackbar/cubit/snack_bar_cubit.dart';
 import 'package:task_craft/module/auth/data/repositories/auth_repository.dart';
+import 'package:task_craft/module/auth/domain/cubit/google_auth/google_auth_cubit.dart';
 import 'package:task_craft/module/auth/domain/cubit/request_otp/request_otp_cubit.dart';
 import 'package:task_craft/module/auth/domain/cubit/verify_otp/verify_otp_cubit.dart';
 
@@ -22,10 +23,12 @@ class Provider {
       create: (BuildContext context) =>
           RequestOtpCubit(repository: AuthRepository()),
     ),
-
     BlocProvider<VerifyOtpCubit>(
       create: (BuildContext context) =>
           VerifyOtpCubit(repository: AuthRepository()),
+    ),
+    BlocProvider<GoogleAuthCubit>(
+      create: (BuildContext context) => GoogleAuthCubit(),
     ),
   ];
 }

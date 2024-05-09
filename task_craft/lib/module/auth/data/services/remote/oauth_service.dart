@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:task_craft/bootstrap.dart';
 
 Future<String?> signInWithGoogle() async {
+  await GoogleSignIn().signOut();
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
   final GoogleSignInAuthentication? googleAuth =
