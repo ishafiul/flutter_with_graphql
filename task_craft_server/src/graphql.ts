@@ -49,6 +49,7 @@ export class VerifyOtpInput {
 
 export class LoginWithGoogleInput {
     googleToken: string;
+    deviceUuid: string;
 }
 
 export class RefreshTokenInput {

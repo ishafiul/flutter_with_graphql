@@ -145,6 +145,9 @@ input VerifyOtpInput {
 input LoginWithGoogleInput {
   """User Valid Email. OTP will send there"""
   googleToken: String!
+
+  """this system generated device id"""
+  deviceUuid: String!
 }
 
 input RefreshTokenInput {

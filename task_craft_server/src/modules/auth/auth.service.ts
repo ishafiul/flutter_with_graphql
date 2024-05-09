@@ -206,8 +206,43 @@ export class AuthService {
     });
     const payload = ticket.getPayload();
     console.log(payload);
+    if (!payload) {
+      throw new HttpException('Invalid google token', HttpStatus.BAD_REQUEST);
+    }
+    if (!payload.email_verified) {
+      throw new HttpException('Email not verified', HttpStatus.BAD_REQUEST);
+    }
+    let user: User;
+    user = await this.userService.findOne({
+      email: payload.email,
+    });
+
+    if (!user) {
+      user = await this.userService.create({
+        email: payload.email,
+      });
+    }
+    console.log(payload);
+    const auth = await this.authModel.findOne({
+      userId: user._id,
+    });
+    if (auth) {
+      // delete auth
+      await this.authModel.deleteOne({
+        userId: user._id,
+      });
+    }
+    //find on aut
+    const newAuth = await this.authModel.create({
+      userId: user._id,
+      deviceId: '',
+      lastRefresh: new Date().toISOString(),
+    });
+    const jwtPayload: JwtPayload = {
+      authID: newAuth._id,
+    };
     return {
-      accessToken: '',
+      accessToken: this.jwtService.sign(jwtPayload),
     };
   }
 

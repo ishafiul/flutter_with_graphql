@@ -6,4 +6,9 @@ export class LoginWithGoogleInput {
     description: 'User Valid Email. OTP will send there',
   })
   googleToken: string;
+
+  @Field(() => String, {
+    description: 'this system generated device id',
+  })
+  deviceUuid: string;
 }
