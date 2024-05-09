@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +8,6 @@ import 'package:logger/logger.dart';
 import 'package:task_craft/core/config/env/env.dart';
 import 'package:task_craft/core/config/get_it.dart';
 import 'package:task_craft/core/utils/isar_db.dart';
-import 'package:task_craft/firebase_options.dart';
 
 /// show console log with [Logger].
 Logger logger = Logger(
@@ -59,8 +57,6 @@ Future<void> bootstrap(
 
   await runZonedGuarded(
     () async {
-      WidgetsFlutterBinding.ensureInitialized();
-
       await SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
         DeviceOrientation.portraitUp,
       ]);
@@ -71,10 +67,6 @@ Future<void> bootstrap(
 
       /// init get_it dependencies
       initDependencies();
-
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
 
       DB();
       if (kDebugMode) {

@@ -1,4 +1,4 @@
-package com.example.ipp
+package info.ishaf.taskcraft
 
 import io.flutter.embedding.android.FlutterActivity
 

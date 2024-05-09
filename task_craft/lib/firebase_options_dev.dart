@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart'
 ///
 /// Example:
 /// ```dart
-/// import 'firebase_options.dart';
+/// import 'firebase_options_dev.dart';
 /// // ...
 /// await Firebase.initializeApp(
 ///   options: DefaultFirebaseOptions.currentPlatform,
@@ -44,38 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCso6gReooGgfaEhUEYLuJwi7fxs2SJ34A',
-    appId: '1:747569887837:web:786d0318b0fcc47ad92bb4',
-    messagingSenderId: '747569887837',
-    projectId: 'task-craft-e0aed',
-    authDomain: 'task-craft-e0aed.firebaseapp.com',
-    storageBucket: 'task-craft-e0aed.appspot.com',
-    measurementId: 'G-10VX7EBP25',
+    apiKey: 'AIzaSyAuXLSoVQfi5hH-pesWmfF5UtjsXs1gB-E',
+    appId: '1:287218143583:web:38408b8a9f7fecfd1126ea',
+    messagingSenderId: '287218143583',
+    projectId: 'task-craft-dev',
+    authDomain: 'task-craft-dev.firebaseapp.com',
+    storageBucket: 'task-craft-dev.appspot.com',
+    measurementId: 'G-PPEQ5ZZZLK',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAbGfk5wf3xOHi-ZPyZY7aTtxdMuu5-ZDU',
-    appId: '1:747569887837:android:b3d624615f098428d92bb4',
-    messagingSenderId: '747569887837',
-    projectId: 'task-craft-e0aed',
-    storageBucket: 'task-craft-e0aed.appspot.com',
+    apiKey: 'AIzaSyD6itGFxS4E_RSRnJhHyJnFxWpRPaCdWI8',
+    appId: '1:287218143583:android:e44a1c3c1f68accc1126ea',
+    messagingSenderId: '287218143583',
+    projectId: 'task-craft-dev',
+    storageBucket: 'task-craft-dev.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDjHIABF7gk9hlCXpN-eO10nAB3TQ4-d8Y',
-    appId: '1:747569887837:ios:18950613cded3b3cd92bb4',
-    messagingSenderId: '747569887837',
-    projectId: 'task-craft-e0aed',
-    storageBucket: 'task-craft-e0aed.appspot.com',
-    iosBundleId: 'info.ishaf.taskcraft',
+    apiKey: 'AIzaSyCkxOyZ_cHrYfN_UuNIH7mKDt_-oV3E_Kw',
+    appId: '1:287218143583:ios:45162684eddb6dd61126ea',
+    messagingSenderId: '287218143583',
+    projectId: 'task-craft-dev',
+    storageBucket: 'task-craft-dev.appspot.com',
+    iosBundleId: 'info.ishaf.taskcraft.dev',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDjHIABF7gk9hlCXpN-eO10nAB3TQ4-d8Y',
-    appId: '1:747569887837:ios:8c718879f0077c42d92bb4',
-    messagingSenderId: '747569887837',
-    projectId: 'task-craft-e0aed',
-    storageBucket: 'task-craft-e0aed.appspot.com',
+    apiKey: 'AIzaSyCkxOyZ_cHrYfN_UuNIH7mKDt_-oV3E_Kw',
+    appId: '1:287218143583:ios:8d3d0188ee11123d1126ea',
+    messagingSenderId: '287218143583',
+    projectId: 'task-craft-dev',
+    storageBucket: 'task-craft-dev.appspot.com',
     iosBundleId: 'com.example.sampleProject',
   );
 }
