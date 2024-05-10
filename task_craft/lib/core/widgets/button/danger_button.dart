@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/widgets/button/enums.dart';
 
-import 'utils.dart';
+import 'package:task_craft/core/widgets/button/utils.dart';
 
 class DangerButton extends StatelessWidget {
   const DangerButton({
@@ -41,7 +41,8 @@ class DangerButton extends StatelessWidget {
         focusElevation: 0,
         highlightElevation: 0,
         splashColor: CColor.danger.shade50.withOpacity(0.4),
-        fillColor: fill == ButtonFill.solid ? CColor.danger : Colors.transparent,
+        fillColor:
+            fill == ButtonFill.solid ? CColor.danger : Colors.transparent,
         constraints: buttonConstants(
           buttonSize: buttonSize ?? ButtonSize.middle,
           isBlock: isBlock,
@@ -54,5 +55,4 @@ class DangerButton extends StatelessWidget {
       ),
     );
   }
-
 }

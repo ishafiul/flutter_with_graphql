@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/schema.graphql.dart';
@@ -48,6 +45,9 @@ class RequestOtpCubit extends Cubit<RequestOtpState> {
       );
       return;
     }
-    emit(RequestOtpSuccess(email: email, deviceUuid: deviceUuid.deviceUuId,userId: requestOtpRes!.$_id));
+    emit(RequestOtpSuccess(
+        email: email,
+        deviceUuid: deviceUuid.deviceUuId,
+        userId: requestOtpRes!.$_id));
   }
 }

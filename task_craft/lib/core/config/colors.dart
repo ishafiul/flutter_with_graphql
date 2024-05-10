@@ -67,7 +67,6 @@ MaterialColor createMaterialColor(Color baseColor) {
 ///
 /// project colors
 class CColor {
-
   /// primary color for a project that can be use as a [ColorScheme] inside material
   /// theme property.
   static MaterialColor primary = createMaterialColor(const Color(0xFF097D5D));
@@ -120,6 +119,7 @@ class CColor {
   static MaterialColor border = createMaterialColor(const Color(0xFFEEEEEE));
   static MaterialColor weak = createMaterialColor(const Color(0xFF999999));
   static MaterialColor light = createMaterialColor(const Color(0xFFCCCCCC));
+
   /// project colors that will retun all color property as static variabble
   CColor();
 }

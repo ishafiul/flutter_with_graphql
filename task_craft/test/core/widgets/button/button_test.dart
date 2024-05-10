@@ -20,7 +20,8 @@ void main() {
       // Add more assertions based on your specific requirements
     });
 
-    testWidgets('Primary Button renders correctly', (WidgetTester tester) async {
+    testWidgets('Primary Button renders correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -36,7 +37,8 @@ void main() {
       // Add more assertions based on your specific requirements
     });
 
-    testWidgets('Success Button renders correctly', (WidgetTester tester) async {
+    testWidgets('Success Button renders correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -52,7 +54,8 @@ void main() {
       // Add more assertions based on your specific requirements
     });
 
-    testWidgets('Warning Button renders correctly', (WidgetTester tester) async {
+    testWidgets('Warning Button renders correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(

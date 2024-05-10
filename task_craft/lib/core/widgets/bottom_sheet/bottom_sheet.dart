@@ -33,7 +33,7 @@ class BaseBottomSheet extends StatelessWidget {
                     color: Color(0xffABABAB),
                   ),
                 ),
-                child
+                child,
               ],
             ),
           ),

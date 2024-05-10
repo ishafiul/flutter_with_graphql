@@ -78,7 +78,8 @@ void main() {
     expect(changedValue, 'Test');
   });
 
-  testWidgets('TextInputField renders "*" prefix with label when isRequired is true',
+  testWidgets(
+      'TextInputField renders "*" prefix with label when isRequired is true',
       (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(

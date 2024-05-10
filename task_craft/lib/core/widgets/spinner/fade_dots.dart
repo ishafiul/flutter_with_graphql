@@ -1,22 +1,22 @@
+import 'dart:math' as math;
+
 import 'package:flutter/widgets.dart';
 import 'package:task_craft/core/widgets/spinner/tween/delay.dart';
-import 'dart:math' as math;
 
 class FadingFourSpinner extends StatefulWidget {
   const FadingFourSpinner({
-    Key? key,
+    super.key,
     this.color,
     this.shape = BoxShape.circle,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  })  : assert(
+  }) : assert(
           !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
               !(itemBuilder == null && color == null),
           'You should specify either a itemBuilder or a color',
-        ),
-        super(key: key);
+        );
 
   final Color? color;
   final BoxShape shape;
@@ -44,7 +44,8 @@ class _FadingFourSpinnerState extends State<FadingFourSpinner>
         AnimationController(vsync: this, duration: widget.duration))
       ..repeat();
 
-    _controller2 = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
+    _controller2 = (widget.controller ??
+        AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() {
         if (mounted) {
           setState(() {});
@@ -54,7 +55,7 @@ class _FadingFourSpinnerState extends State<FadingFourSpinner>
     _animation = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller2,
-        curve: const Interval(0.0, 1.0, curve: Curves.linear),
+        curve: const Interval(0.0, 1.0),
       ),
     );
   }
@@ -86,7 +87,6 @@ class _FadingFourSpinnerState extends State<FadingFourSpinner>
                 child: Transform(
                   transform: Matrix4.rotationZ(30.0 * (i * 3) * 0.0174533),
                   child: Align(
-                    alignment: Alignment.center,
                     child: FadeTransition(
                       opacity: DelayTween(
                         begin: 0.0,

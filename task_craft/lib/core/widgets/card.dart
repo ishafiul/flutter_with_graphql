@@ -1,5 +1,5 @@
-import 'package:task_craft/core/config/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:task_craft/core/config/colors.dart';
 
 enum CCardType { primary, warning, danger, success }
 

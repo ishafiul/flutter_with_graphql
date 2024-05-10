@@ -51,5 +51,4 @@ class BaseButton extends StatelessWidget {
       ),
     );
   }
-
 }

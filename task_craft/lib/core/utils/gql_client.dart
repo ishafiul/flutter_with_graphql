@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql/client.dart';
 import 'package:task_craft/app/app_router.dart';
-import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/config/env/env.dart';
 import 'package:task_craft/core/config/get_it.dart';
 import 'package:task_craft/core/schema.graphql.dart';
@@ -27,8 +26,8 @@ class CustomAuthLink extends _AsyncReqTransformLink {
       (Request request) async {
         final Map<String, String>? headers = await getHeaders();
         return request.updateContextEntry<HttpLinkHeaders>(
-          (_headers) => HttpLinkHeaders(
-            headers: headers!,
+          (headers) => HttpLinkHeaders(
+            headers: headers! as Map<String, String>,
           ),
         );
       };
@@ -61,7 +60,7 @@ final policies = Policies(
 class MyGraphQLClient {
   late final GraphQLClient client;
 
-  MyGraphQLClient({Map<String, String>? headers}) {
+  MyGraphQLClient() {
     // initClient(headers: headers);
   }
 

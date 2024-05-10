@@ -1,5 +1,3 @@
-
-import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -30,7 +28,9 @@ class TodoScreen extends HookWidget {
           child: child,
         );
 
-    useEffect(() {});
+    useEffect(() {
+      return null;
+    });
     final ValueNotifier<Size?> dateTimeLineConstraints = useState(null);
     return Scaffold(
       key: homePageScaffoldKey,

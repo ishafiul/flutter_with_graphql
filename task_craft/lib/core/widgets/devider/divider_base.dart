@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_craft/core/config/colors.dart';
 
 class BaseDivider extends StatelessWidget {
-  BaseDivider({
+  const BaseDivider({
     super.key,
     this.width,
     this.thickness,
@@ -10,8 +10,7 @@ class BaseDivider extends StatelessWidget {
     this.endIndent,
     this.height,
     required this.axis,
-  })
-      : assert(width == null || width >= 0.0),
+  })  : assert(width == null || width >= 0.0),
         assert(thickness == null || thickness >= 0.0),
         assert(indent == null || indent >= 0.0),
         assert(endIndent == null || endIndent >= 0.0);

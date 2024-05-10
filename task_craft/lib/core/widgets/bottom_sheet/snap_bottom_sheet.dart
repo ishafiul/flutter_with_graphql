@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/config/custom_icons_icons.dart';
 import 'package:task_craft/core/utils/extention.dart';
 import 'package:task_craft/core/widgets/mesure_widget.dart';
@@ -65,13 +64,12 @@ class _SnapBottomSheetState extends State<SnapBottomSheet> {
     return Material(
       child: SlidingUpPanel(
         onPanelSlide: (position) {
-          if(position > 0){
-          }
+          if (position > 0) {}
           setState(() {
             this.position = position;
           });
         },
-        
+
         panel: MeasureSize(
           onChange: (size) {
             maxHeight = size.height;
@@ -97,7 +95,6 @@ class _SnapBottomSheetState extends State<SnapBottomSheet> {
           ),
         ),
         borderRadius: const BorderRadius.all(Radius.circular(6)),
-        parallaxEnabled: false,
         snapPoint: 0.5,
         boxShadow: position == 1
             ? []

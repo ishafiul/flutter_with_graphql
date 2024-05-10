@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import 'get_it.config.dart';
+import 'package:task_craft/core/config/get_it.config.dart';
 
 /// [GetIt] instance
 final getIt = GetIt.instance;

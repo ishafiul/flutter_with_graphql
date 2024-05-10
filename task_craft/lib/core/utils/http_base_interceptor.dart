@@ -7,13 +7,11 @@ import 'package:task_craft/app/app_router.dart';
 class BaseInterceptor extends Interceptor {
   @override
   Future<void> onRequest(
-      RequestOptions options,
-      RequestInterceptorHandler handler,
-      ) async {
-    final String? token  = '';
-    if (token != null) {
-      options.headers['Authorization'] = 'Bearer $token';
-    }
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    const String token = '';
+    options.headers['Authorization'] = 'Bearer $token';
 
     super.onRequest(options, handler);
   }
@@ -31,13 +29,11 @@ class BaseInterceptor extends Interceptor {
     if (err.response?.statusCode == 401) {
       final dio = Dio();
       try {
-      final String? newToken = '';
-        err.requestOptions.headers['Authorization'] =
-        'Bearer ${newToken}';
+        const String newToken = '';
+        err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
         return handler.resolve(await dio.fetch(err.requestOptions));
       } on DioException catch (e) {
         if (e.response?.statusCode == 401) {
-
           router.go('/auth');
           return;
         }

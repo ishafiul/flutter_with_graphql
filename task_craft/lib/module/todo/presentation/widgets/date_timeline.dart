@@ -8,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/config/custom_icons_icons.dart';
 import 'package:task_craft/core/utils/extention.dart';
@@ -205,15 +204,16 @@ class DateTimeLine extends HookWidget {
                           shape: badges.BadgeShape.square,
                           badgeColor: CColor.primary.shade200,
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(
-                                4,
-                              ),
-                              topRight: Radius.circular(
-                                4,
-                              ),
-                              bottomLeft: Radius.circular(
-                                4,
-                              )),
+                            topLeft: Radius.circular(
+                              4,
+                            ),
+                            topRight: Radius.circular(
+                              4,
+                            ),
+                            bottomLeft: Radius.circular(
+                              4,
+                            ),
+                          ),
                           elevation: 0,
                         ),
                         position:

@@ -1,6 +1,5 @@
-
-import 'package:task_craft/core/utils/extention.dart';
 import 'package:flutter/material.dart';
+import 'package:task_craft/core/utils/extention.dart';
 
 class CDropDownItemInput extends StatelessWidget {
   final List<String> items;
@@ -24,7 +23,8 @@ class CDropDownItemInput extends StatelessWidget {
     this.labelSuffix,
   });
 
-  List<DropdownMenuItem<String>> _listBuilder(List<String> items, BuildContext context) {
+  List<DropdownMenuItem<String>> _listBuilder(
+      List<String> items, BuildContext context) {
     final List<DropdownMenuItem<String>> newItems = [];
     if (isInitialItemLabel == true) {
       newItems.add(
@@ -66,7 +66,9 @@ class CDropDownItemInput extends StatelessWidget {
       value: selected ?? 'Select A $labelText',
       elevation: 16,
       onChanged: (String? value) {
-        if (value != 'Select A $labelText' && value != null && onChanged != null) {
+        if (value != 'Select A $labelText' &&
+            value != null &&
+            onChanged != null) {
           onChanged!(value);
         }
       },

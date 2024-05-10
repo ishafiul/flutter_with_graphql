@@ -43,7 +43,6 @@ class TaskContent extends HookWidget {
                     ),
                     clipBehavior: Clip.antiAlias,
                     builder: TimelineTileBuilder.connected(
-                      contentsAlign: ContentsAlign.basic,
                       lastConnectorBuilder: (context) {
                         return SolidLineConnector(
                           color: CColor.weak,
@@ -84,16 +83,17 @@ class TaskContent extends HookWidget {
                               showModalBottomSheet(
                                 context: context,
                                 builder: (context) => SlidingUpPanel(
-                                  panel: Center(
+                                  panel: const Center(
                                     child: Text("This is the sliding Widget"),
                                   ),
-                                  body: Center(
-                                    child: Text("This is the Widget behind the sliding panel"),
+                                  body: const Center(
+                                    child: Text(
+                                        "This is the Widget behind the sliding panel"),
                                   ),
                                 ),
                               );
                             },
-                            child: Container(
+                            child: SizedBox(
                               width: MediaQuery.sizeOf(context).width,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -129,7 +129,6 @@ class TaskContent extends HookWidget {
                         ),
                       ),
                       connectorBuilder: (context, index, type) {
-
                         return SolidLineConnector(
                           color: index == 0 || index == 3 ? CColor.weak : null,
                         );

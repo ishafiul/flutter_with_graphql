@@ -40,7 +40,7 @@ class RadioGroupWrap<T> extends HookWidget {
       alignment: WrapAlignment.spaceBetween,
       children: List.generate(
         values.length,
-            (index) => InkWell(
+        (index) => InkWell(
           onTap: () {
             if (active.value != values[index]) {
               active.value = values[index];
@@ -55,7 +55,7 @@ class RadioGroupWrap<T> extends HookWidget {
                   data: ThemeData(
                     radioTheme: RadioThemeData(
                       fillColor: MaterialStateProperty.resolveWith(
-                            (states) => active.value == values[index]
+                        (states) => active.value == values[index]
                             ? CColor.primary
                             : const Color(0xFFCCCCCC),
                       ),

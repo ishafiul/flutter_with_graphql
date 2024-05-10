@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:task_craft/core/widgets/button/base_button.dart';
+import 'package:task_craft/core/widgets/button/danger_button.dart';
+import 'package:task_craft/core/widgets/button/enums.dart';
 import 'package:task_craft/core/widgets/button/primary_button.dart';
 import 'package:task_craft/core/widgets/button/success_button.dart';
 import 'package:task_craft/core/widgets/button/warning_button.dart';
-import 'danger_button.dart';
-import 'enums.dart';
 
 class Button extends StatelessWidget {
   final Function()? onPressed;
-  late final ButtonType? buttonType;
+   final ButtonType? buttonType;
   final ButtonFill? fill;
   final ButtonShape? shape;
   final ButtonSize? buttonSize;
   final bool? isBlock;
   final Widget child;
 
-  Button({
+  const Button({
     super.key,
     this.onPressed,
     this.fill,
@@ -25,7 +25,7 @@ class Button extends StatelessWidget {
     required this.child,
   }) : buttonType = ButtonType.base;
 
-  Button.primary({
+  const Button.primary({
     super.key,
     this.onPressed,
     this.fill,
@@ -35,7 +35,7 @@ class Button extends StatelessWidget {
     required this.child,
   }) : buttonType = ButtonType.primary;
 
-  Button.success({
+  const Button.success({
     super.key,
     this.onPressed,
     this.fill,
@@ -45,7 +45,7 @@ class Button extends StatelessWidget {
     required this.child,
   }) : buttonType = ButtonType.success;
 
-  Button.warning({
+  const Button.warning({
     super.key,
     this.onPressed,
     this.fill,
@@ -55,7 +55,7 @@ class Button extends StatelessWidget {
     required this.child,
   }) : buttonType = ButtonType.warning;
 
-  Button.danger({
+  const Button.danger({
     super.key,
     this.onPressed,
     this.fill,

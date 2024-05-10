@@ -235,7 +235,7 @@ export class AuthService {
     //find on aut
     const newAuth = await this.authModel.create({
       userId: user._id,
-      deviceId: '',
+      deviceId: loginWithGoogleInput.deviceUuid,
       lastRefresh: new Date().toISOString(),
     });
     const jwtPayload: JwtPayload = {

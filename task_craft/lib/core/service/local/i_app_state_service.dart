@@ -1,4 +1,3 @@
-
 import 'package:task_craft/core/utils/app_state_collection_isar.dart';
 
 /// The `IAppStateService` interface defines methods for managing application state.
@@ -29,6 +28,4 @@ abstract class IAppStateService {
 
   /// Updates the user refresh token in the local storage.
   Future<void> updateDeviceUuid(String accessToken);
-
-
 }

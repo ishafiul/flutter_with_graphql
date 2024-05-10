@@ -18,8 +18,8 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: ListView(
-        children: [
-          const Padding(
+        children: const [
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: TodayTodoUpdate(),
           ),

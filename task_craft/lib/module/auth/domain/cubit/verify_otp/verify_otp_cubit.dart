@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/schema.graphql.dart';
 import 'package:task_craft/core/service/local/app_state.dart';
 import 'package:task_craft/core/utils/app_state_collection_isar.dart';

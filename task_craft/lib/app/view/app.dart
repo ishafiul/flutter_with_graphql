@@ -1,16 +1,14 @@
-import 'package:task_craft/app/app_router.dart';
-import 'package:task_craft/core/config/bloc_provider.dart';
-import 'package:task_craft/core/config/colors.dart';
-import 'package:task_craft/core/config/get_it.dart';
-import 'package:task_craft/core/config/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:task_craft/app/app_router.dart';
+import 'package:task_craft/core/config/bloc_provider.dart';
+import 'package:task_craft/core/config/get_it.dart';
+import 'package:task_craft/core/config/theme.dart';
 
 /// [GlobalKey] for [ScaffoldMessenger]
 GlobalKey<ScaffoldMessengerState> scaffoldMessageKey =
-GlobalKey<ScaffoldMessengerState>();
+    GlobalKey<ScaffoldMessengerState>();
 
 /// [App]
 class App extends StatelessWidget {

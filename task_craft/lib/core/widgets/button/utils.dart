@@ -3,8 +3,10 @@ import 'package:task_craft/core/config/colors.dart';
 
 import 'package:task_craft/core/widgets/button/enums.dart';
 
-BoxConstraints buttonConstants(
-    {ButtonSize buttonSize = ButtonSize.middle, bool isBlock = false}) {
+BoxConstraints buttonConstants({
+  ButtonSize buttonSize = ButtonSize.middle,
+  bool isBlock = false,
+}) {
   switch (buttonSize) {
     case ButtonSize.large:
       return BoxConstraints(

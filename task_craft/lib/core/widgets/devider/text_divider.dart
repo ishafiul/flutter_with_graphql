@@ -8,7 +8,8 @@ enum TextDividerPosition {
 }
 
 class TextDivider extends StatelessWidget {
-  TextDivider({required this.text, this.position = TextDividerPosition.center});
+  const TextDivider(
+      {required this.text, this.position = TextDividerPosition.center});
 
   final String text;
 
@@ -21,7 +22,7 @@ class TextDivider extends StatelessWidget {
       children: [
         Flexible(
           flex: position == TextDividerPosition.right ? 7 : 1,
-          child: BaseDivider(axis: Axis.horizontal),
+          child: const BaseDivider(axis: Axis.horizontal),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -38,7 +39,7 @@ class TextDivider extends StatelessWidget {
         ),
         Flexible(
           flex: position == TextDividerPosition.left ? 7 : 1,
-          child: BaseDivider(axis: Axis.horizontal),
+          child: const BaseDivider(axis: Axis.horizontal),
         ),
       ],
     );

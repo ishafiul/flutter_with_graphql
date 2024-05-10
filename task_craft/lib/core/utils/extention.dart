@@ -26,8 +26,6 @@ extension XBuildContext on BuildContext {
   OutlinedButtonThemeData get outlineButtonTheme =>
       Theme.of(this).outlinedButtonTheme;
 
-
-
   /// get filledButtonTheme of the project
   FilledButtonThemeData get filledButtonTheme =>
       Theme.of(this).filledButtonTheme;

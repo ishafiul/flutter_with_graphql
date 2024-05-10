@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_craft/app/view/app.dart';
 import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/config/custom_icons_icons.dart';
-import 'package:task_craft/core/utils/extention.dart';
 import 'package:vibration/vibration.dart';
 
 /// Enum representing different types of SnackBars.
@@ -66,60 +63,60 @@ Future<void> showSnackBar({
             ),
           ),
           child: Padding(
-              padding: const EdgeInsets.all(
-                12,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (withIcon == true)
-                    Icon(
-                      leadingIcon ?? CustomIcons.sound,
-                      color: Colors.white,
-                    ),
-                  if (withIcon == true) 8.horizontalSpace,
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            message,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontFamily: 'Arial',
-                              fontWeight: FontWeight.w400,
-                            ),
+            padding: const EdgeInsets.all(
+              12,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (withIcon == true)
+                  Icon(
+                    leadingIcon ?? CustomIcons.sound,
+                    color: Colors.white,
+                  ),
+                if (withIcon == true) 8.horizontalSpace,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          message,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'Arial',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                        if (closable == true) 8.horizontalSpace,
-                        if (closable == true)
-                          InkWell(
-                            onTap: () {
-                              scaffoldMessageKey.currentState
-                                  ?.removeCurrentSnackBar();
-                            },
-                            child: const Icon(
-                              CustomIcons.close,
-                              color: Colors.white,
-                            ),
+                      ),
+                      if (closable == true) 8.horizontalSpace,
+                      if (closable == true)
+                        InkWell(
+                          onTap: () {
+                            scaffoldMessageKey.currentState
+                                ?.removeCurrentSnackBar();
+                          },
+                          child: const Icon(
+                            CustomIcons.close,
+                            color: Colors.white,
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
         ),
       );
-      break;
     case SnackBarType.alert:
       snackBar = SnackBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         content: Container(
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xFFFFF9ED),
             border: Border(
               top: BorderSide(color: Color(0xFFFFF3E9)),
@@ -127,53 +124,53 @@ Future<void> showSnackBar({
             ),
           ),
           child: Padding(
-              padding: const EdgeInsets.all(
-                12,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (withIcon == true)
-                    Icon(
-                      leadingIcon ?? CustomIcons.sound,
-                      color: CColor.warning,
-                    ),
-                  if (withIcon == true) 8.horizontalSpace,
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            message,
-                            style: TextStyle(
-                              color: CColor.warning,
-                              fontSize: 15,
-                              fontFamily: 'Arial',
-                              fontWeight: FontWeight.w400,
-                            ),
+            padding: const EdgeInsets.all(
+              12,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (withIcon == true)
+                  Icon(
+                    leadingIcon ?? CustomIcons.sound,
+                    color: CColor.warning,
+                  ),
+                if (withIcon == true) 8.horizontalSpace,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          message,
+                          style: TextStyle(
+                            color: CColor.warning,
+                            fontSize: 15,
+                            fontFamily: 'Arial',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                        if (closable == true) 8.horizontalSpace,
-                        if (closable == true)
-                          InkWell(
-                            onTap: () {
-                              scaffoldMessageKey.currentState
-                                  ?.removeCurrentSnackBar();
-                            },
-                            child: Icon(
-                              CustomIcons.close,
-                              color: CColor.warning,
-                            ),
+                      ),
+                      if (closable == true) 8.horizontalSpace,
+                      if (closable == true)
+                        InkWell(
+                          onTap: () {
+                            scaffoldMessageKey.currentState
+                                ?.removeCurrentSnackBar();
+                          },
+                          child: Icon(
+                            CustomIcons.close,
+                            color: CColor.warning,
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
         ),
       );
-      break;
     case SnackBarType.error:
       snackBar = SnackBar(
         backgroundColor: Colors.transparent,
@@ -182,66 +179,66 @@ Future<void> showSnackBar({
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: CColor.danger,
-            border: Border(
+            border: const Border(
               top: BorderSide(color: Color(0xFFD9281E)),
               bottom: BorderSide(color: Color(0xFFD9281E)),
             ),
           ),
           child: Padding(
-              padding: const EdgeInsets.all(
-                12,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (withIcon == true)
-                    Icon(
-                      leadingIcon ?? CustomIcons.sound,
-                      color: Colors.white,
-                    ),
-                  if (withIcon == true) 8.horizontalSpace,
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            message,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontFamily: 'Arial',
-                              fontWeight: FontWeight.w400,
-                            ),
+            padding: const EdgeInsets.all(
+              12,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (withIcon == true)
+                  Icon(
+                    leadingIcon ?? CustomIcons.sound,
+                    color: Colors.white,
+                  ),
+                if (withIcon == true) 8.horizontalSpace,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          message,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'Arial',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                        if (closable == true) 8.horizontalSpace,
-                        if (closable == true)
-                          InkWell(
-                            onTap: () {
-                              scaffoldMessageKey.currentState
-                                  ?.removeCurrentSnackBar();
-                            },
-                            child: Icon(
-                              CustomIcons.close,
-                              color: Colors.white,
-                            ),
+                      ),
+                      if (closable == true) 8.horizontalSpace,
+                      if (closable == true)
+                        InkWell(
+                          onTap: () {
+                            scaffoldMessageKey.currentState
+                                ?.removeCurrentSnackBar();
+                          },
+                          child: const Icon(
+                            CustomIcons.close,
+                            color: Colors.white,
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
         ),
       );
-      break;
     case SnackBarType.info:
       snackBar = SnackBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         content: Container(
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xffD0E4FF),
             border: Border(
               top: BorderSide(color: Color(0xFFBCD8FF)),
@@ -249,53 +246,53 @@ Future<void> showSnackBar({
             ),
           ),
           child: Padding(
-              padding: const EdgeInsets.all(
-                12,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (withIcon == true)
-                    Icon(
-                      leadingIcon ?? CustomIcons.sound,
-                      color: CColor.info,
-                    ),
-                  if (withIcon == true) 8.horizontalSpace,
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            message,
-                            style: TextStyle(
-                              color: CColor.info,
-                              fontSize: 15,
-                              fontFamily: 'Arial',
-                              fontWeight: FontWeight.w400,
-                            ),
+            padding: const EdgeInsets.all(
+              12,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (withIcon == true)
+                  Icon(
+                    leadingIcon ?? CustomIcons.sound,
+                    color: CColor.info,
+                  ),
+                if (withIcon == true) 8.horizontalSpace,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          message,
+                          style: TextStyle(
+                            color: CColor.info,
+                            fontSize: 15,
+                            fontFamily: 'Arial',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                        if (closable == true) 8.horizontalSpace,
-                        if (closable == true)
-                          InkWell(
-                            onTap: () {
-                              scaffoldMessageKey.currentState
-                                  ?.removeCurrentSnackBar();
-                            },
-                            child: Icon(
-                              CustomIcons.close,
-                              color: CColor.info,
-                            ),
+                      ),
+                      if (closable == true) 8.horizontalSpace,
+                      if (closable == true)
+                        InkWell(
+                          onTap: () {
+                            scaffoldMessageKey.currentState
+                                ?.removeCurrentSnackBar();
+                          },
+                          child: Icon(
+                            CustomIcons.close,
+                            color: CColor.info,
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
         ),
       );
-      break;
     case null:
     // TODO: Handle this case.
   }

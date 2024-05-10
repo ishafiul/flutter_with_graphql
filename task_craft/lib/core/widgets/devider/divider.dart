@@ -14,7 +14,7 @@ class CDivider extends StatelessWidget {
     this.height,
     required this.axis,
   }) {
-    this.deviderType = DeviderType.base;
+    deviderType = DeviderType.base;
   }
 
   CDivider.text({
@@ -22,7 +22,7 @@ class CDivider extends StatelessWidget {
     required this.text,
     this.position = TextDividerPosition.center,
   }) {
-    this.deviderType = DeviderType.text;
+    deviderType = DeviderType.text;
   }
 
   late final double? width;

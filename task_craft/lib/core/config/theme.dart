@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:injectable/injectable.dart';
 import 'package:task_craft/core/config/colors.dart';
@@ -24,7 +23,6 @@ class AppTheme {
     );
 
     return baseTheme.copyWith(
-      useMaterial3: true,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: const Color(0xffFAFAFA),
       inputDecorationTheme: InputDecorationTheme(
@@ -106,20 +104,21 @@ class AppTheme {
         ),
       ),
       tabBarTheme: TabBarTheme(
-          indicatorColor: CColor.primary,
-          indicatorSize: TabBarIndicatorSize.tab,
-          //tabAlignment: TabAlignment.start,
-          unselectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 16,
-          ),
-          unselectedLabelColor: CColor.text,
-          labelStyle: TextStyle(
-            color: CColor.primary,
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),
-          dividerColor: Colors.transparent),
+        indicatorColor: CColor.primary,
+        indicatorSize: TabBarIndicatorSize.tab,
+        //tabAlignment: TabAlignment.start,
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 16,
+        ),
+        unselectedLabelColor: CColor.text,
+        labelStyle: TextStyle(
+          color: CColor.primary,
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+        ),
+        dividerColor: Colors.transparent,
+      ),
       checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateProperty.all(Colors.white),
         checkColor: MaterialStateProperty.all(CColor.primary),
@@ -332,9 +331,7 @@ class AppTheme {
             const BoxConstraints.tightFor(height: 56, width: 280),
       ),
       dialogTheme: const DialogTheme(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(0)),
-        ),
+        shape: RoundedRectangleBorder(),
       ),
       unselectedWidgetColor: CColor.disableText,
       primaryColor: CColor.primary,

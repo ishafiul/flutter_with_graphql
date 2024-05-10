@@ -5,12 +5,12 @@ import 'package:task_craft/bootstrap.dart';
 Future<String?> signInWithGoogle() async {
   await GoogleSignIn().signOut();
   final GoogleSignInAccount? googleUser = await GoogleSignIn(
-    serverClientId: '287218143583-1hjqp1au1a6ra8gj6gdn1766m73r0k0q.apps.googleusercontent.com',
+    serverClientId:
+        '287218143583-1hjqp1au1a6ra8gj6gdn1766m73r0k0q.apps.googleusercontent.com',
   ).signIn();
 
   final GoogleSignInAuthentication? googleAuth =
       await googleUser?.authentication;
-
 
   logger.d(googleAuth?.idToken);
 

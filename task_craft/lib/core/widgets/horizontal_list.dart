@@ -1,5 +1,5 @@
-import 'package:task_craft/core/const.dart';
 import 'package:flutter/material.dart';
+import 'package:task_craft/core/const.dart';
 
 class HorizontalList extends StatelessWidget {
   final int itemCount;
@@ -41,7 +41,8 @@ class HorizontalList extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         runAlignment: wrapAlignment ?? WrapAlignment.start,
         crossAxisAlignment: crossAxisAlignment ?? WrapCrossAlignment.start,
-        children: List.generate(itemCount, (index) => itemBuilder(context, index)),
+        children:
+            List.generate(itemCount, (index) => itemBuilder(context, index)),
       ),
     );
   }

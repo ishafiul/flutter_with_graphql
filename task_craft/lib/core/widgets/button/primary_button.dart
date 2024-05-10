@@ -42,7 +42,8 @@ class PrimaryButton extends StatelessWidget {
         focusElevation: 0,
         highlightElevation: 0,
         splashColor: CColor.primary.shade50.withOpacity(0.4),
-        fillColor: fill == ButtonFill.solid ? CColor.primary : Colors.transparent,
+        fillColor:
+            fill == ButtonFill.solid ? CColor.primary : Colors.transparent,
         constraints: buttonConstants(
           buttonSize: buttonSize ?? ButtonSize.middle,
           isBlock: isBlock,
@@ -55,5 +56,4 @@ class PrimaryButton extends StatelessWidget {
       ),
     );
   }
-
 }

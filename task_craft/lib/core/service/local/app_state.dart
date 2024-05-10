@@ -1,5 +1,3 @@
-
-
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:task_craft/bootstrap.dart';
@@ -132,5 +130,4 @@ class AppStateService implements IAppStateService {
       await db.appStates.put(appState!);
     });
   }
-
 }

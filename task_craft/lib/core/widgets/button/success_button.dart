@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/widgets/button/enums.dart';
 
-import 'utils.dart';
+import 'package:task_craft/core/widgets/button/utils.dart';
 
 class SuccessButton extends StatelessWidget {
   const SuccessButton({
@@ -41,7 +41,8 @@ class SuccessButton extends StatelessWidget {
         focusElevation: 0,
         highlightElevation: 0,
         splashColor: CColor.success.shade50.withOpacity(0.4),
-        fillColor: fill == ButtonFill.solid ? CColor.success : Colors.transparent,
+        fillColor:
+            fill == ButtonFill.solid ? CColor.success : Colors.transparent,
         constraints: buttonConstants(
           buttonSize: buttonSize ?? ButtonSize.middle,
           isBlock: isBlock,
@@ -54,5 +55,4 @@ class SuccessButton extends StatelessWidget {
       ),
     );
   }
-
 }

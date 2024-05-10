@@ -8,7 +8,6 @@ import 'package:task_craft/core/utils/extention.dart';
 import 'package:task_craft/core/widgets/button/button.dart';
 import 'package:task_craft/core/widgets/button/enums.dart';
 import 'package:task_craft/core/widgets/spinner/fade_dots.dart';
-import 'package:task_craft/module/auth/data/services/remote/oauth_service.dart';
 import 'package:task_craft/module/auth/domain/cubit/google_auth/google_auth_cubit.dart';
 import 'package:task_craft/module/auth/domain/cubit/request_otp/request_otp_cubit.dart';
 
@@ -62,7 +61,7 @@ class SocialButtons extends StatelessWidget {
                         ? Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                               FadingFourSpinner(
+                              FadingFourSpinner(
                                 color: CColor.primary,
                                 size: 20,
                               ),
