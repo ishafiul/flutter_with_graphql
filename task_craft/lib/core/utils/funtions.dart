@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:intl/intl.dart';
 import 'package:task_craft/core/schema.graphql.dart';
 
@@ -22,7 +23,7 @@ String convertDate(String isoDate) {
 
 Future<Input$CreateDeviceUuidInput> rawDeviceInfo() async {
   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-
+  final token = await FirebaseMessaging.instance.getToken();
   if (Platform.isAndroid) {
     final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     return Input$CreateDeviceUuidInput(
@@ -33,7 +34,7 @@ Future<Input$CreateDeviceUuidInput> rawDeviceInfo() async {
       isPhysicalDevice: androidInfo.isPhysicalDevice,
       ipAddress: '',
       deviceModel: androidInfo.model,
-      fcmToken: '',
+      fcmToken: token ?? '',
       location: Input$LocationInput(
         lat: '0',
         long: '0',
@@ -49,7 +50,7 @@ Future<Input$CreateDeviceUuidInput> rawDeviceInfo() async {
       appVersion: '0.1.1',
       isPhysicalDevice: iosInfo.isPhysicalDevice,
       ipAddress: '',
-      fcmToken: '',
+      fcmToken: token ?? '',
       deviceModel: iosInfo.model,
       location: Input$LocationInput(
         lat: '0',
@@ -65,7 +66,7 @@ Future<Input$CreateDeviceUuidInput> rawDeviceInfo() async {
     isPhysicalDevice: true,
     ipAddress: '',
     deviceModel: '',
-    fcmToken: '',
+    fcmToken: token ?? '',
     location: Input$LocationInput(
       lat: '0',
       long: '',

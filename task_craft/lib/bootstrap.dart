@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,6 +81,7 @@ Future<void> bootstrap(
           systemNavigationBarColor: Colors.white,
         ),
       );
+      await FirebaseMessaging.instance.requestPermission(provisional: true);
       runApp(await builder());
     },
     (Object error, StackTrace stackTrace) {
