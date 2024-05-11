@@ -13,6 +13,7 @@ import { UseGuards } from '@nestjs/common';
 import { RefreshAuthGuard } from '../../guards/refresh.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { LoginWithGoogleInput } from './dto/login-with-goole.input';
+import { LoginWithGoogleEntity } from './entities/login-with-google.entity';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -44,7 +45,7 @@ export class AuthResolver {
     return this.authService.verifyOtp(verifyOtpInput);
   }
 
-  @Mutation(() => TokenEntity, {
+  @Mutation(() => LoginWithGoogleEntity, {
     description:
       'verify otp. it will verify email and device, if not valid, it will throw error. then it will generate jwt token and refresh token. this endpoint also invalid existing longed in user',
   })

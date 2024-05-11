@@ -18,6 +18,7 @@ import { DeviceDocument, DeviceModel } from './schema/device.shema';
 import { Auth, AuthDocument, AuthModel } from './schema/auth.schema';
 import { OAuth2Client } from 'google-auth-library';
 import { LoginWithGoogleInput } from './dto/login-with-goole.input';
+import { LoginWithGoogleEntity } from './entities/login-with-google.entity';
 
 @Injectable()
 export class AuthService {
@@ -198,7 +199,7 @@ export class AuthService {
 
   async loginWithGoogle(
     loginWithGoogleInput: LoginWithGoogleInput,
-  ): Promise<TokenEntity> {
+  ): Promise<LoginWithGoogleEntity> {
     const client = new OAuth2Client();
     const ticket = await client.verifyIdToken({
       idToken: loginWithGoogleInput.googleToken,
@@ -243,6 +244,7 @@ export class AuthService {
     };
     return {
       accessToken: this.jwtService.sign(jwtPayload),
+      userId: user._id,
     };
   }
 

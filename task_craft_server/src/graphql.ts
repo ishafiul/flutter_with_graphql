@@ -82,6 +82,11 @@ export class TokenEntity {
     accessToken: string;
 }
 
+export class LoginWithGoogleEntity {
+    accessToken: string;
+    userId: string;
+}
+
 export abstract class IQuery {
     abstract health(): string | Promise<string>;
 
@@ -107,7 +112,7 @@ export abstract class IMutation {
 
     abstract verifyOtp(verifyOtpInput: VerifyOtpInput): TokenEntity | Promise<TokenEntity>;
 
-    abstract loginWithGoogle(loginWithGoogleInput: LoginWithGoogleInput): TokenEntity | Promise<TokenEntity>;
+    abstract loginWithGoogle(loginWithGoogleInput: LoginWithGoogleInput): LoginWithGoogleEntity | Promise<LoginWithGoogleEntity>;
 
     abstract refreshToken(refreshTokenInput: RefreshTokenInput): TokenEntity | Promise<TokenEntity>;
 
