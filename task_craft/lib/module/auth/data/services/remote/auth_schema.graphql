@@ -20,6 +20,7 @@ mutation VerifyOtp($otpVerify: VerifyOtpInput!){
 mutation LoginWithGoogle($loginWithGoogleInput: LoginWithGoogleInput!){
     loginWithGoogle(loginWithGoogleInput: $loginWithGoogleInput){
         accessToken
+        userId
     }
 }
 

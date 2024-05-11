@@ -43,7 +43,12 @@ class SocialButtons extends StatelessWidget {
                   ],
                 ),
               ),
-              BlocBuilder<GoogleAuthCubit, GoogleAuthState>(
+              BlocConsumer<GoogleAuthCubit, GoogleAuthState>(
+                listener: (context, state) {
+                  if (state is GoogleAuthSuccess) {
+                    router.go('/');
+                  }
+                },
                 builder: (context, googleState) {
                   return Button(
                     fill: ButtonFill.outline,

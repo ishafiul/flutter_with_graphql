@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:task_craft/core/schema.graphql.dart';
+import 'package:task_craft/core/service/local/app_state.dart';
+import 'package:task_craft/core/utils/app_state_collection_isar.dart';
 import 'package:task_craft/core/utils/funtions.dart';
 import 'package:task_craft/module/auth/data/services/remote/oauth_service.dart';
 import 'package:task_craft/module/auth/domain/repositories/i_auth_repository.dart';
@@ -34,12 +36,21 @@ class GoogleAuthCubit extends Cubit<GoogleAuthState> {
       return;
     }
 
-    await _repository.loginWithGoogle(
+    final result = await _repository.loginWithGoogle(
       loginWithGoogleInput: Input$LoginWithGoogleInput(
         googleToken: token,
         deviceUuid: deviceUuid!.deviceUuId,
       ),
     );
-    emit(GoogleAuthSuccess());
+    if (result?.accessToken != null) {
+      final appState = AppStateService();
+      await appState.initLocalDbUser(User());
+      await appState.updateAccessToken(result!.accessToken);
+      await appState.updateDeviceUuid(deviceUuid.deviceUuId);
+      await appState.updateUserID(result.userId);
+      emit(GoogleAuthSuccess());
+    } else {
+      emit(GoogleAuthError(message: 'Something went wrong'));
+    }
   }
 }
