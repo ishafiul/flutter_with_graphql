@@ -21,4 +21,6 @@ abstract class IAuthRepository {
   Future<Mutation$LoginWithGoogle$loginWithGoogle?> loginWithGoogle({
     required Input$LoginWithGoogleInput loginWithGoogleInput,
   });
+
+  Future<Query$Logout$logout?> logout();
 }

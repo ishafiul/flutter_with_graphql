@@ -87,4 +87,16 @@ class AuthRepository implements IAuthRepository {
     );
     return res.parsedData?.loginWithGoogle;
   }
+
+  @override
+  Future<Query$Logout$logout?> logout() async {
+    final gql = MyGraphQLClient();
+    await gql.initClient();
+    final client = gql.client;
+    final res = await client.query$Logout(
+      Options$Query$Logout(),
+    );
+    logger.i(res);
+    return res.parsedData?.logout;
+  }
 }
