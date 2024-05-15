@@ -5,6 +5,8 @@ import { CreateTaskInput } from './dto/create-task.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { CurrentUser } from '../../decorator/get-current-user.decorator';
+import { User } from '../user/entities/user.entity';
 
 @Resolver(() => Task)
 export class TaskResolver {
@@ -22,7 +24,8 @@ export class TaskResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => Task, { name: 'taskById', nullable: true })
-  findOne(@Args('id') id: string) {
+  findOne(@Args('id') id: string, @CurrentUser() user: User) {
+    console.log(user);
     return this.taskService.findOne(id);
   }
 
