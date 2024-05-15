@@ -200,6 +200,9 @@ class AppTheme {
         color: Colors.white,
         shadowColor: CColor.disableText.withOpacity(0.05),
       ),
+      listTileTheme: ListTileThemeData(
+        tileColor: Colors.white,
+      ),
       dividerTheme: const DividerThemeData(
         color: CColor.disableText,
         thickness: 1.0,
