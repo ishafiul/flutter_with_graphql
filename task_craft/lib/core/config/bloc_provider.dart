@@ -7,6 +7,7 @@ import 'package:task_craft/module/auth/data/repositories/auth_repository.dart';
 import 'package:task_craft/module/auth/domain/cubit/google_auth/google_auth_cubit.dart';
 import 'package:task_craft/module/auth/domain/cubit/request_otp/request_otp_cubit.dart';
 import 'package:task_craft/module/auth/domain/cubit/verify_otp/verify_otp_cubit.dart';
+import 'package:task_craft/module/menu/domain/bloc/logout_cubit.dart';
 
 /// [Provider] is a [Singleton] that will provide [List] of [BlocProvider].
 /// need to provide [BlocProvider] for those `bloc` or `cubit` that will be available
@@ -29,6 +30,10 @@ class Provider {
     ),
     BlocProvider<GoogleAuthCubit>(
       create: (BuildContext context) => GoogleAuthCubit(AuthRepository()),
+    ),
+    BlocProvider<LogoutCubit>(
+      create: (BuildContext context) =>
+          LogoutCubit(repository: AuthRepository()),
     ),
   ];
 }
