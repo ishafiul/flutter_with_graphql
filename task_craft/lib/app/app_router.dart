@@ -4,6 +4,7 @@ import 'package:task_craft/core/presentation/page_not_found.dart';
 import 'package:task_craft/core/service/local/app_state.dart';
 import 'package:task_craft/module/auth/presentation/auth_router.dart';
 import 'package:task_craft/module/home/presentation/home_screen.dart';
+import 'package:task_craft/module/menu/presentation/menu_screen.dart';
 import 'package:task_craft/module/todo/presentation/todo_router.dart';
 
 /// it will return [GoRouter] object,
@@ -16,15 +17,19 @@ GoRouter router = GoRouter(
   initialLocation: '/',
   redirect: (context, state) async {
     final isLoggedIn = await AppStateService().isLoggedIn();
-
     if (isLoggedIn == false &&
         (state.uri == Uri(path: '/auth/login') ||
             state.uri == Uri(path: '/auth/verify-otp'))) {
       return null;
     }
-    if (isLoggedIn != true) {
-      return '/auth/login';
+    if (isLoggedIn == true &&
+        (state.uri == Uri(path: '/auth/login') ||
+            state.uri == Uri(path: '/auth/verify-otp'))) {
+      return '/';
     }
+   /* if (isLoggedIn != true) {
+      return '/auth/login';
+    }*/
     return null;
   },
   routes: [
@@ -34,6 +39,12 @@ GoRouter router = GoRouter(
       builder: (context, state) => const HomeScreen(),
       routes: [
         ...todoRouter,
+        GoRoute(
+          path: 'menu',
+          name: 'menu',
+          builder: (context, state) => const MenuScreen(),
+          routes: [],
+        ),
       ],
     ),
 
