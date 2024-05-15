@@ -80,6 +80,18 @@ class LoginScreen extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Task Craft"),
+        centerTitle: false,
+        actions: [
+          Button.primary(
+            child: const Text("Skip For Now"),
+            onPressed: () {
+              router.go('/');
+            },
+          ),
+          SizedBox(
+            width: 20.w,
+          ),
+        ],
       ),
       body: SafeArea(
         child: Form(
