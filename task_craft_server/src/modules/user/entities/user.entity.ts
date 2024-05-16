@@ -14,15 +14,22 @@ export type UserDocument = User & Document;
 export class User {
   @Field(() => String, { description: 'user uuid' })
   _id: MongooseSchema.Types.ObjectId;
-  @Field({ description: 'user first name. its not required and can be null' })
+  @Field({
+    description: 'user first name. its not required and can be null',
+    nullable: true,
+  })
   @Prop({ type: String, isRequired: false })
   firstName?: string;
-  @Field({ description: 'user last name. its not required and can be null' })
+  @Field({
+    description: 'user last name. its not required and can be null',
+    nullable: true,
+  })
   @Prop({ type: String, isRequired: false })
   lastName?: string;
   @Field({
     description:
       'user profile picture (public). its not required and can be null',
+    nullable: true,
   })
   @Prop({
     type: String,

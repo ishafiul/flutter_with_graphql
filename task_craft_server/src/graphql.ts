@@ -68,9 +68,9 @@ export class Task {
 
 export class User {
     _id: string;
-    firstName: string;
-    lastName: string;
-    profilePicture: string;
+    firstName?: Nullable<string>;
+    lastName?: Nullable<string>;
+    profilePicture?: Nullable<string>;
     email: string;
 }
 
@@ -97,6 +97,8 @@ export abstract class IQuery {
     abstract logout(): DeviceUuId | Promise<DeviceUuId>;
 
     abstract user(id: string): User | Promise<User>;
+
+    abstract userMe(): User | Promise<User>;
 }
 
 export abstract class IMutation {

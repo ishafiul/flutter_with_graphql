@@ -12,13 +12,13 @@ type User {
   _id: String!
 
   """user first name. its not required and can be null"""
-  firstName: String!
+  firstName: String
 
   """user last name. its not required and can be null"""
-  lastName: String!
+  lastName: String
 
   """user profile picture (public). its not required and can be null"""
-  profilePicture: String!
+  profilePicture: String
 
   """user registered email"""
   email: String!
@@ -50,6 +50,7 @@ type Query {
   """logout user. it will remove auth and invalidate jwt token"""
   logout: DeviceUuId!
   user(id: String!): User!
+  userMe: User!
 }
 
 type Mutation {
