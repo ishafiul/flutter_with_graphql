@@ -221,6 +221,8 @@ export class AuthService {
     if (!user) {
       user = await this.userService.create({
         email: payload.email,
+        firstName: payload.given_name,
+        lastName: payload.family_name,
       });
     }
     console.log(payload);

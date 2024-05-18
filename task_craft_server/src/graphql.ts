@@ -58,6 +58,8 @@ export class RefreshTokenInput {
 
 export class UpdateUserInput {
     email?: Nullable<string>;
+    firstName?: Nullable<string>;
+    lastName?: Nullable<string>;
     id: string;
 }
 

@@ -166,9 +166,15 @@ input RefreshTokenInput {
 
 input UpdateUserInput {
   """
-  this is user email. its one time use only. can be replaced. if user exist with this email, then it will not going to create new user. it will just use existing user info 
+  this is user email. its one time use only. cant be replaced. if user exist with this email, then it will not going to create new user. it will just use existing user info 
   """
   email: String
+
+  """this is user first name"""
+  firstName: String
+
+  """this is user last name"""
+  lastName: String
 
   """user uuid"""
   id: String!
