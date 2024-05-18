@@ -45,9 +45,12 @@ class RequestOtpCubit extends Cubit<RequestOtpState> {
       );
       return;
     }
-    emit(RequestOtpSuccess(
+    emit(
+      RequestOtpSuccess(
         email: email,
         deviceUuid: deviceUuid.deviceUuId,
-        userId: requestOtpRes!.$_id));
+        userId: requestOtpRes!.$_id,
+      ),
+    );
   }
 }

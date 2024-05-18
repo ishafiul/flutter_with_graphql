@@ -11,6 +11,7 @@ import 'package:task_craft/core/widgets/button/enums.dart';
 import 'package:task_craft/core/widgets/spinner/fade_dots.dart';
 import 'package:task_craft/module/auth/domain/cubit/request_otp/request_otp_cubit.dart';
 import 'package:task_craft/module/auth/domain/cubit/verify_otp/verify_otp_cubit.dart';
+import 'package:task_craft/module/user/domain/cubit/user_me/user_me_cubit.dart';
 
 class VerifyOtpScreen extends HookWidget {
   const VerifyOtpScreen({super.key});
@@ -111,9 +112,10 @@ class VerifyOtpScreen extends HookWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: SafeArea(
                   child: BlocConsumer<VerifyOtpCubit, VerifyOtpState>(
-                    listener: (context, state) {
+                    listener: (context, state) async {
                       if (state is VerifyOtpSuccess) {
                         router.go('/');
+                        await context.read<UserMeCubit>().getUserMe();
                       }
                     },
                     builder: (context, state) {

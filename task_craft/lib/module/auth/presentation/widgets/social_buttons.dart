@@ -10,6 +10,7 @@ import 'package:task_craft/core/widgets/button/enums.dart';
 import 'package:task_craft/core/widgets/spinner/fade_dots.dart';
 import 'package:task_craft/module/auth/domain/cubit/google_auth/google_auth_cubit.dart';
 import 'package:task_craft/module/auth/domain/cubit/request_otp/request_otp_cubit.dart';
+import 'package:task_craft/module/user/domain/cubit/user_me/user_me_cubit.dart';
 
 class SocialButtons extends StatelessWidget {
   const SocialButtons({super.key});
@@ -44,9 +45,10 @@ class SocialButtons extends StatelessWidget {
                 ),
               ),
               BlocConsumer<GoogleAuthCubit, GoogleAuthState>(
-                listener: (context, state) {
+                listener: (context, state) async {
                   if (state is GoogleAuthSuccess) {
                     router.go('/');
+                    await context.read<UserMeCubit>().getUserMe();
                   }
                 },
                 builder: (context, googleState) {
