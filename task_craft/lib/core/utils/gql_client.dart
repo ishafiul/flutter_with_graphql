@@ -98,6 +98,9 @@ class MyGraphQLClient {
         if (accessToken == null) {
           return false;
         }
+        if(response.errors == null) {
+          return false;
+        }
         if (response.errors![0].message == 'Unauthorized') {
           return true;
         }
