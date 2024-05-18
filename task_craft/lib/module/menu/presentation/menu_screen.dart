@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +12,7 @@ import 'package:task_craft/core/widgets/devider/text_divider.dart';
 import 'package:task_craft/core/widgets/shimmer.dart';
 import 'package:task_craft/core/widgets/spinner/fade_dots.dart';
 import 'package:task_craft/module/menu/domain/bloc/logout_cubit.dart';
+import 'package:task_craft/module/user/domain/cubit/user_me/user_me_cubit.dart';
 
 class MenuScreen extends HookWidget {
   const MenuScreen({super.key});
@@ -70,14 +69,33 @@ class MenuScreen extends HookWidget {
           if (!isLoggedIn.value) 4.verticalSpace,
           Padding(
             padding: 20.paddingHorizontal(),
-            child: AppShimmer(
-              isLoading: isLoggedIn.value,
-              child: ListTile(
-                onTap: () {},
-                leading: const Icon(CustomIcons.user),
-                title: const Text("Edit Profile"),
-                subtitle: const Text("Edit your profile"),
-              ),
+            child: BlocBuilder<UserMeCubit, UserMeState>(
+              builder: (context, state) {
+                if (state is UserMeLoaded) {
+                  return AppShimmer(
+                    isLoading: isLoggedIn.value,
+                    child: ListTile(
+                      onTap: () {},
+                      leading: const Icon(CustomIcons.user),
+                      title: state.userMe != null &&
+                              state.userMe!.firstName != null &&
+                              state.userMe!.lastName != null
+                          ? Text(
+                              "${state.userMe?.firstName} ${state.userMe?.lastName}",
+                            )
+                          : null,
+                      subtitle: Text("${state.userMe?.email}"),
+                    ),
+                  );
+                }
+                if (state is UserMeLoading) {
+                  return const AppShimmer(
+                    isLoading: false,
+                    child: SizedBox(),
+                  );
+                }
+                return const SizedBox();
+              },
             ),
           ),
           4.verticalSpace,
@@ -103,7 +121,6 @@ class MenuScreen extends HookWidget {
                                 FadingFourSpinner(
                                   color: CColor.text,
                                   size: 20,
-
                                 ),
                                 8.horizontalSpace,
                                 const Text("Logout Loading"),
