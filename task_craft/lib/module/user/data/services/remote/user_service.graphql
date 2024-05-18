@@ -1,0 +1,9 @@
+query UserMe {
+    userMe{
+        _id
+        firstName
+        lastName
+        profilePicture
+        email
+    }
+}
