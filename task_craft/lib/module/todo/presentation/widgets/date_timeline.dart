@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:task_craft/bootstrap.dart';
 import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/utils/extention.dart';
 import 'package:task_craft/core/widgets/devider/divider.dart';
 
 class DateTimeLine extends StatefulWidget {
-  const DateTimeLine({super.key, this.controller});
+  const DateTimeLine({super.key, this.controller, this.visibleDate});
 
   final DateTimelineController? controller;
+
+  final void Function(DateTime date)? visibleDate;
 
   @override
   State<DateTimeLine> createState() => _DateTimeLineState();
@@ -18,12 +21,40 @@ class DateTimeLine extends StatefulWidget {
 
 class _DateTimeLineState extends State<DateTimeLine> {
   final ScrollController _controller = ScrollController();
-  DateTime _currentDate = DateTime.now();
+  DateTime? _currentDate;
+
+  // a function that will take a date and return a new date with only day month year
+  DateTime _getOnlyDate(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
 
   @override
   void initState() {
+    _currentDate = _getOnlyDate(DateTime.now());
     widget.controller?.setDatePickerState(this);
+
+    // if widget rendered then animate to today date
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.controller?.animateToDate(DateTime.now());
+    });
+    _controller.addListener(_scrollListener);
     super.initState();
+  }
+
+  void _scrollListener() {
+    if (_controller.hasClients) {
+      final double centerOffset = _controller.offset +
+          (MediaQuery.of(context).size.width / 2);
+      final DateTime visibleDate = widget.controller!.calculateDateFromOffset(centerOffset);
+      widget.visibleDate?.call(visibleDate);
+    }
+  }
+
+  void _updateCurrentDate(DateTime date) {
+    setState(() {
+      _currentDate = _getOnlyDate(date);
+      logger.d(_currentDate);
+    });
   }
 
   @override
@@ -33,23 +64,6 @@ class _DateTimeLineState extends State<DateTimeLine> {
           Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
       axis: Axis.horizontal,
     );
-
-    /*final DateTime initialDate = DateTime(2024);
-    final isMounted = useIsMounted();
-    final selectedIndex = useState(0);
-    final selectedDate = useState(DateTime.now());*/
-    /*Future<void> jump() async {
-      WidgetsFlutterBinding.ensureInitialized();
-      final mounted = isMounted();
-      if (!mounted) return;
-      final int initialIndex = DateTime.now().difference(initialDate).inDays;
-      selectedIndex.value = initialIndex;
-      await controller.scrollToIndex(
-        initialIndex,
-        preferPosition: AutoScrollPosition.middle,
-        duration: const Duration(milliseconds: 1),
-      );
-    }*/
 
     Widget wrapScrollTag({required int index, required Widget child}) =>
         AutoScrollTag(
@@ -71,6 +85,7 @@ class _DateTimeLineState extends State<DateTimeLine> {
               final DateTime currentDate =
                   DateTime(2024).add(Duration(days: index));
 
+              final curentDateOnly = _getOnlyDate(currentDate);
               final isToday = DateTime(
                     currentDate.year,
                     currentDate.month,
@@ -93,7 +108,9 @@ class _DateTimeLineState extends State<DateTimeLine> {
                   height: 56,
                   width: 56.0,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: _currentDate == curentDateOnly
+                        ? CColor.primary
+                        : Colors.white,
                     border: isToday
                         ? Border.all(color: CColor.primary)
                         : Border.all(
@@ -112,9 +129,7 @@ class _DateTimeLineState extends State<DateTimeLine> {
                           // 0 mean, scroll to the top, 0.5 mean, half
                           curve: Curves.easeInOutCubic,
                         );
-                        setState(() {
-                          _currentDate = currentDate;
-                        });
+                        _updateCurrentDate(currentDate);
                       },
                       child: badges.Badge(
                         badgeStyle: badges.BadgeStyle(
@@ -185,63 +200,80 @@ class DateTimelineController {
   }
 
   void jumpToSelection() {
+    assert(
+      _datePickerState != null,
+      'DatePickerController is not attached to any DatePicker View.',
+    );
+
+    // jump to the current Date
+    _datePickerState!._controller.jumpTo(
+        _calculateDateOffset(_datePickerState?._currentDate ?? DateTime.now()));
+  }
+
+  /// This function will animate the Timeline to the currently selected Date
+  void animateToSelection() {
     assert(_datePickerState != null,
         'DatePickerController is not attached to any DatePicker View.');
 
-    // jump to the current Date
-    _datePickerState!._controller
-        .jumpTo(_calculateDateOffset(_datePickerState!._currentDate));
-  }
-
-  /*/// This function will animate the Timeline to the currently selected Date
-  void animateToSelection(
-      {duration = const Duration(milliseconds: 500), curve = Curves.linear}) {
-    assert(_datePickerState != null,
-    'DatePickerController is not attached to any DatePicker View.');
-
     // animate to the current date
     _datePickerState!._controller.animateTo(
-        _calculateDateOffset(_datePickerState!._currentDate),
-        duration: duration,
-        curve: curve);
-  }*/
+        _calculateDateOffset(_datePickerState!._currentDate ?? DateTime.now()),
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut);
+  }
 
   /// This function will animate to any date that is passed as an argument
   /// In case a date is out of range nothing will happen
-  void animateToDate(DateTime date,
-      {duration = const Duration(milliseconds: 500), curve = Curves.linear}) {
-    /* assert(_datePickerState != null,
-    'DatePickerController is not attached to any DatePicker View.');
-*/
-    _datePickerState!._controller.animateTo(_calculateDateOffset(date),
-        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+  Future<void> animateToDate(
+    DateTime date, {
+    duration = const Duration(milliseconds: 200),
+    curve = Curves.linear,
+  }) async {
+    assert(
+      _datePickerState != null,
+      'DatePickerController is not attached to any DatePicker View.',
+    );
+    _datePickerState!._updateCurrentDate(date);
+    await _datePickerState!._controller.animateTo(
+      _calculateDateOffset(date),
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
-
-  /// This function will animate to any date that is passed as an argument
-  /// this will also set that date as the current selected date
-  /* void setDateAndAnimate(DateTime date,
-      {duration = const Duration(milliseconds: 500), curve = Curves.linear}) {
-    assert(_datePickerState != null,
-    'DatePickerController is not attached to any DatePicker View.');
-
-    _datePickerState!._controller.animateTo(_calculateDateOffset(date),
-        duration: duration, curve: curve);
-
-    if (date.compareTo(_datePickerState!.widget.startDate) >= 0 &&
-        date.compareTo(_datePickerState!.widget.startDate
-            .add(Duration(days: _datePickerState!.widget.daysCount))) <=
-            0) {
-      // date is in the range
-      _datePickerState!._currentDate = date;
-    }
-  }*/
 
   /// Calculate the number of pixels that needs to be scrolled to go to the
   /// date provided in the argument
   double _calculateDateOffset(DateTime date) {
     final startDate = DateTime(2024);
+    final int daysDifference = date.difference(startDate).inDays;
 
-    final int offset = date.difference(startDate).inDays;
-    return (offset * 56) + (offset * 16);
+    // Assuming each date item is 72 pixels wide (56 + 16 padding)
+    const double dateItemWidth = 56.0;
+    const double dateItemPadding = 16.0;
+    const double totalDateItemWidth = dateItemWidth + dateItemPadding;
+
+    // Calculate the offset for the date
+    double offset = daysDifference * totalDateItemWidth;
+
+    // Calculate the half-width of the screen
+    final double screenWidth =
+        MediaQuery.of(_datePickerState!.context).size.width;
+    final double halfScreenWidth = screenWidth / 2;
+
+    // Calculate the half-width of a date item
+    const double halfDateItemWidth = totalDateItemWidth / 2;
+
+    // Adjust the offset to position the date in the middle of the screen
+    return offset -= halfScreenWidth - halfDateItemWidth;
+  }
+
+  DateTime calculateDateFromOffset(double offset) {
+    const double dateItemWidth = 56.0;
+    const double dateItemPadding = 16.0;
+    const double totalDateItemWidth = dateItemWidth + dateItemPadding;
+    final startDate = DateTime(2024);
+
+    final int daysFromStart = (offset / totalDateItemWidth).round();
+    return startDate.add(Duration(days: daysFromStart));
   }
 }

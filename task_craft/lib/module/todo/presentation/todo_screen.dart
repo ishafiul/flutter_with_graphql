@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +13,7 @@ import 'package:task_craft/core/widgets/button/button.dart';
 import 'package:task_craft/core/widgets/mesure_widget.dart';
 import 'package:task_craft/module/todo/presentation/widgets/date_timeline.dart';
 import 'package:task_craft/module/todo/presentation/widgets/task_content.dart';
+
 final DateTimelineController dateController = DateTimelineController();
 final _formKey = GlobalKey<FormState>();
 GlobalKey<ScaffoldState> homePageScaffoldKey = GlobalKey<ScaffoldState>();
@@ -26,20 +28,8 @@ class TodoScreen extends HookWidget {
           Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
       axis: Axis.horizontal,
     );
-
-
-    final DateTime initialDate = DateTime(2024);
-    final isMounted = useIsMounted();
-    final selectedIndex = useState(0);
-    final selectedDate = useState(DateTime.now());
-    Widget wrapScrollTag({required int index, required Widget child}) =>
-        AutoScrollTag(
-          key: ValueKey(index),
-          controller: controller,
-          index: index,
-          child: child,
-        );
-
+    final ValueNotifier<DateTime> selectedDate =
+        ValueNotifier<DateTime>(DateTime.now());
     useEffect(() {
       return null;
     });
@@ -76,9 +66,15 @@ class TodoScreen extends HookWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    DateFormat('MMMM yyyy').format(selectedDate.value),
-                    style: context.textTheme.titleLarge,
+                  ValueListenableBuilder(
+                    valueListenable: selectedDate,
+                    builder:
+                        (BuildContext context, DateTime value, Widget? child) {
+                      return Text(
+                        DateFormat('MMM yyyy').format(value),
+                        style: context.textTheme.titleLarge,
+                      );
+                    },
                   ),
                   Row(
                     children: [
@@ -95,7 +91,23 @@ class TodoScreen extends HookWidget {
                           );
                           selectedDate.value = DateTime.now();
                           selectedIndex.value = initialIndex;*/
-                          dateController.animateToDate(DateTime.now());
+                          await dateController.animateToDate(DateTime.now());
+                        },
+                      ),
+                      Button.primary(
+                        child: const Text('Selected Date'),
+                        onPressed: () async {
+                          /*final int initialIndex =
+                              DateTime.now().difference(initialDate).inDays;
+
+                          await controller.scrollToIndex(
+                            initialIndex,
+                            preferPosition: AutoScrollPosition.middle,
+                            duration: const Duration(milliseconds: 100),
+                          );
+                          selectedDate.value = DateTime.now();
+                          selectedIndex.value = initialIndex;*/
+                          dateController.animateToSelection();
                         },
                       ),
                       IconButton(
@@ -123,23 +135,14 @@ class TodoScreen extends HookWidget {
                                           DateRangePickerSelectionChangedArgs
                                               dateRangePickerSelectionChangedArgs,
                                         ) async {
-                                          selectedDate.value = DateTime.parse(
-                                            dateRangePickerSelectionChangedArgs
-                                                .value
-                                                .toString(),
-                                          );
-                                          final int index = selectedDate.value
-                                              .difference(initialDate)
-                                              .inDays;
-
-                                          await controller.scrollToIndex(
-                                            index,
-                                            preferPosition:
-                                                AutoScrollPosition.middle,
-                                            duration: const Duration(
-                                                milliseconds: 100),
-                                          );
                                           context.pop();
+                                          await dateController.animateToDate(
+                                            DateTime.parse(
+                                              dateRangePickerSelectionChangedArgs
+                                                  .value
+                                                  .toString(),
+                                            ),
+                                          );
                                         },
                                         selectionShape:
                                             DateRangePickerSelectionShape
@@ -166,6 +169,9 @@ class TodoScreen extends HookWidget {
               },
               child: DateTimeLine(
                 controller: dateController,
+                visibleDate: (date) {
+                  selectedDate.value = date;
+                },
               ),
             ),
             if (dateTimeLineConstraints.value != null)
