@@ -95,9 +95,8 @@ class AppTheme {
         shape: Border(
           bottom: BorderSide(color: CColor.border),
         ),
-        iconTheme: const IconThemeData(),
       ),
-      actionIconTheme: ActionIconThemeData(
+      actionIconTheme: const ActionIconThemeData().copyWith(
         backButtonIconBuilder: (BuildContext context) => Icon(
           CustomIcons.left,
           color: CColor.text,

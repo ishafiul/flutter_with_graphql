@@ -6,6 +6,6 @@ final todoRouter = [
   GoRoute(
     path: 'todo',
     name: 'todo',
-    builder: (context, state) => const TodoScreen(),
+    builder: (context, state) =>  TodoScreen(),
   ),
 ];

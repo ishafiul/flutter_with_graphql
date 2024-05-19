@@ -1,21 +1,30 @@
-import 'dart:async';
-
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:task_craft/core/config/colors.dart';
-import 'package:task_craft/core/config/custom_icons_icons.dart';
 import 'package:task_craft/core/utils/extention.dart';
-import 'package:task_craft/core/widgets/button/button.dart';
 import 'package:task_craft/core/widgets/devider/divider.dart';
 
-class DateTimeLine extends HookWidget {
-  const DateTimeLine({super.key});
+class DateTimeLine extends StatefulWidget {
+  const DateTimeLine({super.key, this.controller});
+
+  final DateTimelineController? controller;
+
+  @override
+  State<DateTimeLine> createState() => _DateTimeLineState();
+}
+
+class _DateTimeLineState extends State<DateTimeLine> {
+  final ScrollController _controller = ScrollController();
+  DateTime _currentDate = DateTime.now();
+
+  @override
+  void initState() {
+    widget.controller?.setDatePickerState(this);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +33,12 @@ class DateTimeLine extends HookWidget {
           Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
       axis: Axis.horizontal,
     );
-    final DateTime initialDate = DateTime(2024);
+
+    /*final DateTime initialDate = DateTime(2024);
     final isMounted = useIsMounted();
     final selectedIndex = useState(0);
-    final selectedDate = useState(DateTime.now());
-    Future<void> jump() async {
+    final selectedDate = useState(DateTime.now());*/
+    /*Future<void> jump() async {
       WidgetsFlutterBinding.ensureInitialized();
       final mounted = isMounted();
       if (!mounted) return;
@@ -37,9 +47,9 @@ class DateTimeLine extends HookWidget {
       await controller.scrollToIndex(
         initialIndex,
         preferPosition: AutoScrollPosition.middle,
-        duration: const Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 1),
       );
-    }
+    }*/
 
     Widget wrapScrollTag({required int index, required Widget child}) =>
         AutoScrollTag(
@@ -48,110 +58,18 @@ class DateTimeLine extends HookWidget {
           index: index,
           child: child,
         );
-    useEffect(
-      () {
-        jump();
-        return null;
-      },
-      [],
-    );
+
     return Column(
       children: [
-        Padding(
-          padding: 24.paddingHorizontal(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                DateFormat('MMMM yyyy').format(selectedDate.value),
-                style: context.textTheme.titleLarge,
-              ),
-              Row(
-                children: [
-                  Button.primary(
-                    child: const Text('Today'),
-                    onPressed: () async {
-                      final int initialIndex =
-                          DateTime.now().difference(initialDate).inDays;
-
-                      await controller.scrollToIndex(
-                        initialIndex,
-                        preferPosition: AutoScrollPosition.middle,
-                        duration: const Duration(milliseconds: 100),
-                      );
-                      selectedDate.value = DateTime.now();
-                      selectedIndex.value = initialIndex;
-                    },
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            insetPadding: const EdgeInsets.all(24),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SfDateRangePicker(
-                                    backgroundColor: CColor.backgroundColor,
-                                    showNavigationArrow: true,
-                                    headerHeight: 56,
-                                    headerStyle:
-                                        const DateRangePickerHeaderStyle(
-                                      backgroundColor: CColor.backgroundColor,
-                                    ),
-                                    onSelectionChanged: (
-                                      DateRangePickerSelectionChangedArgs
-                                          dateRangePickerSelectionChangedArgs,
-                                    ) async {
-                                      selectedDate.value = DateTime.parse(
-                                        dateRangePickerSelectionChangedArgs
-                                            .value
-                                            .toString(),
-                                      );
-                                      final int index = selectedDate.value
-                                          .difference(initialDate)
-                                          .inDays;
-
-                                      await controller.scrollToIndex(
-                                        index,
-                                        preferPosition:
-                                            AutoScrollPosition.middle,
-                                        duration:
-                                            const Duration(milliseconds: 100),
-                                      );
-                                      context.pop();
-                                    },
-                                    selectionShape:
-                                        DateRangePickerSelectionShape.rectangle,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    icon: const Icon(CustomIcons.calendar),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        8.verticalSpace,
         SizedBox(
           width: double.infinity,
           height: 60,
           child: ListView.builder(
-            controller: controller,
+            controller: _controller,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               final DateTime currentDate =
-                  initialDate.add(Duration(days: index));
+                  DateTime(2024).add(Duration(days: index));
 
               final isToday = DateTime(
                     currentDate.year,
@@ -175,9 +93,7 @@ class DateTimeLine extends HookWidget {
                   height: 56,
                   width: 56.0,
                   decoration: BoxDecoration(
-                    color: selectedIndex.value == index
-                        ? CColor.primary
-                        : Colors.white,
+                    color: Colors.white,
                     border: isToday
                         ? Border.all(color: CColor.primary)
                         : Border.all(
@@ -188,8 +104,6 @@ class DateTimeLine extends HookWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: () {
-                        selectedIndex.value = index;
-                        selectedDate.value = currentDate;
                         Scrollable.ensureVisible(
                           GlobalObjectKey(currentDate).currentContext!,
                           duration: const Duration(milliseconds: 500),
@@ -198,6 +112,9 @@ class DateTimeLine extends HookWidget {
                           // 0 mean, scroll to the top, 0.5 mean, half
                           curve: Curves.easeInOutCubic,
                         );
+                        setState(() {
+                          _currentDate = currentDate;
+                        });
                       },
                       child: badges.Badge(
                         badgeStyle: badges.BadgeStyle(
@@ -230,17 +147,13 @@ class DateTimeLine extends HookWidget {
                               Text(
                                 dayNumber,
                                 style: context.textTheme.bodyMedium?.copyWith(
-                                  color: selectedIndex.value == index
-                                      ? Colors.white
-                                      : CColor.text,
+                                  color: CColor.text,
                                 ),
                               ),
                               Text(
                                 dayName,
                                 style: context.textTheme.bodyMedium?.copyWith(
-                                  color: selectedIndex.value == index
-                                      ? Colors.white
-                                      : CColor.light,
+                                  color: CColor.light,
                                 ),
                               ),
                             ],
@@ -261,5 +174,74 @@ class DateTimeLine extends HookWidget {
         8.verticalSpace,
       ],
     );
+  }
+}
+
+class DateTimelineController {
+  _DateTimeLineState? _datePickerState;
+
+  void setDatePickerState(_DateTimeLineState state) {
+    _datePickerState = state;
+  }
+
+  void jumpToSelection() {
+    assert(_datePickerState != null,
+        'DatePickerController is not attached to any DatePicker View.');
+
+    // jump to the current Date
+    _datePickerState!._controller
+        .jumpTo(_calculateDateOffset(_datePickerState!._currentDate));
+  }
+
+  /*/// This function will animate the Timeline to the currently selected Date
+  void animateToSelection(
+      {duration = const Duration(milliseconds: 500), curve = Curves.linear}) {
+    assert(_datePickerState != null,
+    'DatePickerController is not attached to any DatePicker View.');
+
+    // animate to the current date
+    _datePickerState!._controller.animateTo(
+        _calculateDateOffset(_datePickerState!._currentDate),
+        duration: duration,
+        curve: curve);
+  }*/
+
+  /// This function will animate to any date that is passed as an argument
+  /// In case a date is out of range nothing will happen
+  void animateToDate(DateTime date,
+      {duration = const Duration(milliseconds: 500), curve = Curves.linear}) {
+    /* assert(_datePickerState != null,
+    'DatePickerController is not attached to any DatePicker View.');
+*/
+    _datePickerState!._controller.animateTo(_calculateDateOffset(date),
+        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+  }
+
+  /// This function will animate to any date that is passed as an argument
+  /// this will also set that date as the current selected date
+  /* void setDateAndAnimate(DateTime date,
+      {duration = const Duration(milliseconds: 500), curve = Curves.linear}) {
+    assert(_datePickerState != null,
+    'DatePickerController is not attached to any DatePicker View.');
+
+    _datePickerState!._controller.animateTo(_calculateDateOffset(date),
+        duration: duration, curve: curve);
+
+    if (date.compareTo(_datePickerState!.widget.startDate) >= 0 &&
+        date.compareTo(_datePickerState!.widget.startDate
+            .add(Duration(days: _datePickerState!.widget.daysCount))) <=
+            0) {
+      // date is in the range
+      _datePickerState!._currentDate = date;
+    }
+  }*/
+
+  /// Calculate the number of pixels that needs to be scrolled to go to the
+  /// date provided in the argument
+  double _calculateDateOffset(DateTime date) {
+    final startDate = DateTime(2024);
+
+    final int offset = date.difference(startDate).inDays;
+    return (offset * 56) + (offset * 16);
   }
 }
