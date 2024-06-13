@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:task_craft/core/config/colors.dart';
 import 'package:task_craft/core/utils/extention.dart';
+import 'package:task_craft/core/widgets/bottom_sheet/scrollable_bottom_sheet.dart';
 import 'package:task_craft/core/widgets/devider/divider.dart';
 import 'package:task_craft/module/todo/presentation/widgets/title.dart';
 import 'package:timelines/timelines.dart';
@@ -80,16 +82,11 @@ class TaskContent extends HookWidget {
                           color: Colors.white,
                           child: InkWell(
                             onTap: () {
-                              showModalBottomSheet(
+                              showBottomSheet(
                                 context: context,
-                                builder: (context) => SlidingUpPanel(
-                                  panel: const Center(
-                                    child: Text("This is the sliding Widget"),
-                                  ),
-                                  body: const Center(
-                                    child: Text(
-                                        "This is the Widget behind the sliding panel"),
-                                  ),
+                                builder: (context) => ScrollableBottomSheet(
+                                  child:
+                                      List.generate(100, (index) => Text("s")),
                                 ),
                               );
                             },

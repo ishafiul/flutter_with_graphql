@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -36,15 +37,6 @@ class TodoScreen extends HookWidget {
     final ValueNotifier<Size?> dateTimeLineConstraints = useState(null);
     return Scaffold(
       key: homePageScaffoldKey,
-      floatingActionButton: SafeArea(
-        child: IconButton.filled(
-          onPressed: () {},
-          icon: const Icon(
-            CustomIcons.add,
-            size: 32,
-          ),
-        ),
-      ),
       backgroundColor: const Color(0xfffcfbfa),
       appBar: AppBar(
         title: const Text("TODO"),
@@ -55,132 +47,149 @@ class TodoScreen extends HookWidget {
           ),
         ],
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            Padding(
-              padding: 24.paddingHorizontal(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ValueListenableBuilder(
-                    valueListenable: selectedDate,
-                    builder:
-                        (BuildContext context, DateTime value, Widget? child) {
-                      return Text(
-                        DateFormat('MMM yyyy').format(value),
-                        style: context.textTheme.titleLarge,
-                      );
-                    },
-                  ),
-                  Row(
+      body: Stack(
+        children: [
+          Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Padding(
+                  padding: 24.paddingHorizontal(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Button.primary(
-                        child: const Text('Today'),
-                        onPressed: () async {
-                          /*final int initialIndex =
-                              DateTime.now().difference(initialDate).inDays;
-
-                          await controller.scrollToIndex(
-                            initialIndex,
-                            preferPosition: AutoScrollPosition.middle,
-                            duration: const Duration(milliseconds: 100),
+                      ValueListenableBuilder(
+                        valueListenable: selectedDate,
+                        builder:
+                            (BuildContext context, DateTime value, Widget? child) {
+                          return Text(
+                            DateFormat('MMM yyyy').format(value),
+                            style: context.textTheme.titleLarge,
                           );
-                          selectedDate.value = DateTime.now();
-                          selectedIndex.value = initialIndex;*/
-                          await dateController.animateToDate(DateTime.now());
                         },
                       ),
-                      Button.primary(
-                        child: const Text('Selected Date'),
-                        onPressed: () async {
-                          /*final int initialIndex =
-                              DateTime.now().difference(initialDate).inDays;
+                      Row(
+                        children: [
+                          Button.primary(
+                            child: const Text('Today'),
+                            onPressed: () async {
+                              /*final int initialIndex =
+                                  DateTime.now().difference(initialDate).inDays;
 
-                          await controller.scrollToIndex(
-                            initialIndex,
-                            preferPosition: AutoScrollPosition.middle,
-                            duration: const Duration(milliseconds: 100),
-                          );
-                          selectedDate.value = DateTime.now();
-                          selectedIndex.value = initialIndex;*/
-                          dateController.animateToSelection();
-                        },
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                insetPadding: const EdgeInsets.all(24),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SfDateRangePicker(
-                                        backgroundColor: CColor.backgroundColor,
-                                        showNavigationArrow: true,
-                                        headerHeight: 56,
-                                        headerStyle:
-                                            const DateRangePickerHeaderStyle(
-                                          backgroundColor:
-                                              CColor.backgroundColor,
-                                        ),
-                                        onSelectionChanged: (
-                                          DateRangePickerSelectionChangedArgs
-                                              dateRangePickerSelectionChangedArgs,
-                                        ) async {
-                                          context.pop();
-                                          await dateController.animateToDate(
-                                            DateTime.parse(
-                                              dateRangePickerSelectionChangedArgs
-                                                  .value
-                                                  .toString(),
+                              await controller.scrollToIndex(
+                                initialIndex,
+                                preferPosition: AutoScrollPosition.middle,
+                                duration: const Duration(milliseconds: 100),
+                              );
+                              selectedDate.value = DateTime.now();
+                              selectedIndex.value = initialIndex;*/
+                              await dateController.animateToDate(DateTime.now());
+                            },
+                          ),
+                          Button.primary(
+                            child: const Text('Selected Date'),
+                            onPressed: () async {
+                              /*final int initialIndex =
+                                  DateTime.now().difference(initialDate).inDays;
+
+                              await controller.scrollToIndex(
+                                initialIndex,
+                                preferPosition: AutoScrollPosition.middle,
+                                duration: const Duration(milliseconds: 100),
+                              );
+                              selectedDate.value = DateTime.now();
+                              selectedIndex.value = initialIndex;*/
+                              dateController.animateToSelection();
+                            },
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    insetPadding: const EdgeInsets.all(24),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SfDateRangePicker(
+                                            backgroundColor: CColor.backgroundColor,
+                                            showNavigationArrow: true,
+                                            headerHeight: 56,
+                                            headerStyle:
+                                                const DateRangePickerHeaderStyle(
+                                              backgroundColor:
+                                                  CColor.backgroundColor,
                                             ),
-                                          );
-                                        },
-                                        selectionShape:
-                                            DateRangePickerSelectionShape
-                                                .rectangle,
+                                            onSelectionChanged: (
+                                              DateRangePickerSelectionChangedArgs
+                                                  dateRangePickerSelectionChangedArgs,
+                                            ) async {
+                                              context.pop();
+                                              await dateController.animateToDate(
+                                                DateTime.parse(
+                                                  dateRangePickerSelectionChangedArgs
+                                                      .value
+                                                      .toString(),
+                                                ),
+                                              );
+                                            },
+                                            selectionShape:
+                                                DateRangePickerSelectionShape
+                                                    .rectangle,
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        icon: const Icon(CustomIcons.calendar),
+                            icon: const Icon(CustomIcons.calendar),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
+                8.verticalSpace,
+                MeasureSize(
+                  onChange: (Size size) {
+                    dateTimeLineConstraints.value = size;
+                  },
+                  child: DateTimeLine(
+                    controller: dateController,
+                    visibleDate: (date) {
+                      selectedDate.value = date;
+                    },
+                  ),
+                ),
+                if (dateTimeLineConstraints.value != null)
+                  TaskContent(
+                    extraTopSize: dateTimeLineConstraints.value!,
+                    scaafoldContext: context,
+                  ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 24.h,
+            right: 24.w,
+            child: SafeArea(
+              child: IconButton.filled(
+                onPressed: () {},
+                icon: const Icon(
+                  CustomIcons.add,
+                  size: 32,
+                ),
               ),
             ),
-            8.verticalSpace,
-            MeasureSize(
-              onChange: (Size size) {
-                dateTimeLineConstraints.value = size;
-              },
-              child: DateTimeLine(
-                controller: dateController,
-                visibleDate: (date) {
-                  selectedDate.value = date;
-                },
-              ),
-            ),
-            if (dateTimeLineConstraints.value != null)
-              TaskContent(
-                extraTopSize: dateTimeLineConstraints.value!,
-                scaafoldContext: context,
-              ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

@@ -9,6 +9,7 @@ class ScrollableBottomSheet extends StatelessWidget {
     this.minChildSize,
     this.maxChildSize,
     required this.child,
+    this.padding,
   });
 
   final double? initialChildSize;
@@ -16,7 +17,8 @@ class ScrollableBottomSheet extends StatelessWidget {
   final double? minChildSize;
 
   final double? maxChildSize;
-  final Widget child;
+  final List<Widget> child;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,7 @@ class ScrollableBottomSheet extends StatelessWidget {
             ),
             child: ListView(
               controller: scrollController,
+              padding: padding,
               children: [
                 Container(
                   padding: 8.paddingVertical(),
@@ -50,7 +53,7 @@ class ScrollableBottomSheet extends StatelessWidget {
                     color: Color(0xffABABAB),
                   ),
                 ),
-                child,
+                ...child,
               ],
             ),
           ),
