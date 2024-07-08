@@ -6,6 +6,10 @@ export const generateOtp = (size: number) => {
 };
 
 export function extractTokenFromHeader(request: Request): string | undefined {
+  if (!request.headers['authorization']) {
+    return;
+  }
+
   const [type, token] = request.headers['authorization'].split(' ') ?? [];
   return type === 'Bearer' ? token : undefined;
 }

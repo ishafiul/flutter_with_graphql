@@ -5,4 +5,8 @@ import { RequestOtpInput } from './request-otp.input';
 export class VerifyOtpInput extends PartialType(RequestOtpInput) {
   @Field(() => Int)
   otp: number;
+  @Field(() => String)
+  email: string;
+  @Field(() => String)
+  deviceUuid: string;
 }

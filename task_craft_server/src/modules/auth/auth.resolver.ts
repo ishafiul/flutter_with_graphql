@@ -17,7 +17,8 @@ import { LoginWithGoogleEntity } from './entities/login-with-google.entity';
 
 @Resolver(() => Auth)
 export class AuthResolver {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {
+  }
 
   @Mutation(() => DeviceUuId, {
     description:

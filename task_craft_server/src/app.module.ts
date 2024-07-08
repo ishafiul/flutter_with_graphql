@@ -9,6 +9,7 @@ import { TaskModule } from './modules/task/task.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { FilesModule } from './modules/files/files.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { FilesModule } from './modules/files/files.module';
     AuthModule,
     UserModule,
     FilesModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

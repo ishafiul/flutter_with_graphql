@@ -42,8 +42,8 @@ export class RequestOtpInput {
 }
 
 export class VerifyOtpInput {
-    email?: Nullable<string>;
-    deviceUuid?: Nullable<string>;
+    email: string;
+    deviceUuid: string;
     otp: number;
 }
 

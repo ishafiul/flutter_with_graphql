@@ -143,11 +143,8 @@ input RequestOtpInput {
 }
 
 input VerifyOtpInput {
-  """User Valid Email. OTP will send there"""
-  email: String
-
-  """this system generated device id"""
-  deviceUuid: String
+  email: String!
+  deviceUuid: String!
   otp: Int!
 }
 
