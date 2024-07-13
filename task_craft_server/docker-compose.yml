@@ -1,0 +1,26 @@
+services:
+  app:
+    container_name: gqlserver
+    restart: always
+    build: .
+    ports:
+      - '8081:3000'
+    environment:
+      - MONGODB_DB_URI=
+
+      - JWT_SECRECT=
+      - HASH_KEY=
+
+      - SMTP=
+      - SMTP_HOST=
+      - SMTP_USER=
+      - SMTP_PASS=
+
+      - GOOGLE_CLIENT_ID=
+
+      - R2_ACCOUNT_ID=
+      - R2_ACCESS_KEY_ID=
+      - R2_ACCESS_KEY_SECRET=
+      - R2_BUCKET=task-craft
+
+      - SERVER_KEY=
