@@ -28,7 +28,7 @@ import { ConnectOptions } from 'mongoose';
         from: '"No Reply" <no-reply@groundcraft.xyz>',
       },
       template: {
-        dir: process.cwd() + '/src/mail-templates',
+        dir: process.cwd() + 'common/mail-templates',
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
